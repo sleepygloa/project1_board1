@@ -28,7 +28,7 @@
 		<level value="info" />
 	</logger> -->
 	
-    <logger name="first" additivity="false">
+    <logger name="bowtech_mvc" additivity="false">
         <level value="debug" />
         <appender-ref ref="console"/>
     </logger>

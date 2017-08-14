@@ -7,31 +7,36 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
- 
-    <context:component-scan base-package="com.company.bowtech_mvc"></context:component-scan>
-     
+
+    <context:component-scan base-package="com.sample.controller" />
+	<context:component-scan base-package="com.company.dao" />
+	<context:component-scan base-package="com.sample.dao" />
+	<context:component-scan base-package="com.sample.service" />
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <bean id="loggerInterceptor" class="com.company.logger.LoggerInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
-     
+
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-     
+
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0" />
     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />   
-     
+
    	<!-- Enables the Spring MVC @Controller programming model -->
 	<!-- <annotation-driven /> -->
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<!-- <resources mapping="/resources/**" location="/resources/" /> -->
-     
+
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->     
     <bean
+    	id="viewResolver"
         class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
         p:viewClass="org.springframework.web.servlet.view.JstlView"
         p:prefix="/WEB-INF/jsp/" p:suffix=".jsp">
     </bean>
+    
 </beans>
