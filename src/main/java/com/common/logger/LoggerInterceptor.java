@@ -1,4 +1,4 @@
-package com.company.logger;
+package com.common.logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
