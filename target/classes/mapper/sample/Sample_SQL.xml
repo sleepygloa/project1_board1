@@ -134,4 +134,23 @@
 		]]>
 	</insert>
 	
+	<update id="deleteFileList" parameterType="hashmap">
+	    <![CDATA[
+        UPDATE TB_FILE SET
+            DEL_GB = 'Y'
+        WHERE
+            BOARD_IDX = #{IDX} 
+	    ]]>
+	</update>
+	 
+	<update id="updateFile" parameterType="hashmap">
+	    <![CDATA[
+	        UPDATE TB_FILE SET
+	            DEL_GB = 'N'
+	        WHERE
+	            IDX = #{FILE_IDX}  
+	    ]]>
+	</update>
+
+
 </mapper>
