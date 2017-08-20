@@ -9,12 +9,10 @@ public class CommandMap {
     Map<String,Object> map = new HashMap<String,Object>();
      
     public Object get(String key){
-    	System.out.println("key :" +key);
         return map.get(key);
     }
      
     public void put(String key, Object value){
-    	System.out.println("key :" +key+" value : "+ value);
         map.put(key, value);
     }
      

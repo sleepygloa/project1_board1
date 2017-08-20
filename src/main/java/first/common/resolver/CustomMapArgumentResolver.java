@@ -16,6 +16,8 @@ public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return CommandMap.class.isAssignableFrom(parameter.getParameterType());
+		//.class.isAssignableFrom 은 런타임이 동적으로 상속구현 받고 있는지 확인하는 정의이다.
+		//비슷한 개념으로 A instanceOf B 가 있지만 이 개념은 정적으로 사용하는 개념이다.
 	}
 
 	@Override
@@ -24,6 +26,8 @@ public class CustomMapArgumentResolver implements HandlerMethodArgumentResolver{
 		
 		HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
 		Enumeration<?> enumeration = request.getParameterNames();
+		//Vector 클래스내 인터페이스, new로 생성하지 않는다. 
+		//request : 주고받은 Key, value값의 존재유무를 파악하여, 생성한 commandMap 클래스에 저장한다.
 		
 		String key = null;
 		String[] values = null;
