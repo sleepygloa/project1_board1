@@ -21,7 +21,6 @@
 			    AAA.*
 			FROM(
 			    SELECT 
-			        COUNT(*) AS TOTAL_COUNT,
 			        AA.*
 			    FROM(  
  		]]>

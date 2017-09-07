@@ -105,6 +105,7 @@
 				ORIGINAL_FILE_NAME,
 				STORED_FILE_NAME,
 				FILE_SIZE,
+				CREA_DTM,
 				CREA_ID
 			)
 			VALUES
@@ -114,6 +115,7 @@
 				#{ORIGINAL_FILE_NAME},
 				#{STORED_FILE_NAME},
 				#{FILE_SIZE},
+				now(),
 				'Admin'
 			)
 		]]>
