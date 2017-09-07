@@ -7,22 +7,22 @@
 		<include refid="common.pagingPre"/> 
 		<![CDATA[
 			SELECT
-				ROW_NUMBER() OVER (ORDER BY IDX DESC) RNUM,
+				@ROWNUM:=@ROWNUM+1 AS RNUM,
 			    IDX,
 			    TITLE,
 			    HIT_CNT,
-			    TO_CHAR(CREA_DTM, 'YYYY.MM.DD') AS CREA_DTM
+			    DATE_FORMAT(CREA_DTM, '%Y.%m.%d') AS CREA_DTM
 			FROM
 			    TB_BOARD
 			WHERE
-				DEL_GB = 'N'
+				DEL_GB = 'N' and (@ROWNUM:=0)=0
 		]]>
 		<include refid="common.pagingPost"/> 
 	</select>
 	
 	<insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
-			SELECT SEQ_TB_BOARD_IDX.NEXTVAL FROM DUAL
+			SELECT MAX(IDX)+1 FROM TB_BOARD
 		</selectKey>
 		<![CDATA[
 			INSERT INTO TB_BOARD
@@ -42,7 +42,7 @@
 				#{CONTENTS},
 			    0, 
 			    'N', 
-			    SYSDATE, 
+			    now(), 
 			    'Admin'
 			)
 		]]>
@@ -52,7 +52,7 @@
 		<![CDATA[
 			UPDATE TB_BOARD 
 			SET
-				HIT_CNT = NVL(HIT_CNT, 0) + 1
+				HIT_CNT = IFNULL(HIT_CNT, 0) + 1
 			WHERE
 				IDX = #{IDX}	
 		]]>
@@ -109,7 +109,7 @@
 			)
 			VALUES
 			(
-				SEQ_TB_FILE_IDX.NEXTVAL,
+				0,
 				#{BOARD_IDX},
 				#{ORIGINAL_FILE_NAME},
 				#{STORED_FILE_NAME},
