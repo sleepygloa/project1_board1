@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="/WEB-INF/include/include-header.jspf" %>
+<%@ include file="/WEB-INF/views/include/include-header.jspf" %>
 </head>
 <body>
 	<form id="frm" name="frm" enctype="multipart/form-data">
@@ -66,7 +66,7 @@
 	<a href="#this" class="btn" id="update">저장하기</a>
 	<a href="#this" class="btn" id="delete">삭제하기</a>
 	
-	<%@ include file="/WEB-INF/include/include-body.jspf" %>
+	<%@ include file="/WEB-INF/views/include/include-body.jspf" %>
 	<script type="text/javascript">
 		var gfv_count = '${fn:length(list)+1}';
 		$(document).ready(function(){

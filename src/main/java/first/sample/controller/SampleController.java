@@ -23,7 +23,7 @@ public class SampleController {
 	
 	@RequestMapping(value="/openBoardList.do")
     public ModelAndView openBoardList(CommandMap commandMap) throws Exception{
-    	ModelAndView mv = new ModelAndView("boardList");
+    	ModelAndView mv = new ModelAndView("board/boardList");
     	
     	return mv;
     }
@@ -46,7 +46,7 @@ public class SampleController {
 	
 	@RequestMapping(value="/openBoardWrite.do")
 	public ModelAndView openBoardWrite(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("boardWrite");
+		ModelAndView mv = new ModelAndView("board/boardWrite");
 		
 		return mv;
 	}
@@ -62,7 +62,7 @@ public class SampleController {
 	
 	@RequestMapping(value="/openBoardDetail.do")
 	public ModelAndView openBoardDetail(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("boardDetail");
+		ModelAndView mv = new ModelAndView("board/boardDetail");
 		
 		Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
 		mv.addObject("map", map.get("map"));
@@ -73,7 +73,7 @@ public class SampleController {
 	
 	@RequestMapping(value="/openBoardUpdate.do")
 	public ModelAndView openBoardUpdate(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("boardUpdate");
+		ModelAndView mv = new ModelAndView("board/boardUpdate");
 		
 		Map<String,Object> map = sampleService.selectBoardDetail(commandMap.getMap());
 		mv.addObject("map", map.get("map"));

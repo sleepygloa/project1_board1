@@ -2,37 +2,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<%@ include file="/WEB-INF/include/include-header.jspf" %>
-</head>
-<body>
-	<h2>게시판 목록</h2>
-	<table class="board_list">
-		<colgroup>
-			<col width="10%"/>
-			<col width="*"/>
-			<col width="15%"/>
-			<col width="20%"/>
-		</colgroup>
-		<thead>
-			<tr>
-				<th scope="col">글번호</th>
-				<th scope="col">제목</th>
-				<th scope="col">조회수</th>
-				<th scope="col">작성일</th>
-			</tr>
-		</thead>
-		<tbody>
-			
-		</tbody>
-	</table>
-	
-	<div id="PAGE_NAVI"></div>
-	<input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
-	
-	<br/>
-	<a href="#this" class="btn" id="write">글쓰기</a>
-	
-	<%@ include file="/WEB-INF/include/include-body.jspf" %>
+<%@ include file="/WEB-INF/views/include/include-header.jspf" %>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			fn_selectBoardList(1);
@@ -114,5 +84,36 @@
 			}
 		}
 	</script>	
+</head>
+<body>
+	<h2>게시판 목록</h2>
+	<table class="board_list">
+		<colgroup>
+			<col width="10%"/>
+			<col width="*"/>
+			<col width="15%"/>
+			<col width="20%"/>
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col">글번호</th>
+				<th scope="col">제목</th>
+				<th scope="col">조회수</th>
+				<th scope="col">작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+	
+	<div id="PAGE_NAVI"></div>
+	<input type="hidden" id="PAGE_INDEX" name="PAGE_INDEX"/>
+	
+	<br/>
+	<a href="#this" class="btn" id="write">글쓰기</a>
+	
+	<%@ include file="/WEB-INF/views/include/include-body.jspf" %>
+
 </body>
 </html>
