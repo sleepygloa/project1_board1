@@ -4,12 +4,23 @@
 <mapper namespace="board">
 	
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
-	SELECT a.idx, a.title, a.content, a.passwd, a.writer, a.email, a.reg_date, a.ref, a.re_level, a.re_step, a.readCount, a.r 
-	FROM (
-		SELECT idx, title, content, passwd, writer, email, reg_date, ref, re_level, re_step, readCount, @rownum:=@rownum+1 AS r  
-		FROM openBoard,(select @rownum:=0) r
-	) a
-	ORDER BY a.idx desc
+	
+	SELECT 
+			idx
+		, 	title
+		, 	content
+		, 	passwd
+		, 	writer
+		,	email
+		, 	reg_date
+		, 	ref
+		, 	re_level	
+		, 	re_step
+		, 	readCount
+		, 	@rownum:=@rownum+1 AS r  
+	FROM 
+			openBoard
+		,	(select @rownum:=0) r
 	</select>
 	
 	<!-- <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">

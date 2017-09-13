@@ -34,7 +34,7 @@ function ComSubmit(opt_formId) {
 	};
 }
 
-var gfv_ajaxCallback = "";
+var fv_ajaxCallback = "";
 function ComAjax(opt_formId){
 	this.url = "";		
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
@@ -71,7 +71,7 @@ function ComAjax(opt_formId){
 					fv_ajaxCallback(data);
 				}
 				else {
-					eval(fv_ajaxCallback + "(data);");
+					eval(fv_ajaxCallback + "(data)");
 				}
 			}
 		});
@@ -149,3 +149,49 @@ function _movePage(value){
 		eval(gfv_eventName + "(value);");
 	}
 }
+
+//function ComBtn(btnFunc, btnUrl){
+//	var str = "";
+//	this.btnClass = "";
+//	this.btnName = "";
+//	this.btnId = "";
+//	this.btnContent = "";
+//	var btnTargetId = "";
+//	
+//	this.setBtnClass = function setBtnClass(btnClass){
+//		this.btnClass = btnClass;
+//	};
+//	this.setBtnName = function setBtnName(btnName){
+//		this.btnName = btnName;
+//	}
+//	this.setBtnId = function setBtnId(btnId){
+//		this.btnId = btnId;
+//	}
+//	this.setBtnContent = function setBtnContent(btnContent){
+//		this.btnContent = btnContent;
+//	}
+//	this.setBtnTargetId = function setBtnTargetId(btnTargetId){
+//		btnTargetId = btnTargetId;
+//	}
+//	str += "<button type='button' "; 
+//		if(this.btnId != null){
+//			str += " id='" + this.btnId + "'";
+//		}
+//		if(this.btnClass != null) {
+//			str += " class='"+ this.btnClass + "'";
+//		}
+//		if(this.btnName != null) {
+//			str += " name='"+ this.btnName + "'";
+//		}
+//		if(this.btnFunc != null) {
+//			if(this.btnFucn == "onClick") {
+//				str += " onClick='window.location=" + this.btnUrl + "'>";
+//			}
+//		}
+//		if(this.btnContent != null){
+//			str += this.content;
+//		}
+//	str += "</button>";
+//	
+//	return str;
+//}

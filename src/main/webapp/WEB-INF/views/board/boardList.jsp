@@ -9,11 +9,10 @@
 $(document).ready(function(){
 	var pageNumValue = $('#paging').val();
 	$('.paging'+pageNumValue+'').css('color', 'red');	
-});
-
-$(document).ready(function(){
+	
 	fn_selectBoardList(1);
 	
+});
 	//게시판초기정보 저장 
 	function fn_selectBoardList(PageNo){
 		var comAjax = new ComAjax();
@@ -47,16 +46,17 @@ $(document).ready(function(){
 			var str = "";
 			$.each(data.list, function(key, value){
 				str += "<tr>" +
-						"<td>" + value.IDX + "</td>" +
-						"<td class='title'>" +
-							"<a href='#this' name='title'>" + value.TITLE + "</a>" +
-							"<input type='hidden' id='IDX' name='IDX' value=" + value.IDX + ">" +
+						"<td style='width:100px;'>" + value.idx + "</td>" +
+						"<td class='title' style='width:700px;'>" +
+							"<div class='td_subject' style='display:inline-block;width:650px'>" +
+							"<a href='#this' name='title'>" + value.title + "</a>" + "</div>" +
+							"<input type='hidden' id='IDX' name='IDX' value=" + value.idx + "/>" +
 						"</td>" +
-						"<td>" + value.HIT_CNT + "</td>" +
-						"<td>" + value.CREA_DTM + "</td>" +
+						"<td class='td_subject' style='width:200px;text-align:center;'>" + value.writer + "</td>" +
+						"<td style='width:100px;'>" + value.readCount + "</td>" +
 					"</tr>";
 			});
-			body.apeend(str);
+			body.append(str);
 			
 			$("a[name='title']").on("click", function(e){
 				e.preventDefault();
@@ -64,7 +64,6 @@ $(document).ready(function(){
 			});
 		}
 	}
-})
 </script>
 
 <style>
@@ -114,11 +113,11 @@ height:20px;
 		<h2> 게시판 입니다. </h2>
 	</div>
 	<div class="col-xs-12">
-		<div class="col-xs-12">
+		<div id="openBoardBtn" class="col-xs-12">
 		<button type="button" class="btn btn-default btn-sm pull-right"
-		onclick="window.location='boardInsert.do'">글쓰기</button>
+		onclick="window.location='/boardInsert.do'">글쓰기</button>
 		<button type="button" class="btn btn-default btn-sm pull-right"
-		onclick="window.location='boardList.do'">전체 글보기</button>
+		onclick="window.location='/openBoard.do'">전체 글보기</button>
 		<table class="table table-hover" style="width:1100px;">
 			<thead>
 				<tr>
