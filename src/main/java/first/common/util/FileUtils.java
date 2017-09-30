@@ -52,6 +52,7 @@ public class FileUtils {
         		listMap.put("ORIGINAL_FILE_NAME", originalFileName);
         		listMap.put("STORED_FILE_NAME", storedFileName);
         		listMap.put("FILE_SIZE", multipartFile.getSize());
+        		listMap.put("writer", map.get("writer"));
         		list.add(listMap);
         	}
         }
@@ -74,7 +75,7 @@ public class FileUtils {
         String requestName = null;
         String idx = null;
         
-        
+       System.out.println(map.get("writer"));System.out.println(map.get("WRITER"));
         while(iterator.hasNext()){
         	multipartFile = multipartHttpServletRequest.getFile(iterator.next());
         	if(multipartFile.isEmpty() == false){
@@ -90,6 +91,7 @@ public class FileUtils {
         		listMap.put("ORIGINAL_FILE_NAME", originalFileName);
         		listMap.put("STORED_FILE_NAME", storedFileName);
         		listMap.put("FILE_SIZE", multipartFile.getSize());
+        		listMap.put("writer", map.get("writer"));
         		list.add(listMap);
         	}
         	else{
@@ -99,6 +101,7 @@ public class FileUtils {
             		listMap = new HashMap<String,Object>();
             		listMap.put("IS_NEW", "N");
             		listMap.put("FILE_IDX", map.get(idx));
+            		listMap.put("writer", map.get("writer"));
             		list.add(listMap);
             	}
         	}

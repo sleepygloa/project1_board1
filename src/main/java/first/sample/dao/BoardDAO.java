@@ -16,42 +16,42 @@ public class BoardDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectPagingList("board.selectBoardList", map);
 	}
 
-//	public void insertBoard(Map<String, Object> map) throws Exception{
-//		insert("sample.insertBoard", map);
-//	}
-//
-//	public void updateHitCnt(Map<String, Object> map) throws Exception{
-//		update("sample.updateHitCnt", map);
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
-//		return (Map<String, Object>) selectOne("sample.selectBoardDetail", map);
-//	}
-//
-//	public void updateBoard(Map<String, Object> map) throws Exception{
-//		update("sample.updateBoard", map);
-//	}
-//
-//	public void deleteBoard(Map<String, Object> map) throws Exception{
-//		update("sample.deleteBoard", map);
-//	}
-//
-//	public void insertFile(Map<String, Object> map) throws Exception{
-//		insert("sample.insertFile", map);
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception{
-//		return (List<Map<String, Object>>)selectList("sample.selectFileList", map);
-//	}
-//
-//	public void deleteFileList(Map<String, Object> map) throws Exception{
-//		update("sample.deleteFileList", map);
-//	}
-//
-//	public void updateFile(Map<String, Object> map) throws Exception{
-//		update("sample.updateFile", map);
-//	}
+	public void insertBoard(Map<String, Object> map) throws Exception{
+		insert("board.insertBoard", map);
+	}
+
+	public void updateHitCnt(Map<String, Object> map) throws Exception{
+		update("board.updateHitCnt", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
+		return (Map<String, Object>) selectOne("board.selectBoardDetail", map);
+	}
+
+	public void updateBoard(Map<String, Object> map) throws Exception{
+		update("board.updateBoard", map);
+	}
+
+	public void deleteBoard(Map<String, Object> map) throws Exception{
+		update("board.deleteBoard", map);
+	}
+
+	public void insertFile(Map<String, Object> map) throws Exception{
+		insert("board.insertFile", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("board.selectFileList", map);
+	}
+
+	public void deleteFileList(Map<String, Object> map) throws Exception{
+		update("board.deleteFileList", map);
+	}
+
+	public void updateFile(Map<String, Object> map) throws Exception{
+		update("board.updateFile", map);
+	}
 
 }

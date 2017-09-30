@@ -38,3 +38,8 @@ thead tr > th, tbody tr > td {
 .info_content > p{
 	padding-top:7px;
 }
+
+
+#fileDiv > p{
+	height:50px;
+}

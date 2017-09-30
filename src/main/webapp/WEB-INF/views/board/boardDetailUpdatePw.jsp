@@ -13,10 +13,10 @@
     	 
     	 <p>수정하시려면 비밀번호를 입력해주세요</p><br />
     	 
-    	 <form action="boardInfoUpdate.do?num=${boardDTO.num}" class="" method="post">
+    	 <form id="updateForm" name="updateForm">
     	 	<label>비밀번호 </label>
-    	 	<input type="text" name="passwd" autocomplete="off" /><br /><br />
-       		<input type="submit" class="btn btn-primary"  value="수정" >
+    	 	<input type="password" name="passwd" autocomplete="off" /><br /><br />
+    	 		<a href="#this" class="btn btn-default" id="update">수정</a>
        		<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button> 
     	 </form>
     	 

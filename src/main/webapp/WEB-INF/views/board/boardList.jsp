@@ -3,7 +3,7 @@
 
 <jsp:include page="boardHeader.jsp" />
 
-<script src="/bowtech/resources/js/searchValidation.js"></script>
+<script src="/resources/js/views/board/boardInsert.js"></script>
 
 <script>
 $(document).ready(function(){
@@ -46,23 +46,30 @@ $(document).ready(function(){
 			var str = "";
 			$.each(data.list, function(key, value){
 				str += "<tr>" +
-						"<td style='width:100px;'>" + value.idx + "</td>" +
-						"<td class='title' style='width:700px;'>" +
+						"<td style='width:100px;'>" + value.IDX + "</td>" +
+						"<td class='TITLE' style='width:700px;'>" +
 							"<div class='td_subject' style='display:inline-block;width:650px'>" +
-							"<a href='#this' name='title'>" + value.title + "</a>" + "</div>" +
-							"<input type='hidden' id='IDX' name='IDX' value=" + value.idx + "/>" +
+							"<a href='#this' name='TITLE'>" + value.TITLE + "</a>" + 
+							"<input type='hidden' id='IDX' name='IDX' value='" + value.IDX + "' />" + "</div>" +
 						"</td>" +
-						"<td class='td_subject' style='width:200px;text-align:center;'>" + value.writer + "</td>" +
-						"<td style='width:100px;'>" + value.readCount + "</td>" +
+						"<td class='td_subject' style='width:200px;text-align:center;'>" + value.WRITER + "</td>" +
+						"<td style='width:100px;'>" + value.READCOUNT + "</td>" +
 					"</tr>";
 			});
 			body.append(str);
 			
-			$("a[name='title']").on("click", function(e){
+			$("a[name='TITLE']").on("click", function(e){
 				e.preventDefault();
-				//fn_openBoardDetail($(this));
+				fn_openBoardDetail($(this));
 			});
 		}
+	}
+	
+	function fn_openBoardDetail(obj){
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/openBoardDetail.do' />");
+		comSubmit.addParam("IDX", obj.parent().find("#IDX").val());
+		comSubmit.submit();
 	}
 </script>
 
@@ -115,7 +122,7 @@ height:20px;
 	<div class="col-xs-12">
 		<div id="openBoardBtn" class="col-xs-12">
 		<button type="button" class="btn btn-default btn-sm pull-right"
-		onclick="window.location='/boardInsert.do'">글쓰기</button>
+		onclick="window.location='/openBoardWrite.do'">글쓰기</button>
 		<button type="button" class="btn btn-default btn-sm pull-right"
 		onclick="window.location='/openBoard.do'">전체 글보기</button>
 		<table class="table table-hover" style="width:1100px;">

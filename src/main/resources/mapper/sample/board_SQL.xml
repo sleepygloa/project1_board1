@@ -6,56 +6,59 @@
 	<select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
 	
 	SELECT 
-			idx
-		, 	title
-		, 	content
-		, 	passwd
-		, 	writer
-		,	email
-		, 	reg_date
-		, 	ref
-		, 	re_level	
-		, 	re_step
-		, 	readCount
+			IDX
+		, 	TITLE
+		, 	CONTENT
+		, 	PASSWD
+		, 	WRITER
+		,	EMAIL
+		, 	REG_DATE
+		, 	REF
+		, 	RE_LEVEL	
+		, 	RE_STEP
+		, 	READCOUNT
 		, 	@rownum:=@rownum+1 AS r  
 	FROM 
-			openBoard
+			BL_BD
 		,	(select @rownum:=0) r
+    WHERE   DEL_GB = 'N'
+    ORDER BY IDX desc
+        
 	</select>
 	
-	<!-- <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+	 <insert id="insertBoard" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
-			SELECT MAX(IDX)+1 FROM TB_BOARD
+			SELECT MAX(IDX)+1 FROM BL_BD
 		</selectKey>
 		<![CDATA[
-			INSERT INTO TB_BOARD
+			INSERT INTO BL_BD
 			(
-				IDX,
+				
 			    TITLE, 
-			    CONTENTS, 
-			    HIT_CNT, 
+			    CONTENT, 
+			    READCOUNT, 
 			    DEL_GB, 
-			    CREA_DTM, 
-			    CREA_ID
+			    REG_DATE, 
+			    WRITER
 			)
 			VALUES
 			(
-				#{IDX}, 
-				#{TITLE},
-				#{CONTENTS},
+			
+				#{title},
+				#{content},
 			    0, 
 			    'N', 
 			    now(), 
-			    'Admin'
+			    #{writer}
 			)
 		]]>
 	</insert>
 	
 	<update id="updateHitCnt" parameterType="hashmap">
 		<![CDATA[
-			UPDATE TB_BOARD 
+			UPDATE BL_BD 
 			SET
-				HIT_CNT = IFNULL(HIT_CNT, 0) + 1
+				READCOUNT = IFNULL(READCOUNT, 0) + 1
 			WHERE
 				IDX = #{IDX}	
 		]]>
@@ -66,13 +69,13 @@
 		<![CDATA[
 			SELECT
 				IDX,
-				HIT_CNT,
-				CREA_ID,
-				CREA_DTM,
+				READCOUNT,
+				WRITER,
+				REG_DATE,
 				TITLE,
-				CONTENTS
+				CONTENT
 			FROM
-				TB_BOARD
+				BL_BD
 			WHERE
 				IDX = #{IDX}		
 		]]>
@@ -80,10 +83,10 @@
 	
 	<update id="updateBoard" parameterType="hashmap">
 		<![CDATA[
-			UPDATE TB_BOARD 
+			UPDATE BL_BD 
 			SET
 				TITLE = #{TITLE},
-				CONTENTS = #{CONTENTS}
+				CONTENT = #{CONTENT}
 			WHERE
 				IDX = #{IDX}	
 		]]>
@@ -91,7 +94,7 @@
 	
 	<update id="deleteBoard" parameterType="hashmap">
 		<![CDATA[
-			UPDATE TB_BOARD
+			UPDATE BL_BD
 			SET
 				DEL_GB = 'Y'
 			WHERE
@@ -101,25 +104,25 @@
 	
 	<insert id="insertFile" parameterType="hashmap">
 		<![CDATA[
-			INSERT INTO TB_FILE
+			INSERT INTO BL_BD_FILE
 			(
 				IDX,
 				BOARD_IDX,
 				ORIGINAL_FILE_NAME,
 				STORED_FILE_NAME,
 				FILE_SIZE,
-				CREA_DTM,
-				CREA_ID
+			    REG_DATE,
+				WRITER
 			)
 			VALUES
 			(
-				0,
+				#{idx},
 				#{BOARD_IDX},
 				#{ORIGINAL_FILE_NAME},
 				#{STORED_FILE_NAME},
 				#{FILE_SIZE},
 				now(),
-				'Admin'
+				#{writer}
 			)
 		]]>
 	</insert>
@@ -131,28 +134,28 @@
 			    ORIGINAL_FILE_NAME,
 			    ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
 			FROM
-			    TB_FILE
+			    BL_BD_FILE
 			WHERE
-			    BOARD_IDX = #{IDX}
+			    BOARD_IDX = #{idx}
 			    AND DEL_GB = 'N'
 		]]>
 	</select>
 	
 	<update id="deleteFileList" parameterType="hashmap">
 		<![CDATA[
-			UPDATE TB_FILE SET 
+			UPDATE BL_BD_FILE SET 
 				DEL_GB = 'Y' 
 			WHERE 
-				BOARD_IDX = #{IDX}	
+				BOARD_IDX = #{idx}	
 		]]>
 	</update>
 	
 	<update id="updateFile" parameterType="hashmap">
 		<![CDATA[
-			UPDATE TB_FILE SET
+			UPDATE BL_BD_FILE SET
 				DEL_GB = 'N'
 			WHERE
-				IDX = #{FILE_IDX}	
+				IDX = #{file_idx}	
 		]]>
-	</update> -->
+	</update> 
 </mapper>
