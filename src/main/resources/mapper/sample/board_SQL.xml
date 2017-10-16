@@ -33,7 +33,6 @@
 		<![CDATA[
 			INSERT INTO BL_BD
 			(
-				
 			    TITLE, 
 			    CONTENT, 
 			    READCOUNT, 
@@ -43,13 +42,12 @@
 			)
 			VALUES
 			(
-			
-				#{title},
-				#{content},
+				#{TITLE},
+				#{CONTENT},
 			    0, 
 			    'N', 
 			    now(), 
-			    #{writer}
+			    #{WRITER}
 			)
 		]]>
 	</insert>
@@ -116,13 +114,13 @@
 			)
 			VALUES
 			(
-				#{idx},
+				#{IDX},
 				#{BOARD_IDX},
 				#{ORIGINAL_FILE_NAME},
 				#{STORED_FILE_NAME},
 				#{FILE_SIZE},
 				now(),
-				#{writer}
+				#{WRITER}
 			)
 		]]>
 	</insert>
@@ -136,7 +134,7 @@
 			FROM
 			    BL_BD_FILE
 			WHERE
-			    BOARD_IDX = #{idx}
+			    BOARD_IDX = #{IDX}
 			    AND DEL_GB = 'N'
 		]]>
 	</select>
@@ -146,7 +144,7 @@
 			UPDATE BL_BD_FILE SET 
 				DEL_GB = 'Y' 
 			WHERE 
-				BOARD_IDX = #{idx}	
+				BOARD_IDX = #{IDX}	
 		]]>
 	</update>
 	

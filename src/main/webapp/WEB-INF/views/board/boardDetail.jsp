@@ -103,11 +103,11 @@ margin:30px 0px;
 	<div class="form-group ">
 		<label class="col-xs-2 control-label">첨부파일</label>
 		<div class="col-xs-10 info_content f content_height">
-			<c:forEach var="row" items="${list}">
+			<c:forEach var="list" items="${list}">
 				<p>
-					<input type="hidden" id="IDX" value="${row.IDX }">
-					<a href="#this" name="file">${row.ORIGINAL_FILE_NAME }</a> 
-					(${row.FILE_SIZE }kb)
+					<input type="hidden" id="FILE_IDX" value="${list.IDX }">
+					<a href="#this" name="FILE">${list.ORIGINAL_FILE_NAME }</a> 
+					(${list.FILE_SIZE }kb)
 				</p>
 			</c:forEach>
 		</div>			

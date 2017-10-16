@@ -35,8 +35,9 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
 		log.debug("insert data : "+ map);
+		System.out.println(map);
 		boardDAO.insertBoard(map);
-		
+		log.debug("After insertBoard data : "+ map);
 		List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(map, request);
 		log.debug("list data : "+ list);
 		for(int i=0, size=list.size(); i<size; i++){
@@ -54,7 +55,7 @@ public class BoardServiceImpl implements BoardService{
 		
 		List<Map<String,Object>> list = boardDAO.selectFileList(map);
 		resultMap.put("list", list);
-		
+		log.debug("/list >>>>>>>>>>> " + resultMap);
 		return resultMap;
 	}
 

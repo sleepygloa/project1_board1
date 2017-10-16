@@ -44,10 +44,10 @@ $(document).ready(function(){
 		"내용에 글이 포함되어있지 않습니다. (공백만으로는 내용을 작성하실수 없습니다.)"];
 	
 	// 1. span태그 obj, 2. input태그 obj, 3. 위에서 정의한 함수명 배열, 4. 검증에 걸렸을 때 나타날 텍스트, 5. 검증을 통과했을 때 나타날 텍스트, 6. span태그의 좌측 폭 위치.
-	validation($("#writerspan"), $("#writer"), writerFuncArray, writerErrorArray, "멋진 이름입니다!", "15px");
-	validation($("#passwdspan"), $("#passwd"), passwdFuncArray, passErrorArray, "사용 가능한 비밀번호입니다. ", "15px");
-	validation($("#titlespan"), $("#title"), titleFuncArray, titleErrorArray, "", "15px");
-	validation($("#contentspan"), $("#content"), contentFuncArray, contentErrorArray, "", "15px");
+	validation($("#writerspan"), $("#WRITER"), writerFuncArray, writerErrorArray, "멋진 이름입니다!", "15px");
+	validation($("#passwdspan"), $("#PASSWD"), passwdFuncArray, passErrorArray, "사용 가능한 비밀번호입니다. ", "15px");
+	validation($("#titlespan"), $("#TITLE"), titleFuncArray, titleErrorArray, "", "15px");
+	validation($("#contentspan"), $("#CONTENT"), contentFuncArray, contentErrorArray, "", "15px");
 
 	//유효성검사시작
 	function validation(spanObj, inputObj, validFuncArray, errorMsg, greenMsg, marginLeftPx){
@@ -184,7 +184,7 @@ function length210(str){
     if( str.length < 2 || str.length > 10 ){
     	if(str.length > 10){
         	var limitContent = str.substring(0,10);
-        	document.getElementById('writer').value = limitContent;
+        	document.getElementById('WRITER').value = limitContent;
     	}
         return false;
     }
@@ -197,7 +197,7 @@ function length0616(str){
     if(str.length < 6 || str.length > 16 ){
     	if(str.length > 16){
         	var limitContent = str.substring(0,16);
-        	document.getElementById('passwd').value = limitContent;
+        	document.getElementById('PASSWD').value = limitContent;
     	}
         return false;
     }
@@ -209,7 +209,7 @@ function length1100(str){
     
     if(str.length > 100 ){
     	var limitContent = str.substring(0,100);
-    	document.getElementById('title').value = limitContent;
+    	document.getElementById('TITLE').value = limitContent;
         return false;
     }
     return true;
@@ -237,12 +237,12 @@ function trim(str){
 //submit 시 유효성 검사 항목을 한번 확인하며, true 시 전송, false 시 그 항목을 나타냄
 function frmCheck(check)
 {
-var userWriter = document.frm.writer.value;
+var userWriter = document.frm.WRITER.value;
 if(check == "insert"){
-	var userPasswd = document.frm.passwd.value;
+	var userPasswd = document.frm.PASSWD.value;
 }
-var userTitle = document.frm.title.value;
-var userContent = document.frm.content.value;
+var userTitle = document.frm.TITLE.value;
+var userContent = document.frm.CONTENT.value;
 
 for(var i=0; i<userWriter.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
 	userWriter = userWriter.replace(" ","");
@@ -260,16 +260,16 @@ for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 
 }
 
 if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다. 
-	$('#writer').focus();
+	$('#WRITER').focus();
 	return false;
  }else if(userPasswd == ""){ // 작성 된 내용이 하나도 없을 경우 안내 메세지 창 출력
-	$('#passwd').focus();
+	$('#PASSWD').focus();
 	return false;
  }else if(userTitle == ""){
-	$('#title').focus();
+	$('#TITLE').focus();
 	return false;
  }else if(userContent == ""){
-	$('#content').focus();
+	$('#CONTENT').focus();
 	return false;
  }else{
    return formsubmit(check);
@@ -279,80 +279,80 @@ if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다.
 
 function formsubmit(check){
 	//변수설정
-	var writer = $('#writer').val();
+	var writer = $('#WRITER').val();
 	if(check == "insert"){
-		var passwd = $('#passwd').val();
+		var passwd = $('#PASSWD').val();
 	}
-	var title = $('#title').val();
-	var content = $('#content').val();
+	var title = $('#TITLE').val();
+	var content = $('#CONTENT').val();
 	
 	//작성자 검사
 	if(!length210(writer)){
-		$('#writer').focus();
+		$('#WRITER').focus();
 		return false;
 	}
 	if(!adminCheck(writer)){
-		$('#writer').focus();
+		$('#WRITER').focus();
 		return false;
 	}
 	if(!trim(writer)){
-		$('#writer').focus();
+		$('#WRITER').focus();
 		return false;
 	}
 	
 	//비밀번호 검사
 	if(check == "insert"){
 		if(!spaceCheck(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 		if(!length0616(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 		if(!alphabetCheck(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 		if(!numberCheck(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 		if(!gihoCheck(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 		if(!trim(passwd)){
-			$('#passwd').focus();
+			$('#PASSWD').focus();
 			return false;
 		}
 	}
 
 	//제목검사
 	if(!nuCheck(title)){
-		$('#title').focus();
+		$('#TITLE').focus();
 		return false;
 	}
 	if(!length1100(title)){
-		$('#title').focus();
+		$('#TITLE').focus();
 		return false;
 	}
 	if(!trim(title)){
-		$('#title').focus();
+		$('#TITLE').focus();
 		return false;
 	}
 	
 	//내용검사
 	if(!nuCheck(content)){
-		$('#content').focus();
+		$('#CONTENT').focus();
 		return false;
 	}
 	if(!length1000(content)){
-		$('#content').focus();
+		$('#CONTENT').focus();
 		return false;
 	}	
 	if(!trim(content)){
-		$('#content').focus();
+		$('#CONTENT').focus();
 		return false;
 	}
 
