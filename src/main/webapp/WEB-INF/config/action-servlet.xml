@@ -12,25 +12,25 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<context:component-scan base-package="first" use-default-filters="false">
+	<context:component-scan base-package="com" use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 	
 	<mvc:annotation-driven>
 		<mvc:argument-resolvers>
-			<bean class="first.common.resolver.CustomMapArgumentResolver"></bean>		
+			<bean class="com.common.resolver.CustomMapArgumentResolver"></bean>		
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
-			<bean id="loggerInterceptor" class="first.common.logger.LoggerInterceptor"></bean>
+			<bean id="loggerInterceptor" class="com.common.logger.LoggerInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
 	
 	<aop:aspectj-autoproxy/>
-	<bean id="loggerAspect" class="first.common.logger.LoggerAspect" />
+	<bean id="loggerAspect" class="com.common.logger.LoggerAspect" />
 	
     <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
     

@@ -8,5 +8,5 @@
 							http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 	
 	<aop:aspectj-autoproxy/>
-	<bean id="loggerAspect" class="first.common.logger.LoggerAspect" />
+	<bean id="loggerAspect" class="com.common.logger.LoggerAspect" />
 </beans>
