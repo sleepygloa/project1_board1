@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blog">
+	
+	<select id="selectBlogList" parameterType="hashmap" resultType="hashmap">
+	SELECT 
+			IDX
+		, 	TITLE
+		, 	CONTENT
+		, 	PASSWD
+		, 	IN_USER_ID
+		,	EMAIL
+		, 	IN_DT
+		, 	REF
+		, 	RE_LEVEL	
+		, 	RE_STEP
+		, 	READCOUNT
+	FROM 
+			BL_BD
+    WHERE   DEL_YN = 'N'
+    ORDER BY IDX DESC
+	</select>
+	
+	 <insert id="insertBoard" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="IDX">
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT MAX(IDX)+1 FROM BL_BD
+		</selectKey>
+		<![CDATA[
+			INSERT INTO BL_BD
+			(
+			    TITLE, 
+			    CONTENT, 
+			    READCOUNT, 
+			    DEL_YN, 
+			    IN_DT, 
+			    IN_USER_ID
+			)
+			VALUES
+			(
+				#{TITLE},
+				#{CONTENT},
+			    0, 
+			    'N', 
+			    now(), 
+			    #{WRITER}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateHitCnt" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD 
+			SET
+				READCOUNT = IFNULL(READCOUNT, 0) + 1
+			WHERE
+				IDX = #{IDX}	
+		]]>
+	</update>
+	
+	
+	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+				IDX,
+				READCOUNT,
+				IN_USER_ID,
+				IN_DT,
+				TITLE,
+				CONTENT
+			FROM
+				BL_BD
+			WHERE
+				IDX = #{IDX}		
+		]]>
+	</select>
+	
+	<update id="updateBoard" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD 
+			SET
+				TITLE = #{TITLE},
+				CONTENT = #{CONTENT}
+			WHERE
+				IDX = #{IDX}	
+		]]>
+	</update>
+	
+	<update id="deleteBoard" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX = #{IDX}
+		]]>
+	</update>
+	
+	<insert id="insertFile" parameterType="hashmap">
+		<![CDATA[
+			INSERT INTO BL_BD_FILE
+			(
+				IDX,
+				BOARD_IDX,
+				ORIGINAL_FILE_NAME,
+				STORED_FILE_NAME,
+				FILE_SIZE,
+			    REG_DATE,
+				WRITER
+			)
+			VALUES
+			(
+				#{IDX},
+				#{BOARD_IDX},
+				#{ORIGINAL_FILE_NAME},
+				#{STORED_FILE_NAME},
+				#{FILE_SIZE},
+				now(),
+				#{WRITER}
+			)
+		]]>
+	</insert>
+	
+	<select id="selectFileList" parameterType="hashmap" resultType="hashmap">
+		<![CDATA[
+			SELECT
+			    IDX,
+			    ORIGINAL_FILE_NAME,
+			    ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+			FROM
+			    BL_BD_FILE
+			WHERE
+			    BOARD_IDX = #{IDX}
+			    AND DEL_YN = 'N'
+		]]>
+	</select>
+	
+	<update id="deleteFileList" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD_FILE SET 
+				DEL_YN = 'Y' 
+			WHERE 
+				BOARD_IDX = #{IDX}	
+		]]>
+	</update>
+	
+	<update id="updateFile" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD_FILE SET
+				DEL_YN = 'N'
+			WHERE
+				IDX = #{file_idx}	
+		]]>
+	</update> 
+</mapper>
