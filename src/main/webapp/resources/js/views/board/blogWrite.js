@@ -355,8 +355,6 @@ function formsubmit(check){
 		$('#CONTENT').focus();
 		return false;
 	}
-
-		
 	}
 
 }

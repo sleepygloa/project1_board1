@@ -28,7 +28,8 @@ public class BlogController {
 	@RequestMapping("/blog.do")
     public ModelAndView openBoard() throws Exception{
 		ModelAndView mv = new ModelAndView("/board/blog");
-    		return mv;
+		
+		return mv;
     }
 	
     /*
@@ -38,6 +39,7 @@ public class BlogController {
 	@RequestMapping("/blogList.do")
 	public ModelAndView openBoardList(HttpServletResponse res, CommandMap commandMap) throws Exception{
 	    	ModelAndView mv = new ModelAndView("jsonView");
+	    	log.debug("Map Parameter : "+commandMap.getMap());
 	    	
 	    	List<Map<String,Object>> list = blogService.selectBlogList(commandMap.getMap());
 	    	mv.addObject("list", list);
@@ -80,9 +82,9 @@ public class BlogController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/openBoardUpdate.do")
+	@RequestMapping(value="/blogUpdate.do")
 	public ModelAndView openBoardUpdate(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("board/boardUpdate");
+		ModelAndView mv = new ModelAndView("board/blogUpdate");
 		
 		Map<String,Object> map = blogService.selectBoardDetail(commandMap.getMap());
 		mv.addObject("map", map.get("map"));
@@ -91,9 +93,9 @@ public class BlogController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/updateBoard.do")
+	@RequestMapping(value="/updateBlog.do")
 	public ModelAndView updateBoard(CommandMap commandMap, HttpServletRequest request) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/openBoardDetail.do");
+		ModelAndView mv = new ModelAndView("redirect:/board/blogDetail.do");
 		
 		blogService.updateBoard(commandMap.getMap(), request);
 		
@@ -101,9 +103,9 @@ public class BlogController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/deleteBoard.do")
+	@RequestMapping(value="/deleteBlog.do")
 	public ModelAndView deleteBoard(CommandMap commandMap) throws Exception{
-		ModelAndView mv = new ModelAndView("redirect:/openBoard.do");
+		ModelAndView mv = new ModelAndView("redirect:/board/blog.do");
 		
 		blogService.deleteBoard(commandMap.getMap());
 		

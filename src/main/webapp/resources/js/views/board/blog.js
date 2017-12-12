@@ -7,6 +7,20 @@ $(document).ready(function(){
 		
 	})
 	
+	$('#blogTotalSearchBtn').click(function(){
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl('/board/blog.do');
+		comSubmit.submit();
+	});
+	
+	$('#blogSearchBtn').click(function(){
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl('/board/blog.do');
+		comSubmit.addParam('searchText', $('#blogSearchText').val());
+		comSubmit.addParam('searchCate', $('#blogSearchCate').val());
+		comSubmit.submit();
+	})
+	
 	var pageNumValue = $('#paging').val();
 	$('.paging'+pageNumValue+'').css('color', 'red');	
 	
@@ -21,6 +35,10 @@ function fn_selectBoardList(PageNo){
 	comAjax.setCallback("fn_selectBoardListCallback");
 	comAjax.addParam("PAGE_INDEX", $("#PAGE_INDEX").val());
 	comAjax.addParam("PAGE_ROW", 15);
+	if($('#blogSearchText') != undefined && $('#blogSearchText') != null){
+		comAjax.addParam('searchText', $('#blogSearchText').val().trim());
+		comAjax.addParam('searchCate', $('#blogSearchCate').val());
+	}
 	comAjax.ajax();
 }
 

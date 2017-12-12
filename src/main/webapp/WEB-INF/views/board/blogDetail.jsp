@@ -15,7 +15,7 @@
 			<input type="hidden" id="IDX" value="${map.IDX}" />
 		</div>
 	</div>
-	<div class="form-group " >
+	<div class="form-group" >
 		<label class="col-xs-2 control-label">작성자</label>
 		<div class="col-xs-10 info_content f">
 			<p>${map.IN_USER_ID}</p>
@@ -68,10 +68,9 @@
 		<label class="col-xs-2 control-label">버튼</label>
 		<div class="col-xs-10">
 
-		<jsp:include page="blogDetailUpdatePw.jsp" /><!-- 글수정 시 비밀번호 검사 -->
-		<jsp:include page="blogDetailDeletePw.jsp" /><!-- 글삭제 시 비밀번호 검사 -->
-		<a href="#this" class="btn btn-default" id="list">목록으로</a>
-		<a href="#this" class="btn btn-default" id="update">수정하기</a>
+		<a href="#this" class="btn btn-default" id="blogDetailList">목록으로</a>
+		<a href="#this" class="btn btn-default" id="blogDetailUpdate">수정하기</a>
+		<a href="#this" class="btn btn-default" id="blogDetailDelete">삭제</a>
 		</div>
 	</div>
 </form>

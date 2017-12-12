@@ -4,8 +4,6 @@
 
 <jsp:include page="boardHeader.jsp" />
 
-<script src="/resources/js/views/board/boardInsert.js"></script>  
-
 <div class="container">
 <form id="frm" name="frm"  class="form-horizontal" enctype="multipart/form-data">
 	<div class="contents_subject center-block" style="width:300px;text-align:center;">
@@ -22,7 +20,7 @@
 	<div class="form-group col-xs-12">
 		<label class="col-xs-2 control-label">작성자</label>
 		<div class="col-xs-10">
-			<input id="WRITER" name="WRITER" class="form-control" type="text" maxlength="10" autocomplete="off" value="${map.WRITER}" 
+			<input id="WRITER" name="WRITER" class="form-control" type="text" maxlength="10" autocomplete="off" value="${map.IN_USER_ID}" 
 			placeholder="2~10자로 구성된 영문, 한글을 이용한 작성자 이름을 입력해주세요" />
 			<span id="writerspan" class="redText">
 		</div>
@@ -35,16 +33,14 @@
 	</div>	 --%>
 	<div class="form-group col-xs-12">
 		<label class="col-xs-2 control-label">조회수</label>
-		<div class="col-xs-10 info_content f">
+		<div class="col-xs-4 info_content f">
 			<p>${map.READCOUNT}</p>
 		</div>
-	</div>
-	<div class="form-group col-xs-12">
 		<label class="col-xs-2 control-label">등록날짜</label>
-		<div class="col-xs-10 info_content f">
-			<p>${map.REG_DATE}</p>
+		<div class="col-xs-4 info_content f">
+			<p>${map.IN_DT}</p>
 		</div>
-	</div>		
+	</div>
 	<div class="form-group col-xs-12">
 		<label class="col-xs-2 control-label">글 제목</label>
 		<div class="col-xs-10">
@@ -78,80 +74,13 @@
 	<div class="form-group col-xs-12">
 		<label class="col-xs-2 control-label">버튼</label>
 		<div class="col-xs-10">
-		<a href="#this" class="btn btn-default" id="addFile">파일 추가</a>
-		<a href="#this" class="btn btn-default" id="update">저장하기</a>
-		<a href="#this" class="btn btn-default" id="delete">삭제하기</a>
-		<a href="#this" class="btn btn-default" id="list">목록으로</a> 
+		<a class="btn btn-default" id="blogUpdateAddFile">파일 추가</a>
+		<a class="btn btn-default" id="blogUpdateSave">저장하기</a>
+		<a class="btn btn-default" id="blogUpdateList">목록으로</a> 
 		</div>
 	</div>	
 </form>
 </div>
 <form id="commonForm" name="commonForm"></form>
-	
-	<script type="text/javascript">
-		var gfv_count = '${fn:length(list)+1}';
-		$(document).ready(function(){
-			$("#list").on("click", function(e){ //목록으로 버튼
-				e.preventDefault();
-				fn_openBoard();
-			});
-			
-			$("#update").on("click", function(e){ //저장하기 버튼
-				e.preventDefault();
-				frmCheck('update');
-				fn_updateBoard();
-			});
-			
-			$("#delete").on("click", function(e){ //삭제하기 버튼
-				e.preventDefault();
-				fn_deleteBoard();
-			});
-			
-			$("#addFile").on("click", function(e){ //파일 추가 버튼
-				e.preventDefault();
-				fn_addFile();
-			});
-			
-			$("a[name^='delete']").on("click", function(e){ //삭제 버튼
-				e.preventDefault();
-				fn_deleteFile($(this));
-			});
-		});
-		
-		function fn_openBoard(){
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/openBoard.do' />");
-			comSubmit.submit();
-		}
-		
-		function fn_updateBoard(){
-			var comSubmit = new ComSubmit("frm");
-			comSubmit.setUrl("<c:url value='/updateBoard.do' />");
-			comSubmit.addParam("IDX", $("#IDX").val());
-			comSubmit.submit();
-		}
-		
-		function fn_deleteBoard(){
-			var comSubmit = new ComSubmit();
-			comSubmit.setUrl("<c:url value='/deleteBoard.do' />");
-			comSubmit.addParam("IDX", $("#IDX").val());
-			comSubmit.submit();
-			
-		}
-		
-		function fn_addFile(){
-			var str = "<p class='col-xs-12'  style='height:50px;'>" +
-					"<input type='file' id='file_"+(gfv_count)+"' name='file_"+(gfv_count)+"' style='display:inline;'>"+
-					"<a href='#this' class='btn btn-default' id='delete_"+(gfv_count)+"' name='delete_"+(gfv_count)+"'>삭제</a>" +
-				"</p>";
-			$("#fileDiv").append(str);
-			$("#delete_"+(gfv_count++)).on("click", function(e){ //삭제 버튼
-				e.preventDefault();
-				fn_deleteFile($(this));
-			});
-		}
-		
-		function fn_deleteFile(obj){
-			obj.parent().remove();
-		}
-	</script>
+<script src="/resources/js/views/board/blogWrite.js"></script>
+<script src="/resources/js/views/board/blogUpdate.js"></script>

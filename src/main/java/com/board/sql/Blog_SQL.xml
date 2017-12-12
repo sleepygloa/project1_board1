@@ -19,6 +19,21 @@
 	FROM 
 			BL_BD
     WHERE   DEL_YN = 'N'
+    <if test="searchText != null and !searchText.equals('')">
+    	<if test="searchCate.equals('0')">
+		AND	TITLE 		= #{searchText}
+    	</if>
+    	<if test="searchCate.equals('1')">
+    	AND	CONTENT 	= #{searchText}
+    	</if>
+    	<if test="searchCate.equals('2')">
+    	AND	IN_USER_ID	= #{searchText}
+    	</if>
+  		<if test="searchCate.equals('3')">
+     	AND	TITLE 		= #{searchText}
+    	AND	CONTENT 	= #{searchText}   	
+    	</if>
+    </if>
     ORDER BY IDX DESC
 	</select>
 	
@@ -77,10 +92,12 @@
 	
 	<update id="updateBoard" parameterType="hashmap">
 		<![CDATA[
-			UPDATE BL_BD 
-			SET
-				TITLE = #{TITLE},
-				CONTENT = #{CONTENT}
+			UPDATE	BL_BD 
+			   SET
+			   		TITLE 		= #{TITLE}
+			   	,	CONTENT 	= #{CONTENT}
+			   	,	IN_USER_ID 	= #{WRITER}
+			   	,	UP_DT		= now()
 			WHERE
 				IDX = #{IDX}	
 		]]>
