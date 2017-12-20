@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.common.common.CommandMap;
 import com.common.dao.AbstractDAO;
 
 @Repository("blogDAO")
@@ -16,8 +15,8 @@ public class BlogDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectPagingList("blog.selectBlogList", map);
 	}
 
-	public void insertBoard(Map<String, Object> map) throws Exception{
-		insert("blog.insertBoard", map);
+	public void insertBlog(Map<String, Object> map) throws Exception{
+		insert("blog.insertBlog", map);
 	}
 
 	public void updateHitCnt(Map<String, Object> map) throws Exception{
@@ -25,16 +24,16 @@ public class BlogDAO extends AbstractDAO{
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception{
-		return (Map<String, Object>) selectOne("blog.selectBoardDetail", map);
+	public Map<String, Object> selectBlogDetail(Map<String, Object> map) throws Exception{
+		return (Map<String, Object>) selectOne("blog.selectBlogDetail", map);
 	}
 
-	public void updateBoard(Map<String, Object> map) throws Exception{
-		update("blog.updateBoard", map);
+	public void updateBlog(Map<String, Object> map) throws Exception{
+		update("blog.updateBlog", map);
 	}
 
-	public void deleteBoard(Map<String, Object> map) throws Exception{
-		update("blog.deleteBoard", map);
+	public void deleteBlog(Map<String, Object> map) throws Exception{
+		update("blog.deleteBlog", map);
 	}
 
 	public void insertFile(Map<String, Object> map) throws Exception{
@@ -53,5 +52,21 @@ public class BlogDAO extends AbstractDAO{
 	public void updateFile(Map<String, Object> map) throws Exception{
 		update("blog.updateFile", map);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getBlogReplyContentList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("blog.getBlogReplyContentList", map);
+	}
+	
+	public void insertReplyContent(Map<String, Object> map) throws Exception{
+		insert("blog.insertReplyContent", map);
+	}
+	
+	public void deleteReplyContent(Map<String, Object> map) throws Exception{
+		update("blog.deleteReplyContent", map);
+	}
 
+	public void insertReReplyContent(Map<String, Object> map) throws Exception{
+		insert("blog.insertReReplyContent", map);
+	}
 }

@@ -39,6 +39,7 @@ function ComAjax(opt_formId){
 	this.url = "";		
 	this.formId = gfn_isNull(opt_formId) == true ? "commonForm" : opt_formId;
 	this.param = "";
+	this.setCallback = "";
 	
 	if(this.formId == "commonForm"){
 		$("#commonForm")[0].reset();
@@ -69,9 +70,13 @@ function ComAjax(opt_formId){
 			success : function(data, status) {
 				if(typeof(fv_ajaxCallback) == "function"){
 					fv_ajaxCallback(data);
-				}
-				else {
-					eval(fv_ajaxCallback + "(data)");
+				}else {
+					if(data.list.length == 0){
+						
+					}else{
+						eval(fv_ajaxCallback + "(data)");
+					}
+					
 				}
 			}
 		});

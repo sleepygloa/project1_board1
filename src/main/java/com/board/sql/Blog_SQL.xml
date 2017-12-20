@@ -12,9 +12,6 @@
 		, 	IN_USER_ID
 		,	EMAIL
 		, 	IN_DT
-		, 	REF
-		, 	RE_LEVEL	
-		, 	RE_STEP
 		, 	READCOUNT
 	FROM 
 			BL_BD
@@ -37,7 +34,7 @@
     ORDER BY IDX DESC
 	</select>
 	
-	 <insert id="insertBoard" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="IDX">
+	 <insert id="insertBlog" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
 			SELECT MAX(IDX)+1 FROM BL_BD
 		</selectKey>
@@ -74,7 +71,7 @@
 	</update>
 	
 	
-	<select id="selectBoardDetail" parameterType="hashmap" resultType="hashmap">
+	<select id="selectBlogDetail" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
 			SELECT
 				IDX,
@@ -90,7 +87,7 @@
 		]]>
 	</select>
 	
-	<update id="updateBoard" parameterType="hashmap">
+	<update id="updateBlog" parameterType="hashmap">
 		<![CDATA[
 			UPDATE	BL_BD 
 			   SET
@@ -103,7 +100,7 @@
 		]]>
 	</update>
 	
-	<update id="deleteBoard" parameterType="hashmap">
+	<update id="deleteBlog" parameterType="hashmap">
 		<![CDATA[
 			UPDATE BL_BD
 			SET
@@ -169,4 +166,85 @@
 				IDX = #{file_idx}	
 		]]>
 	</update> 
+	
+	<select id="getBlogReplyContentList" parameterType="hashmap" resultType="hashmap">
+	SELECT 
+			REF
+		, 	RE_LEVEL	
+		, 	RE_STEP
+		,	IDX
+		, 	CONTENT
+		, 	PASSWD
+		, 	IN_USER_ID
+		, 	DATE_FORMAT(IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
+		,	PASS_YN
+	FROM 
+			BL_BD_RE
+    WHERE   DEL_YN = 'N'
+   ORDER BY REF ASC, RE_STEP ASC
+	</select>
+	
+	 <insert id="insertReplyContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
+	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
+			SELECT MAX(REF)+1 FROM BL_BD_RE
+		</selectKey>
+			INSERT INTO BL_BD_RE
+			(
+				IDX
+			,	PASSWD
+			,	REF
+			,	CONTENT
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{IDX}
+			,	#{PASSWD}
+			,	#{REF}
+			,	#{CONTENT}
+			,	now()
+			,	#{WRITER}
+			)
+	</insert>
+	
+	<update id="deleteReplyContent" parameterType="hashmap">
+		<![CDATA[
+			UPDATE BL_BD_RE
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX = #{IDX}
+			AND REF = #{REF}
+		]]>
+	</update>
+	
+	 <insert id="insertReReplyContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
+ 	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
+			SELECT MAX(RE_STEP)+1 FROM BL_BD_RE WHERE REF = #{REF}
+		</selectKey>
+			INSERT INTO BL_BD_RE
+			(
+				IDX
+			,	PASSWD
+			,	CONTENT
+			,	REF
+			,	RE_LEVEL
+			,	RE_STEP
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{IDX}
+			,	#{PASSWD}
+			,	#{CONTENT}
+			,	#{REF}
+			,	'2'
+			,	#{RE_STEP}
+			,	now()
+			,	#{WRITER}
+			)
+	</insert>
+	
 </mapper>

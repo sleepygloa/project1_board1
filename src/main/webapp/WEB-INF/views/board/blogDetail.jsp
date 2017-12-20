@@ -3,8 +3,7 @@
 
 <jsp:include page="boardHeader.jsp" />
 
-<div class="container">
-<form class="form-horizontal">
+<div style="margin:0 auto;" class="container col-xs-8 form-horizontal">
 	<div class="contents_subject center-block" style="width:300px;text-align:center;">
 		<h2> 글 정보보기 페이지  </h2>
 	</div>
@@ -63,7 +62,6 @@
 			</c:forEach>
 		</div>			
 	</div>
-	<hr />
 	<div class="form-group">
 		<label class="col-xs-2 control-label">버튼</label>
 		<div class="col-xs-10">
@@ -73,7 +71,14 @@
 		<a href="#this" class="btn btn-default" id="blogDetailDelete">삭제</a>
 		</div>
 	</div>
-</form>
+<hr />
+	<div class="form-group" id="blogDetailReplyContent" >
+		<table class="table table-hover col-xs-8" >
+			<tbody>
+			
+			</tbody>
+		</table>
+	</div>
 </div>			
 	
 <form id="commonForm" name="commonForm"></form>

@@ -1,5 +1,6 @@
 package com.board.svce;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +9,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.board.ctrl.FileDownloader;
 import com.board.dao.BlogDAO;
-import com.common.common.CommandMap;
 import com.common.util.FileUtils;
 
 @Service("blogSerivce")
@@ -33,24 +31,24 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception {
-		log.debug("insert data : "+ map);
-		System.out.println(map);
-		blogDAO.insertBoard(map);
-		log.debug("After insertBoard data : "+ map);
+	public void insertBlog(Map<String, Object> map, HttpServletRequest request) throws Exception {
+		log.debug("insertBlog data : "+ map);
+
+		blogDAO.insertBlog(map);
+
 		List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(map, request);
-		log.debug("list data : "+ list);
+
 		for(int i=0, size=list.size(); i<size; i++){
 			blogDAO.insertFile(list.get(i));
 		}
 	}
 
 	@Override
-	public Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception {
-		log.debug("/openBoardDeatil.do map >>>>>>>>>>> " + map);
+	public Map<String, Object> selectBlogDetail(Map<String, Object> map) throws Exception {
+		log.debug("/openBlogDeatil.do map >>>>>>>>>>> " + map);
 		blogDAO.updateHitCnt(map);
 		Map<String, Object> resultMap = new HashMap<String,Object>();
-		Map<String, Object> tempMap = blogDAO.selectBoardDetail(map);
+		Map<String, Object> tempMap = blogDAO.selectBlogDetail(map);
 		resultMap.put("map", tempMap);
 		
 		List<Map<String,Object>> list = blogDAO.selectFileList(map);
@@ -60,10 +58,10 @@ public class BlogServiceImpl implements BlogService{
 	}
 
 	@Override
-	public void updateBoard(Map<String, Object> map, HttpServletRequest request) throws Exception{
-		log.debug("/updateBoard.do start  ");
-		log.debug("/updateBoard.do map >>>>>>>>>>> " + map);
-		blogDAO.updateBoard(map);
+	public void updateBlog(Map<String, Object> map, HttpServletRequest request) throws Exception{
+		log.debug("/updateBlog.do start  ");
+		log.debug("/updateBlog.do map >>>>>>>>>>> " + map);
+		blogDAO.updateBlog(map);
 		
 		blogDAO.deleteFileList(map);
 		List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(map, request);
@@ -77,15 +75,41 @@ public class BlogServiceImpl implements BlogService{
 				blogDAO.updateFile(tempMap);
 			}
 		}
-		log.debug("/updateBoard.do end  ");
+		log.debug("/updateBlog.do end  ");
 	}
 
 	@Override
-	public void deleteBoard(Map<String, Object> map) throws Exception {
-		log.debug("/deleteBoard.do start  ");
-		log.debug("/deleteBoard.do map >>>>>>>>>>> " + map);
-		blogDAO.deleteBoard(map);
-		log.debug("/openBoardDeatil.do end  ");
+	public void deleteBlog(Map<String, Object> map) throws Exception {
+		log.debug("/deleteBlog.do start  ");
+		log.debug("/deleteBlog.do map >>>>>>>>>>> " + map);
+		blogDAO.deleteBlog(map);
+		log.debug("/openBlogDeatil.do end  ");
 	}
+	
+	@Override
+	public List<Map<String, Object>> getBlogReplyContentList(Map<String, Object> map) throws Exception{
+		return blogDAO.getBlogReplyContentList(map);
+	};
 
+	@Override
+	public void insertReplyContent(Map<String, Object> map, HttpServletRequest request) throws Exception {
+		log.debug("insertReplyContent data : "+ map);
+		blogDAO.insertReplyContent(map);
+
+	}
+	
+	@Override
+	public void deleteReplyContent(Map<String, Object> map) throws Exception {
+		log.debug("/deleteReplyContent.do start = "+map);
+		blogDAO.deleteReplyContent(map);
+		log.debug("/deleteReplyContent.do end  ");
+	}
+	
+	@Override
+	public void insertReReplyContent(Map<String, Object> map, HttpServletRequest request) throws Exception {
+		log.debug("insertReReplyContent data : "+ map);
+		blogDAO.insertReReplyContent(map);
+
+	}
+	
 }

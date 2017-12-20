@@ -5,18 +5,26 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.common.common.CommandMap;
 
 public interface BlogService {
 
 	List<Map<String, Object>> selectBlogList(Map<String, Object> map) throws Exception;
 
-	void insertBoard(Map<String, Object> map, HttpServletRequest request) throws Exception;
+	void insertBlog(Map<String, Object> map, HttpServletRequest request) throws Exception;
 
-	Map<String, Object> selectBoardDetail(Map<String, Object> map) throws Exception;
+	Map<String, Object> selectBlogDetail(Map<String, Object> map) throws Exception;
 
-	void updateBoard(Map<String, Object> map, HttpServletRequest request) throws Exception;
+	void updateBlog(Map<String, Object> map, HttpServletRequest request) throws Exception;
 
-	void deleteBoard(Map<String, Object> map) throws Exception;
+	void deleteBlog(Map<String, Object> map) throws Exception;
 
+	List<Map<String, Object>> getBlogReplyContentList(Map<String, Object> map) throws Exception;
+	
+	void insertReplyContent(Map<String, Object> map, HttpServletRequest request) throws Exception;
+	
+	void deleteReplyContent(Map<String, Object> map) throws Exception;
+	
+	void insertReReplyContent(Map<String, Object> map, HttpServletRequest request) throws Exception;
+	
+	
 }
