@@ -25,11 +25,11 @@ function fn_reContentCallback(data){
 				"<tr>" +
 					"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
 					"<td >"+
-						"<a href='#this' id='blogDetailReDelBtn' onclick='blogDetailReDelBtn("+value.REF+")'>댓글삭제</a> " +
-						"<a href='#this' id='blogDetailReAddBtn' onclick='blogDetailReAddBtn("+value.REF+")'>답변달기</a>" +
+						"<a href='#this' id='blogDetailReDelBtn' onclick='blogDetailReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> " +
+						(value.RE_STEP == 0 ? "<a href='#this' id='blogDetailReAddBtn' onclick='blogDetailReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
 					"</td>" +
 				"</tr>"+
-				"<tr id='blogDetailReContentPlace_"+value.REF+"'>"+
+				"<tr id='blogDetailReContentPlace_"+value.REF+"_"+value.RE_STEP+"'>"+
 					"<td colspan='2' style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</td>" +
 				"</tr>"
 		});
@@ -53,15 +53,15 @@ function fn_reContentCallback(data){
 	}
 }
 //댓댓글달기
-function blogDetailReAddBtn(ref){
-	getRef = ref;
-	if(!reReFlag){
-		var refId = "#blogDetailReContentPlace_"+ref;
+function blogDetailReAddBtn(REF, RE_STEP){
+	getRef = REF;
+		var refId = "#blogDetailReContentPlace_"+REF+"_"+RE_STEP;
 		$.ajax({
 			url		: "/board/addReReplyContent.do",
 			type	: "POST",
 			dataType : "json",
 			success : function(){
+				fn_reContentInit();
 				var str = 
 						"<tr>" +
 							"<td class='col-xs-6' style='text-align:left;'>작성자 " +
@@ -79,11 +79,8 @@ function blogDetailReAddBtn(ref){
 							"</td>" +
 						"</tr>";
 				$(refId).after(str);
-				reReFlag = true;
 			}
 		});
-	}
-	
 }
 
 //대댓글추가
@@ -108,14 +105,15 @@ function fn_addReReContent(getRef){
 }
 
 //댓글삭제
-function blogDetailReDelBtn(ref){
+function blogDetailReDelBtn(ref, re_step){
 	if(!confirm('댓글을 삭제하시겠습니까?')){
 		return false;
 	}
 	
 	var sendData = {
 			IDX		:	$("#IDX").val(),
-			REF		:	ref
+			REF		:	ref,
+			RE_STEP	:	re_step
 	}
 	
 	$.ajax({

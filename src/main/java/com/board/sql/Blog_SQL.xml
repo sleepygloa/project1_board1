@@ -214,8 +214,9 @@
 			SET
 				DEL_YN = 'Y'
 			WHERE
-				IDX = #{IDX}
-			AND REF = #{REF}
+				IDX		= #{IDX}
+			AND REF		= #{REF}
+			AND RE_STEP = #{RE_STEP}
 		]]>
 	</update>
 	
