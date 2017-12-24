@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.5.5-10.2.11-MariaDB)
 # Database: seonho
-# Generation Time: 2017-12-24 06:49:03 +0000
+# Generation Time: 2017-12-24 10:16:52 +0000
 # ************************************************************
 
 
@@ -39,6 +39,36 @@ CREATE TABLE `BL_BD` (
   `IN_DT` datetime NOT NULL,
   `UP_DT` datetime DEFAULT NULL,
   PRIMARY KEY (`IDX`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+LOCK TABLES `BL_BD` WRITE;
+/*!40000 ALTER TABLE `BL_BD` DISABLE KEYS */;
+
+INSERT INTO `BL_BD` (`IDX`, `TITLE`, `CONTENT`, `PASSWD`, `READCOUNT`, `USE_YN`, `DEL_YN`, `EMAIL`, `IN_USER_ID`, `UP_USER_ID`, `IN_DT`, `UP_DT`)
+VALUES
+	(1,'test','test','',25,'Y','N',NULL,'test',NULL,'2017-12-24 18:43:43',NULL);
+
+/*!40000 ALTER TABLE `BL_BD` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table BL_BD_FILE
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `BL_BD_FILE`;
+
+CREATE TABLE `BL_BD_FILE` (
+  `IDX` int(11) DEFAULT NULL,
+  `BOARD_IDX` int(11) NOT NULL,
+  `ORIGINAL_FILE_NAME` varchar(100) NOT NULL DEFAULT '',
+  `STORED_FILE_NAME` varchar(240) NOT NULL DEFAULT '',
+  `FILE_SIZE` int(20) DEFAULT NULL,
+  `USE_YN` varchar(1) NOT NULL DEFAULT 'Y',
+  `DEL_YN` varchar(1) NOT NULL DEFAULT 'N',
+  `IN_USER_ID` varchar(10) NOT NULL DEFAULT '',
+  `UP_USER_ID` varchar(10) DEFAULT NULL,
+  `IN_DT` datetime NOT NULL,
+  `UP_DT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -50,18 +80,32 @@ DROP TABLE IF EXISTS `BL_BD_RE`;
 
 CREATE TABLE `BL_BD_RE` (
   `IDX` int(11) NOT NULL,
-  `REF` int(11) NOT NULL,
+  `REF` int(11) NOT NULL DEFAULT 0,
   `RE_LEVEL` int(11) NOT NULL DEFAULT 1,
   `RE_STEP` int(11) NOT NULL DEFAULT 0,
   `CONTENT` varchar(100) NOT NULL DEFAULT '',
   `PASSWD` varchar(12) NOT NULL DEFAULT '',
   `PASS_YN` varchar(1) NOT NULL DEFAULT 'N',
+  `USE_YN` varchar(1) NOT NULL DEFAULT 'Y',
+  `DEL_YN` varchar(1) NOT NULL DEFAULT 'N',
   `IN_USER_ID` varchar(10) NOT NULL DEFAULT '',
   `UP_USER_ID` varchar(10) DEFAULT NULL,
   `IN_DT` datetime NOT NULL,
   `UP_DT` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+LOCK TABLES `BL_BD_RE` WRITE;
+/*!40000 ALTER TABLE `BL_BD_RE` DISABLE KEYS */;
+
+INSERT INTO `BL_BD_RE` (`IDX`, `REF`, `RE_LEVEL`, `RE_STEP`, `CONTENT`, `PASSWD`, `PASS_YN`, `USE_YN`, `DEL_YN`, `IN_USER_ID`, `UP_USER_ID`, `IN_DT`, `UP_DT`)
+VALUES
+	(1,1,1,0,'테스트중인 게시판','123','N','Y','N','김예안',NULL,'2017-12-24 19:14:53',NULL),
+	(1,1,2,1,'예안아안녕?','123','N','Y','N','김선호',NULL,'2017-12-24 19:16:06',NULL),
+	(1,1,2,2,'우쭈쭈예안이~','123','N','Y','N','민상아',NULL,'2017-12-24 19:16:16',NULL),
+	(1,1,2,3,'나는 니애비다','123','N','Y','Y','섯돌',NULL,'2017-12-24 19:16:24',NULL);
+
+/*!40000 ALTER TABLE `BL_BD_RE` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 

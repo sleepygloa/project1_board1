@@ -62,18 +62,22 @@ function ComAjax(opt_formId){
 		if(this.formId != "commonForm"){
 			this.param += "&" + $("#" + this.formId).serialize();
 		}
+		console.log('comAjax start');
 		$.ajax({
 			url : this.url,    
 			type : "POST",   
 			data : this.param,
 			async : false, 
 			success : function(data, status) {
+				console.log('comAjax Success');
 				if(typeof(fv_ajaxCallback) == "function"){
 					fv_ajaxCallback(data);
 				}else {
 					if(data.list.length == 0){
-						
+						console.log("length = 0");
+						eval(fv_ajaxCallback + "(data)");
 					}else{
+						console.log("length > 0");
 						eval(fv_ajaxCallback + "(data)");
 					}
 					

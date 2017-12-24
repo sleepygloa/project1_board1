@@ -1,22 +1,7 @@
-//content 영역 글자수 세기 및 붙여넣기시 적용
-$(document).ready(function(){
-	//내용 글자 수 카운터
-	$('#content').keyup(function (e){
-	    var content = $(this).val();
-	    $('#counter').html(content.length + '/1000');
-	     if(content.length > 1000){
-	    	var limitContent = content.substring(0,1000);
-	    	document.getElementById('content').value = limitContent;
-	    } 
-	});
-	//붙여넣기
-	$('#content').bind('input paste', function(){
-		$(this).trigger('keyup');
-	})
-});
-
-//글쓰기 영역 유효성 검사
-$(document).ready(function(){
+var BloWriteApp = function(){
+	"use strict";
+	
+	var gfv_count = 1;
 	// 검증에 사용할 함수명들을 배열에 담아준다.
 	var writerFuncArray = ["nuCheck","length210","adminCheck","trim"];
 	var writerErrorArray = [
@@ -43,11 +28,331 @@ $(document).ready(function(){
 		"1000자 이상으로 작성하실수 없습니다.", 
 		"내용에 글이 포함되어있지 않습니다. (공백만으로는 내용을 작성하실수 없습니다.)"];
 	
+	return {
+		init : function(){
+			
+			//사용자 이벤트
+			blogWriteEvent();
+			
+		}
+	}
+	
+	function blogWriteEvent(){
+		$("#list").on("click", function(e){ //목록으로 버튼
+			e.preventDefault();
+			fn_openBoard();
+		});
+		
+		$("#write").on("click", function(e){ //작성하기 버튼
+			e.preventDefault();
+			frmCheck('insert');
+			fn_insertBoard();
+		});
+		
+		$("#addFile").on("click", function(e){ //파일 추가 버튼
+			e.preventDefault();
+			fn_addFile();
+		});
+		
+		$("a[name='delete']").on("click", function(e){ //삭제 버튼
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+		
+		
+		//내용 글자 수 카운터
+		$(document).on('keyup', '#blogWriteContent', function(e){
+		    var content = $(this).val();
+		    $(this).empty();
+		    console.log(content);
+		    $('#blogWriteCount').html(content.length + '/1000');
+		     if(content.length > 1000){
+		    	var limitContent = content.substring(0,1000);
+		    	document.getElementById('blogWriteCount').value = limitContent;
+		    } 
+		});
+		//붙여넣기
+		$('#blogWriteContent').bind('input paste', function(){
+			$(this).trigger('keyup');
+		})
+	};
+	
+	function fn_openBoard(){
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("/board/blog.do");
+		comSubmit.submit();
+	}
+
+	function fn_insertBoard(){
+		var comSubmit = new ComSubmit("frm");
+		comSubmit.setUrl("/board/blogWriteInsert.do");
+		comSubmit.submit();
+	}
+
+	function fn_addFile(){
+		var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn btn-default' name='delete'>삭제</a></p>";
+		$("#fileDiv").append(str);
+		$("a[name='delete']").on("click", function(e){ //삭제 버튼
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+	}
+
+	function fn_deleteFile(obj){
+		obj.parent().remove();
+	}
+	
+	//영문만 입력받도록 검증
+	function adminCheck(valuedationStr){
+		if(valuedationStr.indexOf('admin') != -1  ||  valuedationStr.indexOf('관리자') != -1){
+			return false;
+		}
+		return true;
+	}
+
+	// 영문만 입력받도록 검증
+	function isAlphabetForSpan(valuedationStr){
+		var check = /[^A-Za-z\s]/;
+		if(check.test(valuedationStr)){
+			return false;
+		}
+		return true;
+	}
+
+	// 공백을 아예 허용하지 않도록 검증
+	function spaceCheck(inputVal){
+		var invalid = " ";
+		
+		if(inputVal.indexOf(invalid) > -1){
+			return false;
+		}else if(inputVal.length < 1){
+			return false;
+		}else{
+			return true;
+		}
+	}	
+
+	//숫자
+	function alphabetCheck(valuedationStr){
+	    var pattern1 = /[a-zA-Z]/;
+	    
+	    if(!pattern1.test(valuedationStr)){
+	        return false;
+	    }
+	    return true;
+	}
+
+	// 숫자
+	function numberCheck(valuedationStr){
+	    var pattern2 = /[0-9]/;
+	    
+	    if(!pattern2.test(valuedationStr)){
+	        return false;
+	    }
+	    return true;
+	}
+
+	//특수기호
+	function gihoCheck(valuedationStr){
+	    var pattern3 = /[`~!@\#$%<>^&*]/;
+	    if(!pattern3.test(valuedationStr)){
+	        return false;
+	    }
+	    return true;
+	}
+
+	//공백체크
+	function nuCheck(valuedationStr){
+	    if(valuedationStr.length < 1){
+	        return false;
+	    }
+	    return true;
+	}
+
+	//길이 2~10
+	function length210(valuedationStr){
+	    if( valuedationStr.length < 2 || valuedationStr.length > 10 ){
+	    	if(valuedationStr.length > 10){
+	        	var limitContent = valuedationStr.substring(0,10);
+	        	document.getElementById('blogWriteWriter').value = limitContent;
+	    	}
+	        return false;
+	    }
+	    return true;
+	}
+
+	//길이 6~8
+	function length0616(valuedationStr){
+	    
+	    if(valuedationStr.length < 6 || valuedationStr.length > 16 ){
+	    	if(valuedationStr.length > 16){
+	        	var limitContent = valuedationStr.substring(0,16);
+	        	document.getElementById('blogWritePasswd').value = limitContent;
+	    	}
+	        return false;
+	    }
+	    return true;
+	}
+
+	//길이 1~100
+	function length1100(valuedationStr){
+	    
+	    if(valuedationStr.length > 100 ){
+	    	var limitContent = valuedationStr.substring(0,100);
+	    	document.getElementById('blogWriteTitle').value = limitContent;
+	        return false;
+	    }
+	    return true;
+	}
+
+	//길이 1~1000
+	function length1000(valuedationStr){
+	    
+	    if(valuedationStr.length > 1000 ){
+	        return false;
+	    }
+	    return true;
+	}
+
+	//공백제거 후 문자열 있는지 파악
+	function trim(valuedationStr){
+		var valuedationStr1 = $.trim(valuedationStr);
+	    if(valuedationStr1.length < 1 ){
+	        return false;
+	    }
+	    
+	    return true;
+	}
+	
+	//submit 시 유효성 검사 항목을 한번 확인하며, true 시 전송, false 시 그 항목을 나타냄
+	function frmCheck(check){
+		var userWriter = document.frm.WRITER.value;
+		if(check == "insert"){
+			var userPasswd = document.frm.PASSWD.value;
+		}
+		var userTitle = document.frm.TITLE.value;
+		var userContent = document.frm.CONTENT.value;
+		
+		for(var i=0; i<userWriter.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+			userWriter = userWriter.replace(" ","");
+		}
+		if(check == "insert"){
+			for(var i=0; i<userPasswd.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+				userPasswd = userPasswd.replace(" ","");
+			}
+		}
+		for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+			userTitle = userTitle.replace(" ","");
+		}
+		for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+			userContent = userContent.replace(" ","");
+		}
+		
+		if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다. 
+			$('#blogWriteWriter').focus();
+			return false;
+		 }else if(userPasswd == ""){ // 작성 된 내용이 하나도 없을 경우 안내 메세지 창 출력
+			$('#blogWritePasswd').focus();
+			return false;
+		 }else if(userTitle == ""){
+			$('#blogWriteTitle').focus();
+			return false;
+		 }else if(userContent == ""){
+			$('#blogWriteContent').focus();
+			return false;
+		 }else{
+		   return formsubmit(check);
+		 }
+
+
+
+		function formsubmit(check){
+			//변수설정
+			var writer = $('#blogWriteWriter').val();
+			if(check == "insert"){
+				var passwd = $('#blogWritePasswd').val();
+			}
+			var title = $('#blogWriteTitle').val();
+			var content = $('#blogWriteContent').val();
+			
+			//작성자 검사
+			if(!length210(writer)){
+				$('#blogWriteWriter').focus();
+				return false;
+			}
+			if(!adminCheck(writer)){
+				$('#blogWriteWriter').focus();
+				return false;
+			}
+			if(!trim(writer)){
+				$('#blogWriteWriter').focus();
+				return false;
+			}
+			
+			//비밀번호 검사
+			if(check == "insert"){
+				if(!spaceCheck(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+				if(!length0616(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+				if(!alphabetCheck(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+				if(!numberCheck(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+				if(!gihoCheck(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+				if(!trim(passwd)){
+					$('#blogWritePasswd').focus();
+					return false;
+				}
+			}
+		
+			//제목검사
+			if(!nuCheck(title)){
+				$('#blogWriteTitle').focus();
+				return false;
+			}
+			if(!length1100(title)){
+				$('#blogWriteTitle').focus();
+				return false;
+			}
+			if(!trim(title)){
+				$('#blogWriteTitle').focus();
+				return false;
+			}
+			
+			//내용검사
+			if(!nuCheck(content)){
+				$('#blogWriteContent').focus();
+				return false;
+			}
+			if(!length1000(content)){
+				$('#blogWriteContent').focus();
+				return false;
+			}	
+			if(!trim(content)){
+				$('#blogWriteContent').focus();
+				return false;
+			}
+		}
+
+	}
+	
 	// 1. span태그 obj, 2. input태그 obj, 3. 위에서 정의한 함수명 배열, 4. 검증에 걸렸을 때 나타날 텍스트, 5. 검증을 통과했을 때 나타날 텍스트, 6. span태그의 좌측 폭 위치.
-	validation($("#writerspan"), $("#WRITER"), writerFuncArray, writerErrorArray, "멋진 이름입니다!", "15px");
-	validation($("#passwdspan"), $("#PASSWD"), passwdFuncArray, passErrorArray, "사용 가능한 비밀번호입니다. ", "15px");
-	validation($("#titlespan"), $("#TITLE"), titleFuncArray, titleErrorArray, "", "15px");
-	validation($("#contentspan"), $("#CONTENT"), contentFuncArray, contentErrorArray, "", "15px");
+	validation($("#writerspan"), $("#blogWriteWriter"), writerFuncArray, writerErrorArray, "멋진 이름입니다!", "15px");
+	validation($("#passwdspan"), $("#blogWritePasswd"), passwdFuncArray, passErrorArray, "사용 가능한 비밀번호입니다. ", "15px");
+	validation($("#titlespan"), $("#blogWriteTitle"), titleFuncArray, titleErrorArray, "", "15px");
+	validation($("#contentspan"), $("#blogWriteContent"), contentFuncArray, contentErrorArray, "", "15px");
 
 	//유효성검사시작
 	function validation(spanObj, inputObj, validFuncArray, errorMsg, greenMsg, marginLeftPx){
@@ -107,321 +412,6 @@ $(document).ready(function(){
 		}
 	});
 }
-
-	
-});
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-//영문만 입력받도록 검증
-function adminCheck(str){
-	if(str.indexOf('admin') != -1  ||  str.indexOf('관리자') != -1){
-		return false;
-	}
-	return true;
-}
-
-// 영문만 입력받도록 검증
-function isAlphabetForSpan(str){
-	var check = /[^A-Za-z\s]/;
-	if(check.test(str)){
-		return false;
-	}
-	return true;
-}
-
-// 공백을 아예 허용하지 않도록 검증
-function spaceCheck(inputVal){
-	var invalid = " ";
-	
-	if(inputVal.indexOf(invalid) > -1){
-		return false;
-	}else if(inputVal.length < 1){
-		return false;
-	}else{
-		return true;
-	}
-}	
-
-//숫자
-function alphabetCheck(str){
-    var pattern1 = /[a-zA-Z]/;
-    
-    if(!pattern1.test(str)){
-        return false;
-    }
-    return true;
-}
-
-// 숫자
-function numberCheck(str){
-    var pattern2 = /[0-9]/;
-    
-    if(!pattern2.test(str)){
-        return false;
-    }
-    return true;
-}
-
-//특수기호
-function gihoCheck(str){
-    var pattern3 = /[`~!@\#$%<>^&*]/;
-    if(!pattern3.test(str)){
-        return false;
-    }
-    return true;
-}
-
-//공백체크
-function nuCheck(str){
-    if(str.length < 1){
-        return false;
-    }
-    return true;
-}
-
-//길이 2~10
-function length210(str){
-    if( str.length < 2 || str.length > 10 ){
-    	if(str.length > 10){
-        	var limitContent = str.substring(0,10);
-        	document.getElementById('WRITER').value = limitContent;
-    	}
-        return false;
-    }
-    return true;
-}
-
-//길이 6~8
-function length0616(str){
-    
-    if(str.length < 6 || str.length > 16 ){
-    	if(str.length > 16){
-        	var limitContent = str.substring(0,16);
-        	document.getElementById('PASSWD').value = limitContent;
-    	}
-        return false;
-    }
-    return true;
-}
-
-//길이 1~100
-function length1100(str){
-    
-    if(str.length > 100 ){
-    	var limitContent = str.substring(0,100);
-    	document.getElementById('TITLE').value = limitContent;
-        return false;
-    }
-    return true;
-}
-
-//길이 1~1000
-function length1000(str){
-    
-    if(str.length > 1000 ){
-        return false;
-    }
-    return true;
-}
-
-//공백제거 후 문자열 있는지 파악
-function trim(str){
-	var str1 = $.trim(str);
-    if(str1.length < 1 ){
-        return false;
-    }
-    
-    return true;
-}
-   
-//submit 시 유효성 검사 항목을 한번 확인하며, true 시 전송, false 시 그 항목을 나타냄
-	function frmCheck(check){
-	var userWriter = document.frm.WRITER.value;
-	if(check == "insert"){
-		var userPasswd = document.frm.PASSWD.value;
-	}
-	var userTitle = document.frm.TITLE.value;
-	var userContent = document.frm.CONTENT.value;
-	
-	for(var i=0; i<userWriter.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-		userWriter = userWriter.replace(" ","");
-	}
-	if(check == "insert"){
-		for(var i=0; i<userPasswd.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-			userPasswd = userPasswd.replace(" ","");
-		}
-	}
-	for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-		userTitle = userTitle.replace(" ","");
-	}
-	for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-		userContent = userContent.replace(" ","");
-	}
-	
-	if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다. 
-		$('#WRITER').focus();
-		return false;
-	 }else if(userPasswd == ""){ // 작성 된 내용이 하나도 없을 경우 안내 메세지 창 출력
-		$('#PASSWD').focus();
-		return false;
-	 }else if(userTitle == ""){
-		$('#TITLE').focus();
-		return false;
-	 }else if(userContent == ""){
-		$('#CONTENT').focus();
-		return false;
-	 }else{
-	   return formsubmit(check);
-	 }
-
-
-
-	function formsubmit(check){
-		//변수설정
-		var writer = $('#WRITER').val();
-		if(check == "insert"){
-			var passwd = $('#PASSWD').val();
-		}
-		var title = $('#TITLE').val();
-		var content = $('#CONTENT').val();
-		
-		//작성자 검사
-		if(!length210(writer)){
-			$('#WRITER').focus();
-			return false;
-		}
-		if(!adminCheck(writer)){
-			$('#WRITER').focus();
-			return false;
-		}
-		if(!trim(writer)){
-			$('#WRITER').focus();
-			return false;
-		}
-		
-		//비밀번호 검사
-		if(check == "insert"){
-			if(!spaceCheck(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-			if(!length0616(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-			if(!alphabetCheck(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-			if(!numberCheck(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-			if(!gihoCheck(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-			if(!trim(passwd)){
-				$('#PASSWD').focus();
-				return false;
-			}
-		}
-	
-		//제목검사
-		if(!nuCheck(title)){
-			$('#TITLE').focus();
-			return false;
-		}
-		if(!length1100(title)){
-			$('#TITLE').focus();
-			return false;
-		}
-		if(!trim(title)){
-			$('#TITLE').focus();
-			return false;
-		}
-		
-		//내용검사
-		if(!nuCheck(content)){
-			$('#CONTENT').focus();
-			return false;
-		}
-		if(!length1000(content)){
-			$('#CONTENT').focus();
-			return false;
-		}	
-		if(!trim(content)){
-			$('#CONTENT').focus();
-			return false;
-		}
-	}
-
-}
-
-
-
-
-var BloWriteApp = function(){
-	"use strict";
-	
-	var gfv_count = 1;
-	
-	return {
-		init : function(){
-			
-			//사용자 이벤트
-			blogWriteEvent();
-			
-		}
-	}
-	
-	function blogWriteEvent(){
-		$("#list").on("click", function(e){ //목록으로 버튼
-			e.preventDefault();
-			fn_openBoard();
-		});
-		
-		$("#write").on("click", function(e){ //작성하기 버튼
-			e.preventDefault();
-			frmCheck('insert');
-			fn_insertBoard();
-		});
-		
-		$("#addFile").on("click", function(e){ //파일 추가 버튼
-			e.preventDefault();
-			fn_addFile();
-		});
-		
-		$("a[name='delete']").on("click", function(e){ //삭제 버튼
-			e.preventDefault();
-			fn_deleteFile($(this));
-		});
-	};
-	
-	function fn_openBoard(){
-		var comSubmit = new ComSubmit();
-		comSubmit.setUrl("<c:url value='/board/blog.do' />");
-		comSubmit.submit();
-	}
-
-	function fn_insertBoard(){
-		var comSubmit = new ComSubmit("frm");
-		comSubmit.setUrl("<c:url value='/board/blogWriteInsert.do' />");
-		comSubmit.submit();
-	}
-
-	function fn_addFile(){
-		var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn btn-default' name='delete'>삭제</a></p>";
-		$("#fileDiv").append(str);
-		$("a[name='delete']").on("click", function(e){ //삭제 버튼
-			e.preventDefault();
-			fn_deleteFile($(this));
-		});
-	}
-
-	function fn_deleteFile(obj){
-		obj.parent().remove();
-	}
 	
 }();
 

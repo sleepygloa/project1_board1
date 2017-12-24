@@ -13,7 +13,7 @@
 	<div class="form-group">
 		<label class="col-xs-2 control-label">작성자</label>
 		<div class="col-xs-10 f">
-			<input id="WRITER" name="WRITER" class="form-control" type="text" maxlength="10" autocomplete="off" 
+			<input id="blogWriteWriter" name="WRITER" class="form-control" type="text" maxlength="10" autocomplete="off" 
 			placeholder="2~10자로 구성된 영문, 한글을 이용한 작성자 이름을 입력해주세요" />
 			<span id="writerspan" class="redText">
 		</div>
@@ -21,7 +21,7 @@
 	<div class="form-group">
 		<label class="col-xs-2 control-label">비밀번호</label>
 		<div class="col-xs-10 f">
-			<input id="PASSWD" name="PASSWD" class="form-control" type="password" maxlength="16" autocomplete="off" 
+			<input id="blogWritePasswd" name="PASSWD" class="form-control" type="password" maxlength="16" autocomplete="off" 
 			placeholder="6~16자 영문자, 숫자, 특수문자를 사용하세요." />
 			<span id="passwdspan" class="redText">
 		</div>			
@@ -36,7 +36,7 @@
 	<div class="form-group">
 		<label class="col-xs-2 control-label">글 제목</label>
 		<div class="col-xs-10 f">
-			<input id="TITLE" name="TITLE" class="form-control" type="text" maxlength="100" autocomplete="off" 
+			<input id="blogWriteTitle" name="TITLE" class="form-control" type="text" maxlength="100" autocomplete="off" 
 			placeholder="글제목을 100자 이내로 입력해주세요" />
 			<span id="titlespan" class="redText">
 		</div>
@@ -44,9 +44,9 @@
 	<div class="form-group">
 		<label class="col-xs-2 control-label">글 내용<br /></label>
 		<div class="col-xs-10">
-			<textarea id="CONTENT" name="CONTENT" class="form-control" rows="30" cols="50" maxlength="1000"></textarea>
+			<textarea id="blogWriteContent" name="CONTENT" class="form-control" rows="30" cols="30" maxlength="1000"></textarea>
 			<p>내용은 글자수 1000자까지 가능합니다.</p>
-			<span id="counter" class="pull-right">1000</span>
+			<span id="blogWriteCount" class="pull-right">1000</span>
 			<span id="contentspan" class="redText">
 		</div>			
 	</div>

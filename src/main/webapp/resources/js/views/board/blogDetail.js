@@ -7,19 +7,16 @@ function fn_reContentInit(){
 }
 
 var getRef = '';
-var reReFlag = false;
 function fn_reContentCallback(data){
 	var body = $("table > tbody");
-	
+	console.log(data);
 	body.empty();
+	var str = "";
 	if(data.list == undefined || data.list.length == 0){
-		var str = "<tr>" + 
+		str = "<tr>" + 
 					"<td colspan='2'>게시글이 없습니다. 작성해주세요.</td>"
 				+	"</td>";
-		body.append(str);
 	}else{
-		
-		var str = "";
 		$.each(data.list, function(key, value){
 			str += 
 				"<tr>" +
@@ -33,24 +30,25 @@ function fn_reContentCallback(data){
 					"<td colspan='2' style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</td>" +
 				"</tr>"
 		});
-			str += 
-				"<tr>" +
-					"<td class='col-xs-6' style='text-align:left;'>작성자 " +
-						"<input id='blogDetailReWriter' type='text' /> " +
-						"비밀번호 " +
-						"<input id='blogDetailRePasswd' type='text'/>" +
-					"</td>" +
-					"<td class='col-xs-2'>"+
-						"<a id='blogDetailReSaveBtn'>댓글쓰기</a>" +
-					"</td>" +
-				"</tr>"+
-				"<tr>"+
-					"<td colspan='2' class='col-xs-8' style='text-align:left;'>" +
-						"<textarea id='blogDetailReContent' class='col-xs-12' style='height:50px;'></textarea>" +
-					"</td>" +
-				"</tr>"
-		body.append(str);
 	}
+	console.log("dd");
+	str += 
+		"<tr>" +
+			"<td class='col-xs-6' style='text-align:left;'>작성자 " +
+				"<input id='blogDetailReWriter' type='text' /> " +
+				"비밀번호 " +
+				"<input id='blogDetailRePasswd' type='text'/>" +
+			"</td>" +
+			"<td class='col-xs-2'>"+
+				"<a id='blogDetailReSaveBtn'>댓글쓰기</a>" +
+			"</td>" +
+		"</tr>"+
+		"<tr>"+
+			"<td colspan='2' class='col-xs-8' style='text-align:left;'>" +
+				"<textarea id='blogDetailReContent' class='col-xs-12' style='height:50px;'></textarea>" +
+			"</td>" +
+		"</tr>"
+	body.append(str);
 }
 //댓댓글달기
 function blogDetailReAddBtn(REF, RE_STEP){

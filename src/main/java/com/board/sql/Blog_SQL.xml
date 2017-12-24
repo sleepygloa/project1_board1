@@ -186,7 +186,7 @@
 	
 	 <insert id="insertReplyContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
 	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
-			SELECT MAX(REF)+1 FROM BL_BD_RE
+			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM BL_BD_RE
 		</selectKey>
 			INSERT INTO BL_BD_RE
 			(
