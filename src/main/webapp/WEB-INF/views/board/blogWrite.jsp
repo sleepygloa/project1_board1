@@ -69,55 +69,5 @@
 	</div>	
 </form>
 </div>
-<script>
-var gfv_count = 1;
 
-$(document).ready(function(){
-	$("#list").on("click", function(e){ //목록으로 버튼
-		e.preventDefault();
-		fn_openBoard();
-	});
-	
-	$("#write").on("click", function(e){ //작성하기 버튼
-		e.preventDefault();
-		frmCheck('insert');
-		fn_insertBoard();
-	});
-	
-	$("#addFile").on("click", function(e){ //파일 추가 버튼
-		e.preventDefault();
-		fn_addFile();
-	});
-	
-	$("a[name='delete']").on("click", function(e){ //삭제 버튼
-		e.preventDefault();
-		fn_deleteFile($(this));
-	});
-});
-
-function fn_openBoard(){
-	var comSubmit = new ComSubmit();
-	comSubmit.setUrl("<c:url value='/board/blog.do' />");
-	comSubmit.submit();
-}
-
-function fn_insertBoard(){
-	var comSubmit = new ComSubmit("frm");
-	comSubmit.setUrl("<c:url value='/board/blogWriteInsert.do' />");
-	comSubmit.submit();
-}
-
-function fn_addFile(){
-	var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn btn-default' name='delete'>삭제</a></p>";
-	$("#fileDiv").append(str);
-	$("a[name='delete']").on("click", function(e){ //삭제 버튼
-		e.preventDefault();
-		fn_deleteFile($(this));
-	});
-}
-
-function fn_deleteFile(obj){
-	obj.parent().remove();
-}
-</script>
 <script src="/resources/js/views/board/blogWrite.js"></script>  

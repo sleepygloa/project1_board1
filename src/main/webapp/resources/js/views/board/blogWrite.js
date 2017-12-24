@@ -235,130 +235,198 @@ function trim(str){
 }
    
 //submit 시 유효성 검사 항목을 한번 확인하며, true 시 전송, false 시 그 항목을 나타냄
-function frmCheck(check)
-{
-var userWriter = document.frm.WRITER.value;
-if(check == "insert"){
-	var userPasswd = document.frm.PASSWD.value;
-}
-var userTitle = document.frm.TITLE.value;
-var userContent = document.frm.CONTENT.value;
-
-for(var i=0; i<userWriter.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-	userWriter = userWriter.replace(" ","");
-}
-if(check == "insert"){
-	for(var i=0; i<userPasswd.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-		userPasswd = userPasswd.replace(" ","");
-	}
-}
-for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-	userTitle = userTitle.replace(" ","");
-}
-for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
-	userContent = userContent.replace(" ","");
-}
-
-if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다. 
-	$('#WRITER').focus();
-	return false;
- }else if(userPasswd == ""){ // 작성 된 내용이 하나도 없을 경우 안내 메세지 창 출력
-	$('#PASSWD').focus();
-	return false;
- }else if(userTitle == ""){
-	$('#TITLE').focus();
-	return false;
- }else if(userContent == ""){
-	$('#CONTENT').focus();
-	return false;
- }else{
-   return formsubmit(check);
- }
-
-
-
-function formsubmit(check){
-	//변수설정
-	var writer = $('#WRITER').val();
+	function frmCheck(check){
+	var userWriter = document.frm.WRITER.value;
 	if(check == "insert"){
-		var passwd = $('#PASSWD').val();
+		var userPasswd = document.frm.PASSWD.value;
 	}
-	var title = $('#TITLE').val();
-	var content = $('#CONTENT').val();
+	var userTitle = document.frm.TITLE.value;
+	var userContent = document.frm.CONTENT.value;
 	
-	//작성자 검사
-	if(!length210(writer)){
-		$('#WRITER').focus();
-		return false;
+	for(var i=0; i<userWriter.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+		userWriter = userWriter.replace(" ","");
 	}
-	if(!adminCheck(writer)){
-		$('#WRITER').focus();
-		return false;
-	}
-	if(!trim(writer)){
-		$('#WRITER').focus();
-		return false;
-	}
-	
-	//비밀번호 검사
 	if(check == "insert"){
-		if(!spaceCheck(passwd)){
-			$('#PASSWD').focus();
-			return false;
-		}
-		if(!length0616(passwd)){
-			$('#PASSWD').focus();
-			return false;
-		}
-		if(!alphabetCheck(passwd)){
-			$('#PASSWD').focus();
-			return false;
-		}
-		if(!numberCheck(passwd)){
-			$('#PASSWD').focus();
-			return false;
-		}
-		if(!gihoCheck(passwd)){
-			$('#PASSWD').focus();
-			return false;
-		}
-		if(!trim(passwd)){
-			$('#PASSWD').focus();
-			return false;
+		for(var i=0; i<userPasswd.length; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+			userPasswd = userPasswd.replace(" ","");
 		}
 	}
-
-	//제목검사
-	if(!nuCheck(title)){
-		$('#TITLE').focus();
-		return false;
+	for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+		userTitle = userTitle.replace(" ","");
 	}
-	if(!length1100(title)){
-		$('#TITLE').focus();
-		return false;
-	}
-	if(!trim(title)){
-		$('#TITLE').focus();
-		return false;
+	for(var i=0; i<100; i++){ // 값이 들어간 길이 만큼 제목과 본문의 공백을 제거
+		userContent = userContent.replace(" ","");
 	}
 	
-	//내용검사
-	if(!nuCheck(content)){
+	if(userWriter == ""){ // 내용이 작성되어 있는 경우 submit() 한다. 
+		$('#WRITER').focus();
+		return false;
+	 }else if(userPasswd == ""){ // 작성 된 내용이 하나도 없을 경우 안내 메세지 창 출력
+		$('#PASSWD').focus();
+		return false;
+	 }else if(userTitle == ""){
+		$('#TITLE').focus();
+		return false;
+	 }else if(userContent == ""){
 		$('#CONTENT').focus();
 		return false;
-	}
-	if(!length1000(content)){
-		$('#CONTENT').focus();
-		return false;
-	}	
-	if(!trim(content)){
-		$('#CONTENT').focus();
-		return false;
-	}
+	 }else{
+	   return formsubmit(check);
+	 }
+
+
+
+	function formsubmit(check){
+		//변수설정
+		var writer = $('#WRITER').val();
+		if(check == "insert"){
+			var passwd = $('#PASSWD').val();
+		}
+		var title = $('#TITLE').val();
+		var content = $('#CONTENT').val();
+		
+		//작성자 검사
+		if(!length210(writer)){
+			$('#WRITER').focus();
+			return false;
+		}
+		if(!adminCheck(writer)){
+			$('#WRITER').focus();
+			return false;
+		}
+		if(!trim(writer)){
+			$('#WRITER').focus();
+			return false;
+		}
+		
+		//비밀번호 검사
+		if(check == "insert"){
+			if(!spaceCheck(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+			if(!length0616(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+			if(!alphabetCheck(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+			if(!numberCheck(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+			if(!gihoCheck(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+			if(!trim(passwd)){
+				$('#PASSWD').focus();
+				return false;
+			}
+		}
+	
+		//제목검사
+		if(!nuCheck(title)){
+			$('#TITLE').focus();
+			return false;
+		}
+		if(!length1100(title)){
+			$('#TITLE').focus();
+			return false;
+		}
+		if(!trim(title)){
+			$('#TITLE').focus();
+			return false;
+		}
+		
+		//내용검사
+		if(!nuCheck(content)){
+			$('#CONTENT').focus();
+			return false;
+		}
+		if(!length1000(content)){
+			$('#CONTENT').focus();
+			return false;
+		}	
+		if(!trim(content)){
+			$('#CONTENT').focus();
+			return false;
+		}
 	}
 
 }
 
 
+
+
+var BloWriteApp = function(){
+	"use strict";
+	
+	var gfv_count = 1;
+	
+	return {
+		init : function(){
+			
+			//사용자 이벤트
+			blogWriteEvent();
+			
+		}
+	}
+	
+	function blogWriteEvent(){
+		$("#list").on("click", function(e){ //목록으로 버튼
+			e.preventDefault();
+			fn_openBoard();
+		});
+		
+		$("#write").on("click", function(e){ //작성하기 버튼
+			e.preventDefault();
+			frmCheck('insert');
+			fn_insertBoard();
+		});
+		
+		$("#addFile").on("click", function(e){ //파일 추가 버튼
+			e.preventDefault();
+			fn_addFile();
+		});
+		
+		$("a[name='delete']").on("click", function(e){ //삭제 버튼
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+	};
+	
+	function fn_openBoard(){
+		var comSubmit = new ComSubmit();
+		comSubmit.setUrl("<c:url value='/board/blog.do' />");
+		comSubmit.submit();
+	}
+
+	function fn_insertBoard(){
+		var comSubmit = new ComSubmit("frm");
+		comSubmit.setUrl("<c:url value='/board/blogWriteInsert.do' />");
+		comSubmit.submit();
+	}
+
+	function fn_addFile(){
+		var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn btn-default' name='delete'>삭제</a></p>";
+		$("#fileDiv").append(str);
+		$("a[name='delete']").on("click", function(e){ //삭제 버튼
+			e.preventDefault();
+			fn_deleteFile($(this));
+		});
+	}
+
+	function fn_deleteFile(obj){
+		obj.parent().remove();
+	}
+	
+}();
+
+$(document).ready(function(){
+	BloWriteApp.init();
+})
 
 
