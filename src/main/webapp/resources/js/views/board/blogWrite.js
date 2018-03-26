@@ -1,4 +1,4 @@
-var BloWriteApp = function(){
+var BlogWriteApp = function(){
 	"use strict";
 	
 	var gfv_count = 1;
@@ -90,7 +90,9 @@ var BloWriteApp = function(){
 	}
 
 	function fn_addFile(){
-		var str = "<p><input type='file' name='file_"+(gfv_count++)+"'><a href='#this' class='btn btn-default' name='delete'>삭제</a></p>";
+		var str = "<p>" +
+				"<input type='file' name='file_"+(gfv_count++)+"' style='display:inline-block'>" +
+				"<a href='#this' name='delete'>삭제</a></p>";
 		$("#fileDiv").append(str);
 		$("a[name='delete']").on("click", function(e){ //삭제 버튼
 			e.preventDefault();
@@ -261,7 +263,7 @@ var BloWriteApp = function(){
 			$('#blogWriteContent').focus();
 			return false;
 		 }else{
-		   return formsubmit(check);
+		 	return formsubmit(check);
 		 }
 
 
@@ -416,7 +418,7 @@ var BloWriteApp = function(){
 }();
 
 $(document).ready(function(){
-	BloWriteApp.init();
+	BlogWriteApp.init();
 })
 
 

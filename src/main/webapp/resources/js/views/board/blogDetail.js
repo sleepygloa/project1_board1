@@ -2,6 +2,7 @@
 function fn_reContentInit(){
 	var comAjax = new ComAjax();
 	comAjax.setUrl("/board/replyContentList.do");
+	comAjax.addParam("IDX", $("#IDX").val());
 	comAjax.setCallback("fn_reContentCallback");
 	comAjax.ajax();
 }
