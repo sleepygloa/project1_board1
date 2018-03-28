@@ -10,10 +10,10 @@
 		
 		<meta name="author" content="SeonHo Kim">
 		
-		<link rel="styleshhet" href="/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/css/assets/vendor/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/assets/vendor/devicon/devicon.min.css">
-		<link rel="stylesheet" href="/css/main.css">
+		<link rel="styleshhet" href="/resources/css/bootstrap.css">
+		<link rel="stylesheet" href="/resources/css/assets/vendor/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css">
+		<link rel="stylesheet" href="/resources/css/main.css">
 
 
 	</head>
@@ -30,8 +30,8 @@
 		<div id="body"></div>
 	</body>
 
-	<script src="/js/jquery.min.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/typed.min.js"></script>
-	<script src="/js/main.js"></script>
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="/resources/js/bootstrap.js"></script>
+	<script src="/resources/js/typed.min.js"></script>
+	<script src="/resources/js/main.js"></script>
 </html>

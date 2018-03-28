@@ -3,17 +3,16 @@
 	<div id="loginTitle" class="loginChild">
 		<h1>회원가입</h1>
 	</div>
-	<div id="loginContent" class="loginChild">
-		<div id="loginContentBody">
+	<div id="loginContent" class="loginChild" style="background:gray">
+		<div id="loginContentBody" style="background:green">
 			<div class="col-xs-12">
-				<label class="loginLabel col-xs-2">ID
-				</label>
-				<input id="loginIdInput" class="loginInput col-xs-10" type="text" /> 
+				<input id="loginIdInput" class="loginInputTotal" type="text" placeholder="이메일을 입력해주세요"/>
 			</div>
 			<div class="col-xs-12">
-				<label class="loginLabel">PW
-				</label>
-				<input id="loginPwInput" class="loginInput" type="text" />
+				<input id="loginPwInput" class="loginInputTotal" type="text" placeholder="비밀번호를 입력해주세요"/>
+			</div>
+			<div class="col-xs-12">
+				<input id="loginPwConfirmInput" class="loginInputTotal" type="text" placeholder="비밀번호를 입력해주세요"/>
 			</div>
 			<div class="col-xs-12">
 				<button id="loginSubmit" >로그인</button>
