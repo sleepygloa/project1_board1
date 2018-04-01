@@ -9,7 +9,7 @@
 				<input id="loginIdInput" class="loginInputTotal" type="text" placeholder="아이디를 입력해주세요"/>
 			</div>
 			<div class="col-xs-12 m-b-20">
-				<input id="loginPwInput" class="loginInputTotal" type="text" placeholder="비밀번호를 입력해주세요"/>
+				<input id="loginPwInput" class="loginInputTotal" type="password" placeholder="비밀번호를 입력해주세요"/>
 			</div>
 			<div class="col-xs-12">
 				<button id="loginSubmit" >로그인</button>

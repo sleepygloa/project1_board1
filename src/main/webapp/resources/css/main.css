@@ -803,7 +803,7 @@ footer strong {
 }
 
 
-#login{
+#login, #logout{
 	position:absolute;
 	display:inline-block;
 	height:60px;

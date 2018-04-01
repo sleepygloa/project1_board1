@@ -105,5 +105,15 @@ public class LoginController {
 		return mv;
 	}
 	
+	//로그아웃처리
+	@RequestMapping("/logout")
+	public ModelAndView logout(HttpSession session) {
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		session.invalidate();
+		mv.addObject("MSG", "로그아웃되었습니다.");
+		
+		return mv;
+	}
 	
 }

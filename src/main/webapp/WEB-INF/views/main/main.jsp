@@ -22,7 +22,7 @@
 		<div class="page-title">
 			<header class="page-header">
 				<div class="container">
-				  <a class="logo" href="http://localhost:8080">SEONHO blog</a>
+				  <a id="logo" class="logo" href="http://localhost:8080">SEONHO blog</a>
 				  <a id="login" class="login" href="#">login</a>
 				</div>
 			</header>
