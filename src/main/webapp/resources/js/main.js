@@ -165,35 +165,51 @@ jQuery(document).ready(function ($) {
     }
   }
   
-  
-  
-  
-  
-  
-  
-	  
+  //CUSTOM
   function mainEvents(){
+	  loadingMainContent();
+	  
+	  var s_userId;
+	  loadingSession();
+	  
+	  console.log(s_userId);
+	  
 	  $('#login').click(function(){
 		  $.ajax({
-			  url		: "/loadingLoginPg",
+			  url		: "/login/loadingLoginPg",
 			  success	: function(result){
 				  $('#body').html(result);
 			  }
 		  })
 	  })
+	  
+	  //VIEW SETTING
+	  if(s_userId != null){
+		  $('#login').remove();
+		  $('#logo').parent().parse('<a id="logout" class="login" href="#">logout</a>');
+	  }
+	  
   }
 	  
-  mainEvents();
-  
   function loadingMainContent(){
+	  var id = null;
 	  $.ajax({
-		  url		: "/loadingMainContent",
+		  url		: "/login/loadingMainContent",
 		  success	: function(result){
 			  $('#body').html(result);
 		  }
 	  })
   }
   
-  loadingMainContent();
+  function loadingSession(){
+	  $.ajax({
+		  url		:	"/main/loadingSession",
+		  success	:	function(result){
+			  s_userId =  result.s_userId;
+		  }
+	  })
+  }
+  
+  mainEvents();
   
 });

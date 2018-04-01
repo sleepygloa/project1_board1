@@ -344,6 +344,7 @@ pre {
   position: relative;
   top: 0;
   left: 0;
+  margin-top:0px;
   width: 100%;
   background-color:white;
 }
@@ -840,7 +841,7 @@ footer strong {
 }
 
 #body > section {
-	top : 70px;
+	top : 100px;
 	max-width:1140px;
 	margin: 0 auto;
 }
@@ -875,3 +876,33 @@ footer strong {
 	margin: 0 auto;
 }
  */
+ 
+.p-0{padding:0 auto;}
+.p-5{padding:5 auto;}
+.p-10{padding:10 auto;}
+.p-15{padding:15 auto;}
+.p-20{padding:20 auto;}
+.p-25{padding:25 auto;}
+
+.m-0{margin:0 auto;}
+.m-5{margin:5 auto;}
+.m-10{margin:10 auto;}
+.m-15{margin:15 auto;}
+.m-20{margin:20 auto;}
+.m-25{margin:25 auto;}
+
+.m-b-0{margin-bottom:0px;}
+.m-b-5{margin-bottom:5px;}
+.m-b-10{margin-bottom:10px;}
+.m-b-15{margin-bottom:15px;}
+.m-b-20{margin-bottom:20px;}
+.m-b-25{margin-bottom:25px;}
+.m-b-30{margin-bottom:30px;}
+.m-b-35{margin-bottom:35px;}
+.m-b-40{margin-bottom:40px;}
+.m-b-45{margin-bottom:45px;}
+ 
+ 
+.genderSelect, .genderSelect:active, .genderSelect:hover, .genderSelect:focus{
+	background:#1FBC02;
+}

@@ -10,10 +10,10 @@ import com.common.dao.AbstractDAO;
 @Repository("blogDAO")
 public class BlogDAO extends AbstractDAO{
 
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> selectBlogList(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectPagingList("blog.selectBlogList", map);
-	}
+//	@SuppressWarnings("unchecked")
+//	public List<Map<String, Object>> selectBlogList(Map<String, Object> map) throws Exception{
+//		return (List<Map<String, Object>>)selectPagingList("blog.selectBlogList", map);
+//	}
 
 	public void insertBlog(Map<String, Object> map) throws Exception{
 		insert("blog.insertBlog", map);

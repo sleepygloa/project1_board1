@@ -12,21 +12,32 @@
 			ID = #{id}
 	</select>
 
-	<insert id="loginInsert">
-		INSERT INTO
+	<insert id="loginInsert" parameterType="hashmap">
+		INSERT INTO TB_BLOG_USER
 		(	
 			ID
 		,	PASSWD
 		,	NAME
-		,	EMAIL
+		,	GENDER
 		)
 		VALUES
 		(
 			#{id}
-		,	#{passwd}
+		,	#{pw}
 		,	#{name}
-		,	#{email}
+		,	#{gender}
 		)
 	</insert>
+	
+	<select id="loginInfoCheck" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			ID			AS ID
+		,	PASSWD		AS PW
+		,	COUNT(*)	AS COUNT
+		FROM
+			TB_BLOG_USER
+		WHERE
+			ID	=	#{id}
+	</select>
 
 </mapper>

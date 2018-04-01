@@ -1,29 +1,34 @@
 (function loginJs(){
-	function clickBtnRegist(){
-		var data = {
-				id : $('#loginIdInput').val().trim(),
-				pw : $('#loginPwInput').val().trim()
+	
+	var loginData = {};
+	
+	$('#loginSubmit').click(function(){
+		loginData = {
+				id : $('#loginIdInput').val(),
+				pw : $('#loginPwInput').val()
 		};
 		
 		loginValidation();
 		
 		$.ajax({
-			url	: "/loginUser",
+			url		 : "/login/loginUser",
+			data	 : loginData,
 			dataType : 'JSON',
-			success : function(result){
-				alert(result.name + '님! 반갑습니다');
+			success  : function(result){
+				alert(result.MSG);
+				if(result.YN == 'SUCCESS'){
+					window.location.href='/';
+				}
 			}
 		})
-	}
+	})
 	
 	function loginValidation(){
-		var id = $('#loginIdInput').val();
-		var pw = $('#loginPwInput').val();
 		
-		if(id == ''){
+		if(loginData.id == ''){
 			alert('아이디를 입력해주세요');
 			return false;
-		}else if(pw == ''){
+		}else if(loginData.pw == ''){
 			alert('비밀번호를 입력해주세요');
 			return false;
 		}
@@ -31,7 +36,7 @@
 	
 	$('#loginRegist').click(function(){
 		  $.ajax({
-			  url		: "/loadingLoginInsertPg",
+			  url		: "/login/loadingLoginInsertPg",
 			  success	: function(result){
 				  $('#body').html(result);
 			  }

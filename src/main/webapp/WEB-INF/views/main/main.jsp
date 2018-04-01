@@ -10,7 +10,7 @@
 		
 		<meta name="author" content="SeonHo Kim">
 		
-		<link rel="styleshhet" href="/resources/css/bootstrap.css">
+		<link rel="stylesheet" href="/resources/css/bootstrap.css">
 		<link rel="stylesheet" href="/resources/css/assets/vendor/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css">
 		<link rel="stylesheet" href="/resources/css/main.css">
