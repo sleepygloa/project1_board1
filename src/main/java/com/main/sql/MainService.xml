@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MainService">
+
+	<select id="mainBlogContent" resultType="hashmap">
+		SELECT 
+			TITLE
+		,	SUBJECT
+		,	P_IDX
+		,  (SELECT COUNT(TITLE) FROM TB_BLOG_M) AS TITLE_COUNT
+		,  (SELECT count(SUBJECT) FROM TB_BLOG_M WHERE SUBJECT = M.SUBJECT AND TITLE = M.TITLE) AS SUBJECT_COUNT
+		,  (SELECT count(SUBJECT) FROM TB_BLOG_M) AS TOTAL_SUBJECT_COUNT
+		FROM
+			TB_BLOG_M M;
+	</select>
+
+</mapper>

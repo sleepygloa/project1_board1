@@ -172,6 +172,7 @@ var mainJs = function(){
 			loadingSession();
 			
 			mainEvents();
+			
 		}
 	}
 	
