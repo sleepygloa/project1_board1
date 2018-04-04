@@ -221,6 +221,48 @@ var mainJs = function(){
 				  }
 			  })
 		  })
+		  
+		  $(document).on('click', '#blogAddBtn', function(){
+			  $('#body').empty();
+			  
+			  var blogAddContent = '';
+			  
+			  blogAddContent += '<div class="container" style="background:gray; margin-top:100px;">'
+				  			+'<div class="btn-group">'
+				  			+'<button id="blogAddMenuSelect" type="button" class="btn btn-default input-lg dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'
+				  				+'메뉴선택 <span class="caret"></span>'
+			  				+'</button>'
+				  				+'<ul class="dropdown-menu" role="menu" id="blogAddDropdown"></ul>'
+				  			+'</div>'
+				  			+'<input type="text" class="input-lg" />'
+				  			+'<textarea></textarea>'
+			  				+'</div>';
+			  
+			  $('#body').append(blogAddContent);
+			  
+			  blogAddDropdown();
+			  
+		  })
+		  
+		  function blogAddDropdown(){
+//			  $.ajax({
+//				  url : "",
+//				  success : function(result){
+					  var options = '';
+//					  if(result.list){
+//						  var list = result.list;
+//						  for(var i in list){
+//							  options += '<li class="blogAddDropdownLi">'+list[i].NAME+'</li>';
+//						  }  
+//					  }
+					  options += '<li><a href="javascript:blogAddLiSelect(new)">새 컨텐츠</a></li>';
+					  $('#blogAddDropdown').append(options);
+//				  }
+//			  })
+		  }
+		  
+		  
+		  
 	  }
 	
 }();

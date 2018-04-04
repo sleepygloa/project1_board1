@@ -6,13 +6,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 		
-		<title>웹 프로그래밍 튜토리얼 | PoiemaWeb</title>
+		<title>웹 프로그래밍 스터디 | SeonhoWeb</title>
 		
 		<meta name="author" content="SeonHo Kim">
 		
 		<link rel="stylesheet" href="/resources/css/bootstrap.css">
-		<link rel="stylesheet" href="/resources/css/assets/vendor/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css">
+		<link rel="stylesheet" href="/resources/css/fontawesome-all.min.css">
+		<!-- <link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css"> -->
 		<link rel="stylesheet" href="/resources/css/main.css">
 
 

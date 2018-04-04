@@ -29,5 +29,5 @@
 			  </p>
 		  </div>
 		</footer>
-		
+
 		<script src="/resources/js/main_content.js"></script>

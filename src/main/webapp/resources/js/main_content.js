@@ -32,6 +32,7 @@ var mainContentJs = function(){
 								+'<p id="content_count" class="cont-head-title">'
 								+'<strong id="blogContents_totalCounts">'+list[0].TOTAL_SUBJECT_COUNT+'</strong> lessons'
 								+'</p>'
+								+'<div id="blogAddBtn" class="pull-right m-t-10"><i class="fa fa-lg fa-plus"></i></div>'
 							+'</div>'
 							+'</section>';
 					  
