@@ -55,5 +55,32 @@ public class MainController {
 		
 		return mv;
 	}
+	
+	
+	//블로그 글쓰기 콤보박스
+	@RequestMapping("/main/getBlogAddDropdownList")
+	public ModelAndView getBlogAddDropdownList() {
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		try {
+			list = mainService.getBlogAddDropdownList();
+		}catch(Exception e) {
+			
+		}
+		mv.addObject("list", list);
+		return mv;
+	}
+	
+	//블로그 글쓰기 완료
+	@RequestMapping("/main/insertBlogAddContent")
+	public void insertBlogAddContent(Map<String, Object> map) {
+		System.out.println("insertBlogAddContent"+map);
+		try {
+			mainService.insertBlogAddContent(map);
+		}catch(Exception e) {
+			
+		}
+	}
 
 }

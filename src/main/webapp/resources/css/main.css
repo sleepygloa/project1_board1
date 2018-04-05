@@ -918,3 +918,8 @@ footer strong {
 .genderSelect, .genderSelect:active, .genderSelect:hover, .genderSelect:focus{
 	background:#1FBC02;
 }
+
+#blogAddSetContent{
+	height	: 100vh;
+	border	: none;
+}

@@ -34,4 +34,5 @@
 	<script src="/resources/js/bootstrap.js"></script>
 	<script src="/resources/js/typed.min.js"></script>
 	<script src="/resources/js/main.js"></script>
+	<!-- <script src="/resources/js/hangul.js" type="text/javascript"></script> -->
 </html>

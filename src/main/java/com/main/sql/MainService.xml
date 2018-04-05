@@ -15,4 +15,32 @@
 			TB_BLOG_M M;
 	</select>
 
+	<select id="getBlogAddDropdownList" resultType="hashmap">
+		SELECT 
+			TITLE
+		FROM
+			TB_BLOG_M M
+		GROUP BY TITLE;
+	</select>
+	
+	<insert id="insertBlogAddContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 0, MAX(IDX)+1) FROM TB_BLOG_M
+		</selectKey>
+		INSERT INTO TB_BLOG_M
+		(
+			IDX
+		,	TITLE
+		,	SUBJECT
+		,	CONTENT
+		)
+		VALUES
+		(
+			#{IDX}
+		,	#{title}
+		,	#{subject}
+		,	#{content}
+		);
+	</insert>
+
 </mapper>

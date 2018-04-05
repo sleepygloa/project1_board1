@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.common.common.CommandMap;
 import com.main.dao.MainDAO;
 
 @Service("mainService")
@@ -20,6 +21,16 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public List<Map<String, Object>> mainBlogContent() throws Exception{
 		return mainDAO.mainBlogContent();
+	}
+	
+	@Override
+	public List<Map<String, Object>> getBlogAddDropdownList() throws Exception{
+		return mainDAO.getBlogAddDropdownList();
+	}
+	
+	@Override
+	public void insertBlogAddContent(Map<String, Object> map) throws Exception{
+		mainDAO.insertBlogAddContent(map);
 	}
 	
 }

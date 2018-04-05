@@ -15,31 +15,36 @@ var mainContentJs = function(){
 		  $.ajax({
 			  url		: "/main/loadingMainBlogContent",
 			  success	: function(result){
-				  
 				  var contentMain = '';
+				  var title_count = 0;
+				  var title_subject_count = 0;
+				  if(result.list.length > 0){
+					  title_count = result.list[0].TITLE_COUNT;
+					  title_subject_count = result.list[0].TOTAL_SUBJECT_COUNT;
+				  }
+				  
+				  var contentNavi = 
+					  '<section class="cont-head">'
+						+'<div class="container">'
+							+'<p id="menu_count" class="cont-head-menu">'
+							+'<strong id="blogContents_totalSectionCounts">'+title_count+'</strong> sections'
+							+'</p>'
+							+'<p id="content_count" class="cont-head-title">'
+							+'<strong id="blogContents_totalCounts">'+title_subject_count+'</strong> lessons'
+							+'</p>'
+							+'<div id="blogAddBtn" class="pull-right m-t-10"><i class="fa fa-lg fa-plus"></i></div>'
+						+'</div>'
+						+'</section>';
+				  
+				  $('#main').append(contentNavi);
+				  
 				  if(result.list){
 					  var list = result.list;
 					  var title = '';
 					  var count = 0;
 					  var subCount = 0;
 					  
-					  var contentNavi = 
-						  '<section class="cont-head">'
-							+'<div class="container">'
-								+'<p id="menu_count" class="cont-head-menu">'
-								+'<strong id="blogContents_totalSectionCounts">'+list[0].TITLE_COUNT+'</strong> sections'
-								+'</p>'
-								+'<p id="content_count" class="cont-head-title">'
-								+'<strong id="blogContents_totalCounts">'+list[0].TOTAL_SUBJECT_COUNT+'</strong> lessons'
-								+'</p>'
-								+'<div id="blogAddBtn" class="pull-right m-t-10"><i class="fa fa-lg fa-plus"></i></div>'
-							+'</div>'
-							+'</section>';
-					  
-					  $('#main').append(contentNavi);
-					  
 					  for(var i in list){
-						  console.log(list[i]);
 						  
 						  if(title != list[i].TITLE){
 							  title = list[i].TITLE
