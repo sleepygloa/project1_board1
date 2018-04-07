@@ -296,22 +296,24 @@ var mainJs = function(){
 			  }
 			  
 			  var sendData = {
-					  "title"		: menu,
-					  "subject"	: subject,
-					  "content"	: content
+					  title		: menu,
+					  subject	: subject,
+					  content	: content
 			  }
 			  
-		        var jsonStr = JSON.stringify(sendData);
+		      var jsonStr = JSON.stringify(sendData);
 			  
 			  $.ajax({
 				  url		: "/main/insertBlogAddContent",
 				  data  	: jsonStr,
 				  type		: "POST",
-				  dataType	: "json",
 				  contentType: 'application/json; charset=utf-8',
 				  success	: function(result){
 					  alert('글이 게시되었습니다.');
 					  window.location.href='/';
+				  },
+				  error : function(result){
+					  alert('에러');
 				  }
 			  })
 			  

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.common.common.CommandMap;
+import com.core.parameters.Params;
 import com.main.dao.MainDAO;
 
 @Service("mainService")
@@ -29,8 +30,8 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	@Override
-	public void insertBlogAddContent(Map<String, Object> map) throws Exception{
-		mainDAO.insertBlogAddContent(map);
+	public void insertBlogAddContent(Params inParams) throws Exception{
+		mainDAO.insertBlogAddContent(inParams);
 	}
 	
 }

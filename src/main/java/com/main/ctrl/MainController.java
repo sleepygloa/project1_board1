@@ -9,8 +9,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.core.parameters.Params;
 import com.main.svce.MainService;
 
 
@@ -19,6 +22,8 @@ import com.main.svce.MainService;
  *
  */
 @Controller
+@EnableWebMvc
+@RequestMapping("")
 public class MainController {
 	
 	@Autowired
@@ -74,12 +79,13 @@ public class MainController {
 	
 	//블로그 글쓰기 완료
 	@RequestMapping("/main/insertBlogAddContent")
-	public void insertBlogAddContent(Map<String, Object> map) {
-		System.out.println("insertBlogAddContent"+map);
+	@ResponseBody
+	public void insertBlogAddContent(Params inParams) {
+		System.out.println("insertBlogAddContent"+inParams);
 		try {
-			mainService.insertBlogAddContent(map);
+			mainService.insertBlogAddContent(inParams);
 		}catch(Exception e) {
-			
+			System.out.println("에러에러");
 		}
 	}
 

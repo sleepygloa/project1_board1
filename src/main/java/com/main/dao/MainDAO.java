@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.common.common.CommandMap;
 import com.common.dao.AbstractDAO;
+import com.core.parameters.Params;
 
 @Repository("mainDAO")
 public class MainDAO extends AbstractDAO{
@@ -25,7 +25,7 @@ public class MainDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectList("MainService.getBlogAddDropdownList");
 	}
 	
-	public void insertBlogAddContent(Map<String, Object> map) throws Exception{
-		insert("MainService.insertBlogAddContent", map);
+	public void insertBlogAddContent(Params inParams) throws Exception{
+		insert("MainService.insertBlogAddContent", inParams);
 	}
 }

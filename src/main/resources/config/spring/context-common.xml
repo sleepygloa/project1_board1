@@ -41,4 +41,14 @@
 	<mvc:resources mapping="/images/**" location="/resources/images/" /> 
 	<mvc:resources mapping="/js/**" location="/resources/js/" /> 
 	<mvc:resources mapping="/resources/**" location="/resources/" /> 
+	
+		
+   	<bean class="com.core.web.servlet.mvc.ParagonRequestMappingHandlerAdapter">
+		<property name="paramsArgumentResolver" ref="paramsArgumentResolver" ></property> 
+		<property name="paramsReturnValueHandler" ref="paramsReturnValueHandler" ></property> 
+		<property name="order" value="0" />
+	</bean>
+
+	<bean id="paramsArgumentResolver" class="com.core.conversion.ParamsArgumentResolver" />
+	<bean id="paramsReturnValueHandler" class="com.core.conversion.ParamsReturnValueHandler" /> 
 </beans>
