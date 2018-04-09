@@ -5,14 +5,15 @@
 
 	<select id="mainBlogContent" resultType="hashmap">
 		SELECT 
-			TITLE
-		,	SUBJECT
-		,	P_IDX
-		,  (SELECT COUNT(TITLE) FROM TB_BLOG_M) AS TITLE_COUNT
-		,  (SELECT count(SUBJECT) FROM TB_BLOG_M WHERE SUBJECT = M.SUBJECT AND TITLE = M.TITLE) AS SUBJECT_COUNT
-		,  (SELECT count(SUBJECT) FROM TB_BLOG_M) AS TOTAL_SUBJECT_COUNT
+			IDX
+		,	TITLE
+		,	MAX(SUBJECT) AS SUBJECT
+		,	(SELECT COUNT(DISTINCT(TITLE)) FROM TB_BLOG_M) AS TITLE_COUNT
+		,	(SELECT COUNT(SUBJECT) FROM TB_BLOG_M) AS TOTAL_SUBJECT_COUNT
+		,	(SELECT COUNT(SUBJECT) FROM TB_BLOG_M SUB WHERE SUB.TITLE = M.TITLE) AS SUBJECT_COUNT
 		FROM
-			TB_BLOG_M M;
+			TB_BLOG_M M
+		GROUP BY IDX, TITLE;
 	</select>
 
 	<select id="getBlogAddDropdownList" resultType="hashmap">
@@ -42,5 +43,14 @@
 		,	#{content}
 		);
 	</insert>
+
+	<select id="viewBlogContent" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			*
+		FROM
+			TB_BLOG_M
+		WHERE
+			IDX		= #{idx};
+	</select> 
 
 </mapper>

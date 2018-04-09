@@ -13,4 +13,7 @@ public interface MainService{
 	
 	void insertBlogAddContent(Params inParams) throws Exception;
 	
+	List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception;
+	
+	
 }

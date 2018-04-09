@@ -28,4 +28,10 @@ public class MainDAO extends AbstractDAO{
 	public void insertBlogAddContent(Params inParams) throws Exception{
 		insert("MainService.insertBlogAddContent", inParams);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.viewBlogContent", inParams);
+	}
+	
 }

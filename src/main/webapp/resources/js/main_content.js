@@ -1,6 +1,13 @@
+function viewBlogContentPg(idx){
+	var data = {
+			idx  : idx,
+			page : "/main/viewBlogContent"
+	}
+	loadingPgSetting(data);
+}
+
 var mainContentJs = function(){
 	"use strict";
-	
 	
 	return {
 		init : function(){
@@ -65,7 +72,7 @@ var mainContentJs = function(){
 						  subCount++;
 						  contentMain += 					  
 						   '<li class="title">'
-							  +'<a id="contentsHref" href="/html5-syntax"><em id="contentsNum">'+count+'</em> '+list[i].SUBJECT+'</a>'
+							  +'<a onclick="viewBlogContentPg('+list[i].IDX+')"><em id="contentsNum">'+count+'</em> '+list[i].SUBJECT+'</a>'
 						  +'</li>'
 						  if(subCount == list[i].SUBJECT_COUNT){
 							  contentMain += 					  

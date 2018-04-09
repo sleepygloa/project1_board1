@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.common.common.CommandMap;
 import com.core.parameters.Params;
 import com.main.dao.MainDAO;
 
@@ -32,6 +31,11 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public void insertBlogAddContent(Params inParams) throws Exception{
 		mainDAO.insertBlogAddContent(inParams);
+	}
+	
+	@Override
+	public List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception{
+		return mainDAO.viewBlogContent(inParams);
 	}
 	
 }

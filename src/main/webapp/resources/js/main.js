@@ -1,3 +1,18 @@
+var mainData = '';
+
+function loadingPgSetting(data){
+	mainData = data;
+	$.ajax({
+		url		: "/main/viewPg",
+		data	: data,
+		type	: "POST",
+		success	: function(result){
+			$('#body').empty();
+			$('#body').html(result);
+		}
+	})
+}
+
 var mainJs = function(){
 	"use strict";
 	
@@ -163,19 +178,19 @@ var mainJs = function(){
 	      $('iframe[src^="https://stackblitz.com"]').remove();
 	    }
 	  }
-	
-	return {
-		init : function(){
-			
-			loadingMainContent();
-			
-			loadingSession();
-			
-			mainEvents();
-			
+
+		return {
+			init : function(){
+				
+				loadingMainContent();
+				
+				loadingSession();
+				
+				mainEvents();
+				
+			}
 		}
-	}
-	
+		
 	  function loadingMainContent(){
 		  var id = null;
 		  $.ajax({

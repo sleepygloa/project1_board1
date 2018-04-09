@@ -30,7 +30,7 @@ public class MainController {
 	private MainService mainService;
 	
 	@RequestMapping("/")
-	public ModelAndView home() throws Exception {
+	public ModelAndView home(Params inParams) throws Exception {
 		ModelAndView mv = new ModelAndView("/main/main");
 
 		return mv;
@@ -89,4 +89,34 @@ public class MainController {
 		}
 	}
 
+	//블로그 글 페이지
+	@RequestMapping("/main/viewPg")
+	@ResponseBody
+	public ModelAndView viewPg(Params inParams) {
+		System.out.println("viewPg : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		mv.setViewName(inParams.getString("page"));
+		return mv;
+	}
+	
+	//블로그 글 불러오기
+	@RequestMapping("/main/viewBlogContent")
+	@ResponseBody
+	public ModelAndView viewBlogContent(Params inParams) {
+		System.out.println("viewBlogContent : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		try {
+			list = mainService.viewBlogContent(inParams);
+		}catch(Exception e) {
+			
+		}
+		
+		mv.addObject("list", list);
+		
+		return mv;
+	}
+	
 }
