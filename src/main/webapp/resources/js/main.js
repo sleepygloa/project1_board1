@@ -295,10 +295,6 @@ var mainJs = function(){
 			  var subject = $('#blogAddSetSubject').val();
 			  var content = $('#blogAddSetContent').val();
 			  
-			  console.log(menu);
-			  console.log(menu.length);
-			  console.log(subject.length);
-			  console.log(content);
 			  if(menu.length < 1){
 				  alert('메뉴를 선택해주세요');
 				  return false;

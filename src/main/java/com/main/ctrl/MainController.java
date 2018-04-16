@@ -119,4 +119,23 @@ public class MainController {
 		return mv;
 	}
 	
+	
+	//블로그 글 업데이트불러오기
+	@RequestMapping("/main/updateBlogContent")
+	@ResponseBody
+	public ModelAndView updateBlogContent(Params inParams) {
+		System.out.println("updateBlogContent : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		try {
+			list = mainService.viewBlogContent(inParams);
+		}catch(Exception e) {
+			
+		}
+		
+		mv.addObject("list", list);
+		
+		return mv;
+	}
 }
