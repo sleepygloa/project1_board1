@@ -2,6 +2,7 @@
 	
 	var loginData = {};
 	
+	//로그인하기
 	$('#loginSubmit').click(function(){
 		loginData = {
 				id : $('#loginIdInput').val(),

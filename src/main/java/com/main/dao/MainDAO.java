@@ -34,4 +34,8 @@ public class MainDAO extends AbstractDAO{
 		return (List<Map<String, Object>>)selectList("MainService.viewBlogContent", inParams);
 	}
 	
+	public void saveBlogContent(Params inParams) throws Exception{
+		insert("MainService.saveBlogContent", inParams);
+	}
+	
 }

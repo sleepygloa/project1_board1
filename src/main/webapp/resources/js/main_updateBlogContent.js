@@ -10,29 +10,42 @@ var MainUpdateBlogContentJs = function(){
 	}
 	
 	function loadingViewBlogContent(){
-		console.log(mainData);
 		$.ajax({
 			url	 : '/main/viewBlogContent',
 			data : mainData,
 			type : "POST",
 			success : function(result){
 				var list = result.list[0];
-				$('#updateBlogContentIdx').val(list.IDX);
+				idx = list.IDX;
 				$('#updateBlogContentTitle').text(list.TITLE);
-				$('#updateBlogContentSubject').text(list.SUBJECT);
+				$('#updateBlogContentSubject').val(list.SUBJECT);
 				$('#updateBlogContentContent').text(list.CONTENT);
 			}
 		})
 	}
 	
-	function viewBlogContentEvent(){
+	function updateBlogContentEvent(){
 		
 		$('#updateBlogContentCancelBtn').click(function(){
 			window.location.href="/";
 		})
 		
 		$('#updateBlogContentSaveBtn').click(function(){
-			
+			var data = {
+					idx : idx,
+					subject : $('#updateBlogContentSubject').val(),
+					content : $('#updateBlogContentContent').val()
+			}
+			$.ajax({
+				url 	: "/main/saveBlogContent",
+				data	: data,
+				success	: function(result){
+					if(result.SUCCESS){
+						alert(result.SUCCESS);
+						window.location.href="/";
+					}
+				}
+			})
 		})
 		
 	}

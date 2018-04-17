@@ -110,11 +110,19 @@ public class MainController {
 		
 		try {
 			list = mainService.viewBlogContent(inParams);
+			mv.addObject("list", list);
 		}catch(Exception e) {
 			
 		}
 		
-		mv.addObject("list", list);
+		if(inParams.getString("s_userId") != null && list.get(0) != null) {
+			String s_userId = inParams.getString("s_userId");
+			String inUserId = (String)list.get(0).get("IN_USER_ID");
+			if(s_userId.equals(inUserId)) {
+				mv.addObject("S_CHECK_ID", true);
+			}
+		}
+
 		
 		return mv;
 	}
@@ -135,6 +143,25 @@ public class MainController {
 		}
 		
 		mv.addObject("list", list);
+		
+		return mv;
+	}
+	
+	//블로그 글 수정하기
+	@RequestMapping("/main/saveBlogContent")
+	@ResponseBody
+	public ModelAndView saveBlogContent(Params inParams) {
+		System.out.println("/main/SaveBlogContent : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		try {
+			mainService.saveBlogContent(inParams);
+		}catch(Exception e) {
+			
+		}
+		
+		mv.addObject("SUCCESS", "글이 수정되었습니다.");
+		
 		
 		return mv;
 	}

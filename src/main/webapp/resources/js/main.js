@@ -1,3 +1,6 @@
+var s_userId = '';
+var idx = '';
+
 var mainData = '';
 
 function loadingPgSetting(data){
@@ -205,7 +208,7 @@ var mainJs = function(){
 		  $.ajax({
 			  url		:	"/main/loadingSession",
 			  success	:	function(result){
-				  var s_userId =  result.s_userId;
+				  s_userId =  result.s_userId;
 				  
 				  //VIEW SETTING
 				  if(s_userId != null){

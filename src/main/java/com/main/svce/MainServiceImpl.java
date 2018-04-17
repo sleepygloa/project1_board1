@@ -38,4 +38,8 @@ public class MainServiceImpl implements MainService{
 		return mainDAO.viewBlogContent(inParams);
 	}
 	
+	@Override
+	public void saveBlogContent(Params inParams) throws Exception{
+		mainDAO.saveBlogContent(inParams);
+	}
 }

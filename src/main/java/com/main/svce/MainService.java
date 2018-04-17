@@ -15,5 +15,6 @@ public interface MainService{
 	
 	List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception;
 	
+	void saveBlogContent(Params inParams) throws Exception;
 	
 }

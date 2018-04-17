@@ -131,6 +131,13 @@ select, input, textarea {
   font: 99% sans-serif;
 }
 
+input, textarea {
+	border: none;
+}
+input:focus, textarea:focus {
+	border:none;
+}
+
 table {
   font-size: inherit;
   font: 100%;

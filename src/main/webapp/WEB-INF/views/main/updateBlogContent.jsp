@@ -2,13 +2,12 @@
 <section>
 	<div class="container" style="padding-top:100px;">
 		<div class="col-xs-12">
-			<input id="updateBlogContentIdx" type="hidden" value="" />
 			<a id="updateBlogContentTitle" type="button" class="btn btn-default"></a>
-			<a id="updateBlogContentSubject" type="button" class="btn btn-default"></a>
+			<input id="updateBlogContentSubject" type="text" value=""/>
 		</div>
 		<div class="col-xs-12">
-			<div id="updateBlogContentContent">
-			
+			<div>
+				<textarea id="updateBlogContentContent" class="col-xs-12" rows="50" style="border:none"></textarea>
 			</div>
 		</div>
 		<div class="col-xs-12">

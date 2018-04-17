@@ -59,7 +59,7 @@ public class ParamsArgumentResolver
     
     HttpSession session = req.getSession();
     Enumeration<String> attrNames = session.getAttributeNames();
-    
+    commParams.setParam("s_userId", session.getAttribute("s_userId"));
     Set<String> addedParams = (Set)session.getAttribute("addedParams");
     
 

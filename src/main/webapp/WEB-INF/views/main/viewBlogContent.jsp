@@ -3,8 +3,8 @@
 	<div class="container" style="padding-top:100px;">
 		<div class="col-xs-12">
 			<input id="viewBlogContentIdx" type="hidden" value="" /> 
-			<a id="viewBlogContentTitle" type="button" class="btn btn-default"></a>
-			<a id="viewBlogContentSubject" type="button" class="btn btn-default"></a>
+			<span id="viewBlogContentTitle" ></span>
+			<span id="viewBlogContentSubject" ></span>
 		</div>
 		<div class="col-xs-12">
 			<div id="viewBlogContentContent">
@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12">
-			<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-default" >수정하기</button>
+			<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-default" style="display:none">수정하기</button>
 			<button id="viewBlogContentCancelBtn" type="button" class="btn btn-default" >메인으로</button>
 		</div>
 	</div>

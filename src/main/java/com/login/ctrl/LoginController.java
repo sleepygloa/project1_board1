@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.common.common.CommandMap;
+import com.core.parameters.Params;
 import com.login.svce.LoginService;
 
 
@@ -35,16 +36,15 @@ public class LoginController {
 	
 	//로그인하기
 	@RequestMapping("/loginUser")
-	public ModelAndView login(HttpSession session, CommandMap map) {
+	public ModelAndView login(HttpSession session, Params inParams) {
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		//아이디확인
 		try {
-			list = loginService.loginInfoCheck(map.getMap());	
+			list = loginService.loginInfoCheck(inParams);	
 		}catch(Exception e) {
 			log.debug("loginInfoCheck ERROR "+e);
-			System.out.println("loginInfoCheck ERROR "+e);
 		}
 		
 		Map<String, Object> listMap = list.get(0);
@@ -54,16 +54,16 @@ public class LoginController {
 			mv.addObject("YN", "NON_ID");
 			mv.addObject("MSG", "없는 아이디입니다.");
 			return mv;
-		}else if(!((String)listMap.get("PW")).equals((String)map.get("pw"))) {
+		}else if(!((String)listMap.get("PW")).equals((String)inParams.getString("pw"))) {
 
 			mv.addObject("YN", "DIFF_PW");
 			mv.addObject("MSG", "비밀번호가 틀렸습니다.");
 			return mv;
 		}else {
-			session.setAttribute("s_userId", map.getMap().get("id"));
+			session.setAttribute("s_userId", inParams.getString("id"));
 
 			mv.addObject("YN", "SUCCESS");
-			mv.addObject("MSG", "로그인에 성공하였습니다."+map.getMap().get("id")+" 님! 반갑습니다.");
+			mv.addObject("MSG", "로그인에 성공하였습니다."+inParams.getString("id")+" 님! 반갑습니다.");
 		}
 
 		//성공
@@ -88,12 +88,12 @@ public class LoginController {
 	
 	//회원가입처리
 	@RequestMapping("/loginInsert")
-	public ModelAndView loadingLoginInsert(CommandMap map) {
-		log.debug("loginInsertController = "+map);
+	public ModelAndView loadingLoginInsert(Params inParams) {
+		log.debug("loginInsertController = "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		
 		try {
-			loginService.loginInsert(map.getMap());
+			loginService.loginInsert(inParams);
 		}catch(Exception e) {
 			log.debug("loginInsert ERROR" + e);
 			mv.addObject("YN", "FAIL");
