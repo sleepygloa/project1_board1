@@ -38,4 +38,25 @@ public class MainDAO extends AbstractDAO{
 		insert("MainService.saveBlogContent", inParams);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getMainViewReContent(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.getMainViewReContent", map);
+	}
+	
+	public void insertMainBlogReContent(Params inParams) throws Exception{
+		insert("MainService.insertMainBlogReContent", inParams);
+	}
+
+	public void deleteMainBlogReContent(Params inParams) throws Exception{
+		update("MainService.deleteMainBlogReContent", inParams);
+	}
+	
+	public void deleteMainBlogReContentRefAll(Params inParams) throws Exception{
+		update("MainService.deleteMainBlogReContentRefAll", inParams);
+	}
+	
+	public void insertViewBlogReReContent(Params inParams) throws Exception{
+		insert("MainService.insertViewBlogReReContent", inParams);
+	}
+	
 }

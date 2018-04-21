@@ -26,7 +26,7 @@
 	
 	<insert id="insertBlogAddContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
-			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM TB_BLOG_M
+			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM TB_BLOG_M WHERE DEL_YN = 'N'
 		</selectKey>
 		INSERT INTO TB_BLOG_M
 		(
@@ -62,5 +62,87 @@
 			IDX	= #{idx};
 	</update>
 
+	<select id="getMainViewReContent" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+				REF
+			, 	RE_LEVEL	
+			, 	RE_STEP
+			,	IDX
+			, 	CONTENT
+			, 	IN_USER_ID
+			, 	DATE_FORMAT(IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
+		FROM 
+				TB_BLOG_RE_M
+	    WHERE   DEL_YN = 'N'
+	    AND		IDX = #{idx}
+	   ORDER BY REF ASC, RE_STEP ASC
+	</select>
+
+	<insert id="insertMainBlogReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
+	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
+			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M WHERE DEL_YN = 'N'
+		</selectKey>
+			INSERT INTO TB_BLOG_RE_M
+			(
+				IDX
+			,	REF
+			,	CONTENT
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{idx}
+			,	#{REF}
+			,	#{content}
+			,	now()
+			,	#{writer}
+			)
+	</insert>
+	
+	<update id="deleteMainBlogReContent" parameterType="hashmap">
+			UPDATE TB_BLOG_RE_M
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+			AND RE_STEP = #{re_step}
+	</update>
+	
+	<update id="deleteMainBlogReContentRefAll" parameterType="hashmap">
+			UPDATE TB_BLOG_RE_M
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+	</update>
+	
+	<insert id="insertViewBlogReReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
+ 	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
+			SELECT MAX(RE_STEP)+1 FROM TB_BLOG_RE_M WHERE REF = #{ref} AND DEL_YN = 'N'
+		</selectKey>
+			INSERT INTO TB_BLOG_RE_M
+			(
+				IDX
+			,	CONTENT
+			,	REF
+			,	RE_LEVEL
+			,	RE_STEP
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{idx}
+			,	#{content}
+			,	#{ref}
+			,	'2'
+			,	#{RE_STEP}
+			,	now()
+			,	#{writer}
+			)
+	</insert>
 
 </mapper>

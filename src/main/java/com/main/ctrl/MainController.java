@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,4 +169,55 @@ public class MainController {
 		
 		return mv;
 	}
+	
+	//블로그글 중 댓글 불러오기
+	@RequestMapping("/main/getMainViewReContent")
+	@ResponseBody
+	public ModelAndView getMainViewReContent(Params inParams) {
+		System.out.println("getMainViewReContent : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		try {
+			List<Map<String,Object>> list = mainService.getMainViewReContent(inParams);
+			mv.addObject("list", list);
+		}catch(Exception e) {
+			
+		}
+		
+		return mv;
+	}
+	//메일 블로그 댓글 쓰기
+	@RequestMapping(value="/main/insertMainBlogReContent")
+	@ResponseBody
+	public ModelAndView insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception{
+		ModelAndView mv = new ModelAndView("jsonView");
+		mainService.insertMainBlogReContent(inParams, request);
+		return mv;
+	}
+	
+	//블로그 댓글 삭제
+	@RequestMapping(value="/main/deleteMainBlogReContent")
+	@ResponseBody
+	public ModelAndView deleteMainBlogReContent(Params inParams) throws Exception{
+			ModelAndView mv = new ModelAndView("jsonView");
+			mainService.deleteMainBlogReContent(inParams);
+			
+			//프로시저 대체 항목
+			int re_step = inParams.getInteger("re_step");
+			if(re_step == 0) {
+				mainService.deleteMainBlogReContentRefAll(inParams);
+			}
+			
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="/main/insertViewBlogReReContent")
+	@ResponseBody
+	public ModelAndView insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception{
+			ModelAndView mv = new ModelAndView("jsonView");
+			mainService.insertViewBlogReReContent(inParams, request);
+    	return mv;
+	}
+	
 }

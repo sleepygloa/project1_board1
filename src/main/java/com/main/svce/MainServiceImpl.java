@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,32 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public void saveBlogContent(Params inParams) throws Exception{
 		mainDAO.saveBlogContent(inParams);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception{
+		return mainDAO.getMainViewReContent(inParams);
+	};
+	
+	@Override
+	public void insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception {
+		mainDAO.insertMainBlogReContent(inParams);
+
+	}
+	
+	@Override
+	public void deleteMainBlogReContent(Params inParams) throws Exception {
+		mainDAO.deleteMainBlogReContent(inParams);
+	}
+	
+	@Override
+	public void deleteMainBlogReContentRefAll(Params inParams) throws Exception {
+		mainDAO.deleteMainBlogReContentRefAll(inParams);
+	}
+	
+	@Override
+	public void insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception {
+		log.debug("insertViewBlogReReContent data : "+ inParams);
+		mainDAO.insertViewBlogReReContent(inParams);
 	}
 }

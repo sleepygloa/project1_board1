@@ -15,6 +15,13 @@
 			<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-default" style="display:none">수정하기</button>
 			<button id="viewBlogContentCancelBtn" type="button" class="btn btn-default" >메인으로</button>
 		</div>
+		<div class="form-group" id="viewBlogReContentArea" >
+			<table class="table table-hover col-xs-8" >
+				<tbody>
+				
+				</tbody>
+			</table>
+		</div>
 	</div>
 </section>
 

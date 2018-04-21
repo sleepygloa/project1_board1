@@ -3,6 +3,8 @@ package com.main.svce;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.core.parameters.Params;
 
 public interface MainService{
@@ -17,4 +19,13 @@ public interface MainService{
 	
 	void saveBlogContent(Params inParams) throws Exception;
 	
+	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
+	
+	void insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception;
+
+	void deleteMainBlogReContent(Params inParams) throws Exception;
+
+	void deleteMainBlogReContentRefAll(Params inParams) throws Exception;
+	
+	void insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception;
 }
