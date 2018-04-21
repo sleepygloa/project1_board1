@@ -21,7 +21,7 @@ var MainViewBlogContentJs = function(){
 				$('#viewBlogContentIdx').val(list.IDX);
 				$('#viewBlogContentTitle').text(list.TITLE);
 				$('#viewBlogContentSubject').text(list.SUBJECT);
-				$('#viewBlogContentContent').text(list.CONTENT);
+				$('#viewBlogContentContent').html(list.CONTENT);
 				
 				if(idCheck){
 					$('#viewBlogContentUpdateBtn').css('display', 'inline-block');

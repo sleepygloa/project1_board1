@@ -11,7 +11,7 @@ var MainUpdateBlogContentJs = function(){
 	
 	function loadingViewBlogContent(){
 		$.ajax({
-			url	 : '/main/viewBlogContent',
+			url	 : '/main/updateBlogContent',
 			data : mainData,
 			type : "POST",
 			success : function(result){
@@ -39,6 +39,7 @@ var MainUpdateBlogContentJs = function(){
 			$.ajax({
 				url 	: "/main/saveBlogContent",
 				data	: data,
+				contentType : "application/json; charset=utf-8",
 				success	: function(result){
 					if(result.SUCCESS){
 						alert(result.SUCCESS);

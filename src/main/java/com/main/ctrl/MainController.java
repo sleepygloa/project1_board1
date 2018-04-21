@@ -110,6 +110,10 @@ public class MainController {
 		
 		try {
 			list = mainService.viewBlogContent(inParams);
+			//간단한 줄바꿈처리
+			String content = (String)list.get(0).get("CONTENT");
+			content = content.replace("\n", "<br />");
+			list.get(0).put("CONTENT", content);
 			mv.addObject("list", list);
 		}catch(Exception e) {
 			
@@ -141,7 +145,6 @@ public class MainController {
 		}catch(Exception e) {
 			
 		}
-		
 		mv.addObject("list", list);
 		
 		return mv;
