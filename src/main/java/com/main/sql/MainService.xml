@@ -34,6 +34,7 @@
 		,	TITLE
 		,	SUBJECT
 		,	CONTENT
+		,	IN_USER_ID
 		)
 		VALUES
 		(
@@ -41,6 +42,7 @@
 		,	#{title}
 		,	#{subject}
 		,	#{content}
+		,	#{s_userId}
 		);
 	</insert>
 

@@ -123,7 +123,10 @@ public class MainController {
 		if(inParams.getString("s_userId") != null && list.get(0) != null) {
 			String s_userId = inParams.getString("s_userId");
 			String inUserId = (String)list.get(0).get("IN_USER_ID");
+			System.out.println("s_userId"+s_userId);
+			System.out.println("inUserId"+inUserId);
 			if(s_userId.equals(inUserId)) {
+				System.out.println("ID_CHECK_OK");
 				mv.addObject("S_CHECK_ID", true);
 			}
 		}

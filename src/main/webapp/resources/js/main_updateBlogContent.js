@@ -32,9 +32,10 @@ var MainUpdateBlogContentJs = function(){
 		
 		$('#updateBlogContentSaveBtn').click(function(){
 			var data = {
-					idx : idx,
-					subject : $('#updateBlogContentSubject').val(),
-					content : $('#updateBlogContentContent').val()
+					idx 	 : idx,
+					subject  : $('#updateBlogContentSubject').val(),
+					content  : $('#updateBlogContentContent').val(),
+					s_userId : s_userId
 			}
 			$.ajax({
 				url 	: "/main/saveBlogContent",
@@ -48,7 +49,6 @@ var MainUpdateBlogContentJs = function(){
 				}
 			})
 		})
-		
 	}
 	  
 }();

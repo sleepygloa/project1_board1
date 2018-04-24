@@ -118,9 +118,11 @@
 						reContent += 
 							"<tr>" +
 								"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
-								"<td >"+
-									"<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> " +
-									(value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
+								"<td >";
+						if(s_userId != value.IN_USER_ID){
+							reContent +="<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> ";	
+						}
+						reContent += (value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
 								"</td>" +
 							"</tr>"+
 							"<tr id='viewBlogReContentPlace_"+value.REF+"_"+value.RE_STEP+"'>"+
@@ -131,7 +133,7 @@
 				reContent += 
 					"<tr>" +
 						"<td class='col-xs-6' style='text-align:left;'>작성자 " +
-							"<input id='viewBlogReWriter' type='text' /> " +
+							"<input id='viewBlogReWriter' type='text' value='"+s_userId+"' disabled /> " +
 						"</td>" +
 						"<td class='col-xs-2'>"+
 							"<a class='btn btn-default' id='viewBlogReSaveBtn'>댓글쓰기</a>" +

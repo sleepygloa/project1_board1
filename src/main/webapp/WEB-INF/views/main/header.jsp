@@ -15,7 +15,11 @@
 		<!-- <link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css"> -->
 		<link rel="stylesheet" href="/resources/css/main.css">
 
-
+		<script src="/resources/js/jquery.min.js"></script>
+		<script src="/resources/js/bootstrap.js"></script>
+		<script src="/resources/js/typed.min.js"></script>
+		<script src="/resources/js/main.js"></script>
+		<script src="/resources/js/ckeditor/ckeditor.js"></script>
 	</head>
 
 	<body>
@@ -30,3 +34,4 @@
 				</div>
 			</header>
 		</div>
+		
