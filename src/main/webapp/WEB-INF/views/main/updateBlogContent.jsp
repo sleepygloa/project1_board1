@@ -7,7 +7,9 @@
 		</div>
 		<div class="col-xs-12">
 			<div>
-				<textarea id="updateBlogContentContent" class="col-xs-12" rows="50" style="border:none"></textarea>
+				<textarea id="updateBlogContentContent" class="col-xs-12" rows="50" style="border:none"
+				onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">
+				</textarea>
 			</div>
 		</div>
 		<div class="col-xs-12">

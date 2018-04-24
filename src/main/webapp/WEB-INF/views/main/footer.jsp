@@ -7,4 +7,5 @@
 	<script src="/resources/js/typed.min.js"></script>
 	<script src="/resources/js/main.js"></script>
 	<!-- <script src="/resources/js/hangul.js" type="text/javascript"></script> -->
+	<script src="/resources/js/ckeditor5-build-classic/ckeditor.js"></script>
 </html>
