@@ -66,8 +66,7 @@ public class FileUtils {
 		return list;
 	}
 
-	public List<Map<String, Object>> parseUpdateFileInfo(Params inParams, HttpServletRequest request) throws Exception{
-		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+	public List<Map<String, Object>> parseUpdateFileInfo(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
     	Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
     	
     	MultipartFile multipartFile = null;
@@ -78,13 +77,17 @@ public class FileUtils {
     	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null; 
         
+        int j = inParams.getInteger("j");
+        
         String boardIdx = (String)inParams.getString("idx");
         String requestName = null;
         String idx = null;
-        
-        while(iterator.hasNext()){
-        	log.debug("iterator data : "+ iterator.hasNext());
-        	multipartFile = multipartHttpServletRequest.getFile(iterator.next());
+       
+        for(int i = 0; i < j; i++) {
+        	String uploadFileName = iterator.next();
+        	System.out.println(uploadFileName);
+        	multipartFile = multipartHttpServletRequest.getFile(uploadFileName);
+        	System.out.println(multipartFile);
         	if(multipartFile.isEmpty() == false){
         		System.out.println("file ok");
         		originalFileName = multipartFile.getOriginalFilename();
@@ -103,8 +106,8 @@ public class FileUtils {
         		list.add(listMap);
         	}else{
         		System.out.println("file no");
-        		requestName = multipartFile.getName();
-            	idx = "IDX_"+requestName.substring(requestName.indexOf("_")+1);
+        		requestName = uploadFileName;
+            	idx = "ids_"+requestName.substring(requestName.indexOf("_")+1);
             	if(inParams.containsKey(idx) == true && inParams.getString("idx") != null){
             		listMap = new HashMap<String,Object>();
             		listMap.put("IS_NEW", "N");
@@ -113,6 +116,7 @@ public class FileUtils {
             		list.add(listMap);
             	}
         	}
+        	
         }
 		return list;
 	}

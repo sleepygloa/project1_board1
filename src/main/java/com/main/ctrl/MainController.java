@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -127,14 +128,15 @@ public class MainController {
 	//블로그 글 수정하기
 	@RequestMapping("/main/saveBlogContent")
 	@ResponseBody
-	public ModelAndView saveBlogContent(Params inParams, HttpServletRequest req) {
+	public ModelAndView saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) {
 		System.out.println("/main/SaveBlogContent inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		
 		try {
-			mainService.saveBlogContent(inParams, req);
+			mainService.saveBlogContent(inParams, multipartHttpServletRequest);
 		}catch(Exception e) {
 			System.out.println("ERROR" + e);
+			e.printStackTrace();
 		}
 		
 		mv.addObject("SUCCESS", "글이 수정되었습니다.");

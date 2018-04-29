@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.core.parameters.Params;
 
 public interface MainService{
@@ -17,7 +19,7 @@ public interface MainService{
 	
 	Map<String, Object> viewBlogContent(Params inParams) throws Exception;
 	
-	void saveBlogContent(Params inParams, HttpServletRequest req) throws Exception;
+	void saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
 	
 	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
 	
