@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.core.parameters.Params;
+
 @Component("fileUtils")
 public class FileUtils {
 	
@@ -21,7 +23,7 @@ public class FileUtils {
 	
 	private static final String filePath = "C:\\dev\\file\\";
 	
-	public List<Map<String,Object>> parseInsertFileInfo(Map<String,Object> map, HttpServletRequest request) throws Exception{
+	public List<Map<String,Object>> parseInsertFileInfo(Params inParams, HttpServletRequest request) throws Exception{
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
     	Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
     	
@@ -33,8 +35,9 @@ public class FileUtils {
     	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null; 
         
-        String boardIdx = (String)map.get("IDX");
+        String boardIdx = (String)inParams.getString("idx");
         
+        //폴더생성
         File file = new File(filePath);
         if(file.exists() == false){
         	file.mkdirs();
@@ -51,18 +54,19 @@ public class FileUtils {
         		multipartFile.transferTo(file);
         		
         		listMap = new HashMap<String,Object>();
-        		listMap.put("BOARD_IDX", boardIdx);
-        		listMap.put("ORIGINAL_FILE_NAME", originalFileName);
-        		listMap.put("STORED_FILE_NAME", storedFileName);
-        		listMap.put("FILE_SIZE", multipartFile.getSize());
-        		listMap.put("WRITER", map.get("WRITER"));
+        		listMap.put("boardIdx", boardIdx);
+        		listMap.put("originalFileName", originalFileName);
+        		listMap.put("storedFileName", storedFileName);
+        		listMap.put("fileSize", multipartFile.getSize());
+        		listMap.put("s_userId", inParams.getString("s_userId"));
         		list.add(listMap);
         	}
         }
+        
 		return list;
 	}
 
-	public List<Map<String, Object>> parseUpdateFileInfo(Map<String, Object> map, HttpServletRequest request) throws Exception{
+	public List<Map<String, Object>> parseUpdateFileInfo(Params inParams, HttpServletRequest request) throws Exception{
 		MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
     	Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
     	
@@ -74,7 +78,7 @@ public class FileUtils {
     	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null; 
         
-        String boardIdx = (String)map.get("IDX");
+        String boardIdx = (String)inParams.getString("idx");
         String requestName = null;
         String idx = null;
         
@@ -82,6 +86,7 @@ public class FileUtils {
         	log.debug("iterator data : "+ iterator.hasNext());
         	multipartFile = multipartHttpServletRequest.getFile(iterator.next());
         	if(multipartFile.isEmpty() == false){
+        		System.out.println("file ok");
         		originalFileName = multipartFile.getOriginalFilename();
         		originalFileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         		storedFileName = CommonUtils.getRandomString() + originalFileExtension;
@@ -90,21 +95,21 @@ public class FileUtils {
         		
         		listMap = new HashMap<String,Object>();
         		listMap.put("IS_NEW", "Y");
-        		listMap.put("BOARD_IDX", boardIdx);
-        		listMap.put("ORIGINAL_FILE_NAME", originalFileName);
-        		listMap.put("STORED_FILE_NAME", storedFileName);
-        		listMap.put("FILE_SIZE", multipartFile.getSize());
-        		listMap.put("WRITER", map.get("WRITER"));
+        		listMap.put("boardIdx", boardIdx);
+        		listMap.put("originalFileName", originalFileName);
+        		listMap.put("storedFileName", storedFileName);
+        		listMap.put("fileSize", multipartFile.getSize());
+        		listMap.put("s_userId", inParams.getString("s_userId"));
         		list.add(listMap);
-        	}
-        	else{
+        	}else{
+        		System.out.println("file no");
         		requestName = multipartFile.getName();
             	idx = "IDX_"+requestName.substring(requestName.indexOf("_")+1);
-            	if(map.containsKey(idx) == true && map.get(idx) != null){
+            	if(inParams.containsKey(idx) == true && inParams.getString("idx") != null){
             		listMap = new HashMap<String,Object>();
             		listMap.put("IS_NEW", "N");
-            		listMap.put("FILE_IDX", map.get(idx));
-            		listMap.put("WRITER", map.get("WRITER"));
+            		listMap.put("fileIdx", inParams.getString(idx));
+            		listMap.put("s_userId", inParams.getString("s_userId"));
             		list.add(listMap);
             	}
         	}

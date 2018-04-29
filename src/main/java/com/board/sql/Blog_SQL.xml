@@ -12,7 +12,7 @@
 		, 	IN_USER_ID
 		,	EMAIL
 		, 	IN_DT
-		, 	READCOUNT
+		, 	READCOUNT   
 	FROM 
 			BL_BD
     WHERE   DEL_YN = 'N'

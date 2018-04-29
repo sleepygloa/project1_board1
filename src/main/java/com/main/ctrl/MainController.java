@@ -1,6 +1,7 @@
 package com.main.ctrl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -107,49 +108,18 @@ public class MainController {
 	public ModelAndView viewBlogContent(Params inParams) {
 		System.out.println("viewBlogContent : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		try {
-			list = mainService.viewBlogContent(inParams);
-			//간단한 줄바꿈처리
-			String content = (String)list.get(0).get("CONTENT");
-			content = content.replace("\n", "<br />");
-			list.get(0).put("CONTENT", content);
-			mv.addObject("list", list);
+			map = mainService.viewBlogContent(inParams);
+			mv.addObject("map", map.get("map"));
+			mv.addObject("list", map.get("list"));
+			mv.addObject("S_CHECK_ID", map.get("S_CHECK_ID"));
 		}catch(Exception e) {
-			
+			mv.addObject("ERROR", "글 불러오 중 에러가 발생하였습니다.");
+			System.out.println("ERROR" + e);
+			return mv;
 		}
-		
-		if(inParams.getString("s_userId") != null && list.get(0) != null) {
-			String s_userId = inParams.getString("s_userId");
-			String inUserId = (String)list.get(0).get("IN_USER_ID");
-			System.out.println("s_userId"+s_userId);
-			System.out.println("inUserId"+inUserId);
-			if(s_userId.equals(inUserId)) {
-				System.out.println("ID_CHECK_OK");
-				mv.addObject("S_CHECK_ID", true);
-			}
-		}
-
-		
-		return mv;
-	}
-	
-	
-	//블로그 글 업데이트불러오기
-	@RequestMapping("/main/updateBlogContent")
-	@ResponseBody
-	public ModelAndView updateBlogContent(Params inParams) {
-		System.out.println("updateBlogContent : "+inParams);
-		ModelAndView mv = new ModelAndView("jsonView");
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
-		try {
-			list = mainService.viewBlogContent(inParams);
-		}catch(Exception e) {
-			
-		}
-		mv.addObject("list", list);
 		
 		return mv;
 	}
@@ -157,14 +127,14 @@ public class MainController {
 	//블로그 글 수정하기
 	@RequestMapping("/main/saveBlogContent")
 	@ResponseBody
-	public ModelAndView saveBlogContent(Params inParams) {
-		System.out.println("/main/SaveBlogContent : "+inParams);
+	public ModelAndView saveBlogContent(Params inParams, HttpServletRequest req) {
+		System.out.println("/main/SaveBlogContent inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		
 		try {
-			mainService.saveBlogContent(inParams);
+			mainService.saveBlogContent(inParams, req);
 		}catch(Exception e) {
-			
+			System.out.println("ERROR" + e);
 		}
 		
 		mv.addObject("SUCCESS", "글이 수정되었습니다.");

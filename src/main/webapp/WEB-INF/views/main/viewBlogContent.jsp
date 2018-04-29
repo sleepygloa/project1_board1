@@ -3,8 +3,29 @@
 	<div class="container" style="padding-top:100px;">
 		<div class="col-xs-12">
 			<input id="viewBlogContentIdx" type="hidden" value="" /> 
-			<span id="viewBlogContentTitle" ></span>
-			<span id="viewBlogContentSubject" ></span>
+			<span id="viewBlogContentTitle" style="display:inline-block"></span>
+			<span id="viewBlogContentSubject" style="display:inline-block"></span>
+			<div class='zeta-menu-bar'><!-- 나중에 참고 할 수 있는 주석 처리 -->
+				<ul class="zeta-menu" >
+				  <li><a href="#" id="updateBlogFileUploadBtn">파일 업로드</a>
+				    <ul id="zeta-li">
+					</ul>
+				 </li>
+				<!--     <li><a href="#">3번 메뉴</a>
+				      <ul>
+				        <li><a href="#">3-A 메뉴</a></li>
+				        <li><a href="#">3-B 메뉴</a></li>
+				      </ul>
+				    </li> 
+				    <li><a href="#">4번 메뉴</a></li>  -->
+				  </ul>
+			</div>
+<%-- 				<div id="fileDiv" class="col-xs-2">
+					<p class="col-xs-12" style="height:50px;">
+						<input type="hidden" id="IDX" name="IDX_${var.index }" value="${row.IDX }" >
+						<a href="#this" id="name_${var.index }" name="name_${var.index }">${row.ORIGINAL_FILE_NAME }  (${row.FILE_SIZE }kb)</a>
+					</p>
+				</div> --%>
 		</div>
 		<div class="col-xs-12">
 			<div id="viewBlogContentContent">

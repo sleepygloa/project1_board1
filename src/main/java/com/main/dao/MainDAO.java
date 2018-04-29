@@ -30,8 +30,8 @@ public class MainDAO extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception{
-		return (List<Map<String, Object>>)selectList("MainService.viewBlogContent", inParams);
+	public Map<String, Object> viewBlogContent(Params inParams) throws Exception{
+		return (Map<String, Object>)selectOne("MainService.viewBlogContent", inParams);
 	}
 	
 	public void saveBlogContent(Params inParams) throws Exception{
@@ -57,6 +57,23 @@ public class MainDAO extends AbstractDAO{
 	
 	public void insertViewBlogReReContent(Params inParams) throws Exception{
 		insert("MainService.insertViewBlogReReContent", inParams);
+	}
+	
+	public void insertMainBlogFile(Map<String, Object> map) throws Exception{
+		insert("MainService.insertMainBlogFile", map);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> selectFileList(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.getMainBlogSelectFileList", map);
+	}
+	
+	public void deleteMainBlogFileList(Map<String, Object> map) throws Exception{
+	update("MainService.deleteMainBlogFileList", map);
+	}
+	
+	public void updateMainBlogFile(Map<String, Object> map) throws Exception{
+	update("MainService.updateMainBlogFile", map);
 	}
 	
 }

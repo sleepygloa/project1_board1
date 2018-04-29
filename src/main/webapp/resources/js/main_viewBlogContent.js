@@ -48,7 +48,7 @@
 	function viewBlogAddReContent(){
 		
 		if($("#viewBlogReWriter").val() == ''){
-			alert('작성자를 입력해주세요');
+			alert('로그인을 해주세요.');
 			return false;
 		}else if($("#viewBlogReContent").val() == ''){
 			alert('내용을 입력해주세요');
@@ -119,7 +119,7 @@
 							"<tr>" +
 								"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
 								"<td >";
-						if(s_userId != value.IN_USER_ID){
+						if(s_userId == value.IN_USER_ID){
 							reContent +="<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> ";	
 						}
 						reContent += (value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
@@ -133,7 +133,7 @@
 				reContent += 
 					"<tr>" +
 						"<td class='col-xs-6' style='text-align:left;'>작성자 " +
-							"<input id='viewBlogReWriter' type='text' value='"+s_userId+"' disabled /> " +
+							"<input id='viewBlogReWriter' type='text' value='"+(s_userId == null? '' : s_userId)+"' disabled /> " +
 						"</td>" +
 						"<td class='col-xs-2'>"+
 							"<a class='btn btn-default' id='viewBlogReSaveBtn'>댓글쓰기</a>" +
@@ -172,7 +172,8 @@ var MainViewBlogContentJs = function(){
 			type : "POST",
 			async:false,
 			success : function(result){
-				var list = result.list[0];
+				console.log(result);
+				var list = result.map;
 				idx = list.IDX;
 				var idCheck = result.S_CHECK_ID;
 				$('#viewBlogContentIdx').val(list.IDX);
@@ -183,12 +184,35 @@ var MainViewBlogContentJs = function(){
 				if(idCheck){
 					$('#viewBlogContentUpdateBtn').css('display', 'inline-block');
 				}
+				
+				var list = result.list;
+				var str = '';
+				for (var i = 0; i < list.length; i++){
+					str += 
+						"<li>"
+						+	"<a href='#' id='file_text_"+i+"'>"+(i+1)+". "+list[i].ORIGINAL_FILE_NAME+"</a>"
+					+	"</li>";
+				}
+
+				$("#zeta-li").append(str);
 			}
 		})
 	}
 	
 	//이벤트
 	function viewBlogContentEvent(){
+		
+	  $(".zeta-menu li").hover(function(){
+		    $('ul:first',this).show();
+		  }, function(){
+		/*     $('ul:first',this).hide(); */
+		  });
+		 /*  $(".zeta-menu>li:has(ul)>a").each( function() {
+		    $(this).html( $(this).html()+' &or;' );
+		  });
+		  $(".zeta-menu ul li:has(ul)")
+		    .find("a:first")
+		    .append("<p style='float:right;margin:-3px'>&#9656;</p>"); */
 		
 		$('#viewBlogContentCancelBtn').click(function(){
 			window.location.href="/";

@@ -59,15 +59,6 @@
 //		return mv;
 //	}
 //
-//	@RequestMapping(value="/blogWriteInsert.do")
-//	public ModelAndView blogWriteInsert(CommandMap commandMap, HttpServletRequest request) throws Exception{
-//		ModelAndView mv = new ModelAndView("redirect:/board/blog.do");
-//		
-//		blogService.insertBlog(commandMap.getMap(), request);
-//		
-//		return mv;
-//	}
-//	
 //	@RequestMapping(value="/blogDetail.do")
 //	public ModelAndView blogDetail(CommandMap commandMap) throws Exception{
 //		log.debug("/blogDetail.do start >>>>>>>>>>> ");

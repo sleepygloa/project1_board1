@@ -15,9 +15,9 @@ public interface MainService{
 	
 	void insertBlogAddContent(Params inParams) throws Exception;
 	
-	List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception;
+	Map<String, Object> viewBlogContent(Params inParams) throws Exception;
 	
-	void saveBlogContent(Params inParams) throws Exception;
+	void saveBlogContent(Params inParams, HttpServletRequest req) throws Exception;
 	
 	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
 	
