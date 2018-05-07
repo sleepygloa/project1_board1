@@ -19,7 +19,7 @@
 		<script src="/resources/js/bootstrap.js"></script>
 		<script src="/resources/js/typed.min.js"></script>
 		<script src="/resources/js/main.js"></script>
-		<script src="/resources/js/ckeditor/ckeditor.js"></script>
+		<!-- <script src="/resources/js/ckeditor/ckeditor.js"></script> -->
 	</head>
 
 	<body>
@@ -31,6 +31,7 @@
 				<div class="container">
 				  <a id="logo" class="logo" href="http://localhost:8080">SEONHO blog</a>
 				  <a id="login" class="login" href="#">login</a>
+				  <a id="logout" class="login" href="#" style="display:none">logout</a>
 				</div>
 			</header>
 		</div>

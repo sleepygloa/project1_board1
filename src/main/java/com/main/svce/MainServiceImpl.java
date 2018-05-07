@@ -31,8 +31,8 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	@Override
-	public List<Map<String, Object>> getBlogAddDropdownList() throws Exception{
-		return mainDAO.getBlogAddDropdownList();
+	public List<Map<String, Object>> getBlogTitleDropdown() throws Exception{
+		return mainDAO.getBlogTitleDropdown();
 	}
 	
 	@Override
@@ -45,16 +45,17 @@ public class MainServiceImpl implements MainService{
 //		blogDAO.updateHitCnt(map);
 		Map<String, Object> resultMap = new HashMap<String,Object>();
 		Map<String, Object> tempMap = mainDAO.viewBlogContent(inParams);
-		String content = (String)tempMap.get("CONTENT");
-		content = content.replace("\n", "<br />");
-		tempMap.put("CONTENT", content);
+		if(inParams.getString("update") == null) {
+			System.out.println("ddd");
+			String content = (String)tempMap.get("CONTENT");
+			content = content.replace("\n", "<br />");
+			tempMap.put("CONTENT", content);
+		}
 		resultMap.put("map", tempMap);
 		//아이디체크
 		if(inParams.getString("s_userId") != null && tempMap.get("IN_USER_ID") != null) {
 			String s_userId = inParams.getString("s_userId");
 			String inUserId = (String)tempMap.get("IN_USER_ID");
-			System.out.println("s_userId"+s_userId);
-			System.out.println("inUserId"+inUserId);
 			if(s_userId.equals(inUserId)) {
 				System.out.println("ID_CHECK_OK");
 				resultMap.put("S_CHECK_ID", true);
@@ -71,20 +72,28 @@ public class MainServiceImpl implements MainService{
 	
 	@Override
 	public void saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
-		mainDAO.saveBlogContent(inParams);
-//		List<Map<String,Object>> list = fileUtils.parseInsertFileInfo(inParams, req);
 		
-		mainDAO.deleteMainBlogFileList(inParams);
-		List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, multipartHttpServletRequest);
-		Map<String,Object> tempMap = null;
-		for(int i=0, size=list.size(); i<size; i++){
-			tempMap = list.get(i);
-			if(tempMap.get("IS_NEW").equals("Y")){
-				mainDAO.insertMainBlogFile(tempMap);
-			}else{
-				mainDAO.updateMainBlogFile(tempMap);
+		if(inParams.getString("idx")!=null) {
+			mainDAO.saveBlogContent(inParams);
+			
+			mainDAO.deleteMainBlogFileList(inParams);
+			List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, multipartHttpServletRequest);
+			Map<String,Object> tempMap = null;
+			for(int i=0, size=list.size(); i<size; i++){
+				tempMap = list.get(i);
+				if(tempMap.get("IS_NEW").equals("Y")){
+					mainDAO.insertMainBlogFile(tempMap);
+				}else{
+					mainDAO.updateMainBlogFile(tempMap);
+				}
 			}
+		}else {
+			mainDAO.insertBlogAddContent(inParams);
 		}
+		
+		
+		
+
 	}
 	
 	@Override

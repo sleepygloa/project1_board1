@@ -60,19 +60,30 @@ public class MainController {
 		}
 		
 		mv.addObject("list", list);
-		
 		return mv;
 	}
 	
+	//블로그 글 페이지
+	@RequestMapping("/main/viewPg")
+	@ResponseBody
+	public ModelAndView viewPg(Params inParams) {
+		System.out.println("viewPg : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		
+		mv.setViewName(inParams.getString("page"));
+		return mv;
+	}
+	
+///////////////////////////////////////////////////	
 	
 	//블로그 글쓰기 콤보박스
-	@RequestMapping("/main/getBlogAddDropdownList")
-	public ModelAndView getBlogAddDropdownList() {
+	@RequestMapping("/main/getBlogTitleDropdown")
+	public ModelAndView getBlogTitleDropdown() {
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		try {
-			list = mainService.getBlogAddDropdownList();
+			list = mainService.getBlogTitleDropdown();
 		}catch(Exception e) {
 			
 		}
@@ -92,34 +103,29 @@ public class MainController {
 		}
 	}
 
-	//블로그 글 페이지
-	@RequestMapping("/main/viewPg")
-	@ResponseBody
-	public ModelAndView viewPg(Params inParams) {
-		System.out.println("viewPg : "+inParams);
-		ModelAndView mv = new ModelAndView("jsonView");
-		
-		mv.setViewName(inParams.getString("page"));
-		return mv;
-	}
-	
 	//블로그 글 불러오기
 	@RequestMapping("/main/viewBlogContent")
 	@ResponseBody
 	public ModelAndView viewBlogContent(Params inParams) {
 		System.out.println("viewBlogContent : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
-		Map<String, Object> map = new HashMap<String, Object>();
 		
-		try {
-			map = mainService.viewBlogContent(inParams);
-			mv.addObject("map", map.get("map"));
-			mv.addObject("list", map.get("list"));
-			mv.addObject("S_CHECK_ID", map.get("S_CHECK_ID"));
-		}catch(Exception e) {
-			mv.addObject("ERROR", "글 불러오 중 에러가 발생하였습니다.");
-			System.out.println("ERROR" + e);
-			return mv;
+		String idx = inParams.getString("idx");
+		if(idx != "") {
+			Map<String, Object> map = new HashMap<String, Object>();
+			
+			try {
+				map = mainService.viewBlogContent(inParams);
+				mv.addObject("map", map.get("map"));
+				mv.addObject("list", map.get("list"));
+				mv.addObject("S_CHECK_ID", map.get("S_CHECK_ID"));
+			}catch(Exception e) {
+				mv.addObject("ERROR", "글 불러오 중 에러가 발생하였습니다.");
+				System.out.println("ERROR" + e);
+				return mv;
+			}
+		}else {
+			mv.addObject("S_CHECK_ID", inParams.getString("s_userId"));
 		}
 		
 		return mv;

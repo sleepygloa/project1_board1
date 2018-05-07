@@ -29,21 +29,8 @@ var mainContentJs = function(){
 					  title_count = result.list[0].TITLE_COUNT;
 					  title_subject_count = result.list[0].TOTAL_SUBJECT_COUNT;
 				  }
-				  
-				  var contentNavi = 
-					  '<section class="cont-head">'
-						+'<div class="container">'
-							+'<p id="menu_count" class="cont-head-menu">'
-							+'<strong id="blogContents_totalSectionCounts">'+title_count+'</strong> sections'
-							+'</p>'
-							+'<p id="content_count" class="cont-head-title">'
-							+'<strong id="blogContents_totalCounts">'+title_subject_count+'</strong> lessons'
-							+'</p>'
-							+'<div id="blogAddBtn" class="pull-right m-t-10"><i class="fa fa-lg fa-plus"></i></div>'
-						+'</div>'
-						+'</section>';
-				  
-				  $('#main').append(contentNavi);
+				  $('#blogContents_totalSectionCounts').text(title_count);
+				  $('#blogContents_totalCounts').text(title_subject_count);
 				  
 				  if(result.list){
 					  var list = result.list;
@@ -52,7 +39,6 @@ var mainContentJs = function(){
 					  var subCount = 0;
 					  
 					  for(var i in list){
-						  
 						  if(title != list[i].TITLE){
 							  title = list[i].TITLE
 							  subCount = 0;
@@ -89,6 +75,7 @@ var mainContentJs = function(){
 			  }
 		  })
 	  }
+	  
 	  
 }();
 

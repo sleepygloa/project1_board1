@@ -13,7 +13,7 @@ public interface MainService{
 
 	List<Map<String, Object>> mainBlogContent() throws Exception;
 	
-	List<Map<String, Object>> getBlogAddDropdownList() throws Exception;
+	List<Map<String, Object>> getBlogTitleDropdown() throws Exception;
 	
 	void insertBlogAddContent(Params inParams) throws Exception;
 	

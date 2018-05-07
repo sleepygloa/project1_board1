@@ -177,8 +177,8 @@ var MainViewBlogContentJs = function(){
 				idx = list.IDX;
 				var idCheck = result.S_CHECK_ID;
 				$('#viewBlogContentIdx').val(list.IDX);
-				$('#viewBlogContentTitle').text(list.TITLE);
-				$('#viewBlogContentSubject').text(list.SUBJECT);
+				$('#viewBlogContentTitle').val(list.TITLE);
+				$('#viewBlogContentSubject').val(list.SUBJECT);
 				$('#viewBlogContentContent').html(list.CONTENT);
 				
 				if(idCheck){
@@ -221,7 +221,8 @@ var MainViewBlogContentJs = function(){
 		$('#viewBlogContentUpdateBtn').click(function(){
 			var data = {
 					idx  : $('#viewBlogContentIdx').val(),
-					page : "/main/updateBlogContent"
+					page : "/main/updateBlogContent",
+					update : "Y"
 			}
 			loadingPgSetting(data);
 		});

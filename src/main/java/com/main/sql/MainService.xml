@@ -16,9 +16,9 @@
 		GROUP BY IDX, TITLE;
 	</select>
 
-	<select id="getBlogAddDropdownList" resultType="hashmap">
+	<select id="getBlogTitleDropdown" resultType="hashmap">
 		SELECT 
-			TITLE
+			TITLE AS NAME
 		FROM
 			TB_BLOG_M M
 		GROUP BY TITLE;

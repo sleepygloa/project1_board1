@@ -1,49 +1,57 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <section>
-	<div class="container" style="padding-top:100px;">
-		<div class="col-xs-12">
+	<form id="mainBlogUpdateForm" name="mainBlogUpdateForm" onsubmit="return false;" enctype="multipart/form-data">
+		<div class="container" style="padding-top:100px;">
+			<div class="search-form clearfix">
+	        	<div class="search-controls col-md-12" >
+					<!-- 메뉴명 -->
+					<div class="form-group col-md-2">
+						<div class="input-group input-group-sm">
+							<span class="span-info  input-group-addon">메뉴명</span>
+							<input id="viewBlogContentTitle" type="text" class="form-control input-sm" disabled />
+						</div>
+					</div>
+					<!-- 제목 -->
+					<div class="form-group col-md-6">
+						<div class="input-group input-group-sm" >
+							<span class="span-info  input-group-addon">제목</span>
+							<input type="text" class="form-control input-sm" id="viewBlogContentSubject" disabled >
+						</div>
+					</div>
+					<!-- 파일업로드  -->
+					<div class="form-group col-md-4">
+						<div class="input-group input-group-sm" >
+							<span class="span-info  input-group-addon" id="updateBlogFileUploadBtn">파일업로드</span>
+							<input id="updateBlogFileUpload" type="file" value="" style="display:none"/>
+							<input id="updateBlogFileUploadText" type="text" class="form-control input-sm" disabled />
+						</div>
+					</div>
+				</div>
 			<input id="viewBlogContentIdx" type="hidden" value="" /> 
-			<span id="viewBlogContentTitle" style="display:inline-block"></span>
-			<span id="viewBlogContentSubject" style="display:inline-block"></span>
-			<div class='zeta-menu-bar'><!-- 나중에 참고 할 수 있는 주석 처리 -->
-				<ul class="zeta-menu" >
-				  <li><a href="#" id="updateBlogFileUploadBtn">파일 업로드</a>
-				    <ul id="zeta-li">
-					</ul>
-				 </li>
-				<!--     <li><a href="#">3번 메뉴</a>
-				      <ul>
-				        <li><a href="#">3-A 메뉴</a></li>
-				        <li><a href="#">3-B 메뉴</a></li>
-				      </ul>
-				    </li> 
-				    <li><a href="#">4번 메뉴</a></li>  -->
-				  </ul>
+
+	        	<div class="search-controls col-md-12" >
+					<!-- 내용 -->
+					<div class="form-group col-md-12">
+						<div class="input-group input-group-sm">
+							<span class="span-info  input-group-addon">내용</span>
+ 							<div id="viewBlogContentContent" class="form-control col-md-12" 
+							 style="height:500px; background:white;" >
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
-<%-- 				<div id="fileDiv" class="col-xs-2">
-					<p class="col-xs-12" style="height:50px;">
-						<input type="hidden" id="IDX" name="IDX_${var.index }" value="${row.IDX }" >
-						<a href="#this" id="name_${var.index }" name="name_${var.index }">${row.ORIGINAL_FILE_NAME }  (${row.FILE_SIZE }kb)</a>
-					</p>
-				</div> --%>
-		</div>
-		<div class="col-xs-12">
-			<div id="viewBlogContentContent">
 			
+        	<div class="search-button-group col-md-12" >
+   				<div class="form-group col-md-12">
+					<!-- 버튼 -->
+					<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-sm btn-info" style="display:none">수정하기</button>
+					<button id="viewBlogContentCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</button>
+				</div>
 			</div>
 		</div>
-		<div class="col-xs-12">
-			<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-default" style="display:none">수정하기</button>
-			<button id="viewBlogContentCancelBtn" type="button" class="btn btn-default" >메인으로</button>
-		</div>
-		<div class="form-group" id="viewBlogReContentArea" >
-			<table class="table table-hover col-xs-8" >
-				<tbody>
-				
-				</tbody>
-			</table>
-		</div>
-	</div>
+	</form>
 </section>
 
 <script src="/resources/js/main_viewBlogContent.js"></script>

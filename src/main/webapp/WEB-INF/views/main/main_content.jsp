@@ -1,4 +1,4 @@
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 		<div id="main" class="page-body">
 			<section class="page-index">
 				<div class="introBox" style="opacity: 1;">
@@ -11,7 +11,17 @@
 			</section>
 
 			<div class="page-content-title">Learning Paths</div>
-			
+			<section class="cont-head">
+				<div class="container">
+					<p id="menu_count" class="cont-head-menu">
+						<strong id="blogContents_totalSectionCounts"></strong> sections
+					</p>
+					<p id="content_count" class="cont-head-title">
+						<strong id="blogContents_totalCounts"></strong> lessons
+					</p>
+					<div id="blogAddBtn" class="pull-right m-t-10"><i class="fa fa-plus"></i></div>
+				</div>
+			</section>
 	    </div>
 		<footer>
 		  <div class="container">
@@ -21,7 +31,7 @@
 		      </a>
 		 	</p>
 		
-		    <p class="copyright">© 2018&nbsp;&nbsp;KIM SEONHO</p>
+		    <p class="copyright">Â© 2018&nbsp;&nbsp;KIM SEONHO</p>
 			  <p class="theme-by">Hosted on
 			    <a href="https://github.com/sleepygloa">GitHub Pages&nbsp;
 		        	<i class="fa fa-github"></i>

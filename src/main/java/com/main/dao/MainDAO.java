@@ -21,8 +21,8 @@ public class MainDAO extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getBlogAddDropdownList() throws Exception{
-		return (List<Map<String, Object>>)selectList("MainService.getBlogAddDropdownList");
+	public List<Map<String, Object>> getBlogTitleDropdown() throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.getBlogTitleDropdown");
 	}
 	
 	public void insertBlogAddContent(Params inParams) throws Exception{
