@@ -134,12 +134,12 @@ public class MainController {
 	//블로그 글 수정하기
 	@RequestMapping("/main/saveBlogContent")
 	@ResponseBody
-	public ModelAndView saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) {
+	public ModelAndView saveBlogContent(Params inParams) {
 		System.out.println("/main/SaveBlogContent inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		
 		try {
-			mainService.saveBlogContent(inParams, multipartHttpServletRequest);
+			mainService.saveBlogContent(inParams);
 		}catch(Exception e) {
 			System.out.println("ERROR" + e);
 			e.printStackTrace();

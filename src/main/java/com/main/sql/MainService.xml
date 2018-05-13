@@ -13,7 +13,8 @@
 		,	(SELECT COUNT(SUBJECT) FROM TB_BLOG_M SUB WHERE SUB.TITLE = M.TITLE) AS SUBJECT_COUNT
 		FROM
 			TB_BLOG_M M
-		GROUP BY IDX, TITLE;
+		GROUP BY IDX, TITLE
+		ORDER BY TITLE, IDX;
 	</select>
 
 	<select id="getBlogTitleDropdown" resultType="hashmap">

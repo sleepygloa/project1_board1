@@ -15,7 +15,7 @@
 <!-- MariaDB -->    
 	<bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="org.mariadb.jdbc.Driver"/>
-        <property name="url" value="jdbc:mariadb://localhost:3306/seonhoblog?useUnicode=true&amp;characterEncoding=utf8"/>
+        <property name="url" value="jdbc:mariadb://61.252.235.153:18081/seonhoblog?useUnicode=true&amp;characterEncoding=utf8"/>
         <property name="username" value="root"/>
         <property name="password" value="1234"/>       
      </bean> 

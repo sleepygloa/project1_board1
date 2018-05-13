@@ -19,7 +19,7 @@ public interface MainService{
 	
 	Map<String, Object> viewBlogContent(Params inParams) throws Exception;
 	
-	void saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception;
+	void saveBlogContent(Params inParams) throws Exception;
 	
 	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
 	

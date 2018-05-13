@@ -6,6 +6,24 @@
 		<div class="container" style="padding-top:100px;">
 			<div class="search-form clearfix">
 	        	<div class="search-controls col-md-12" >
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="myModalLabel">메뉴 추가</h4>
+					      </div>
+					      <div class="modal-body">
+					        <input type="text" class="form-group" id="insertMenu"/>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+					        <button type="button" class="btn btn-primary" id="insertMenuAddBtn">추가</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
 					<!-- 고객사 -->
 	<!-- 				<div class="form-group col-md-p20" id="assetCompNmGroup">
 						<div class="input-group input-group-sm" >
@@ -16,8 +34,9 @@
 					<!-- 메뉴명 -->
 					<div class="form-group col-md-2">
 						<div class="input-group input-group-sm">
-							<span class="span-info  input-group-addon">메뉴명</span>
+							<span class="span-info input-group-addon" data-toggle="modal" data-target="#myModal">메뉴명</span>
 							<select class="form-control input-sm" id="insertBlogTitleDropdown">
+								<option value="0" id="insertBlogComboAdd" style="display:none"></option>
 							</select>
 						</div>
 					</div>
@@ -46,7 +65,7 @@
 							<span class="span-info  input-group-addon">내용</span>
 							<label></label>
 							<textarea id="updateBlogContentContent" name="updateBlogContentContent" class="form-control col-md-12" 
-							rows="50" style="height:500px;"
+							rows="50" style="height:450px;"
 							onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">
 							</textarea>
 						</div>

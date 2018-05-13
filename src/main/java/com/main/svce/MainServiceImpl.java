@@ -71,22 +71,22 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	@Override
-	public void saveBlogContent(Params inParams, MultipartHttpServletRequest multipartHttpServletRequest) throws Exception{
+	public void saveBlogContent(Params inParams) throws Exception{
 		
 		if(inParams.getString("idx")!=null) {
 			mainDAO.saveBlogContent(inParams);
 			
-			mainDAO.deleteMainBlogFileList(inParams);
-			List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, multipartHttpServletRequest);
-			Map<String,Object> tempMap = null;
-			for(int i=0, size=list.size(); i<size; i++){
-				tempMap = list.get(i);
-				if(tempMap.get("IS_NEW").equals("Y")){
-					mainDAO.insertMainBlogFile(tempMap);
-				}else{
-					mainDAO.updateMainBlogFile(tempMap);
-				}
-			}
+//			mainDAO.deleteMainBlogFileList(inParams);
+//			List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, multipartHttpServletRequest);
+//			Map<String,Object> tempMap = null;
+//			for(int i=0, size=list.size(); i<size; i++){
+//				tempMap = list.get(i);
+//				if(tempMap.get("IS_NEW").equals("Y")){
+//					mainDAO.insertMainBlogFile(tempMap);
+//				}else{
+//					mainDAO.updateMainBlogFile(tempMap);
+//				}
+//			}
 		}else {
 			mainDAO.insertBlogAddContent(inParams);
 		}

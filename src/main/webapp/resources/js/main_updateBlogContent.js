@@ -68,12 +68,20 @@ var MainUpdateBlogContentJs = function(){
 			$('#updateBlogFileUploadText').val(fileName);
 		});
 		
+		//메뉴 추가 버튼
+		$('#insertMenuAddBtn').click(function(){
+			var insertValue = $('#insertMenu').val();
+			$('#insertBlogComboAdd').text(insertValue);
+			$('#insertBlogComboAdd').css('display', 'show');
+		});
+		
 	}
 	//글쓰기 드롭다운 리스
 	  function insertBlogTitleDropdown(){
 		  $.ajax({
 			  url : "/main/getBlogTitleDropdown",
 			  success : function(result){
+				  $('#insertBlogTitleDropdown').empty();
 				  var options = '';
 				  console.log(result.list);
 				  if(result.list){
@@ -93,23 +101,42 @@ var MainUpdateBlogContentJs = function(){
 	  }
 
 	function save(){
-		var form = $('mainBlogUpdateForm')[0];
-		var formData = new FormData(form);
+//		var form = $('mainBlogUpdateForm')[0];
+//		var formData = new FormData(form);
+//		
+//		formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
+//		formData.append('title', $('#insertBlogTitleDropdown option:selected').text());
+//		formData.append('subject', $('#updateBlogContentSubject').val());
+//		formData.append('content', $('#updateBlogContentContent').val());
+//		if(idx != ''){
+//			formData.append('idx', idx);
+//		}
 		
-		formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
-		formData.append('title', $('#insertBlogTitleDropdown option:selected').text());
-		formData.append('subject', $('#updateBlogContentSubject').val());
-		formData.append('content', $('#updateBlogContentContent').val());
+		var data = {}
+
 		if(idx != ''){
-			formData.append('idx', idx);
-		}
+			data = {
+					idx		: idx,
+					title 	: $('#insertBlogTitleDropdown option:selected').text(),
+					subject : $('#updateBlogContentSubject').val(),
+					content : $('#updateBlogContentContent').val()
+			}
+		}else{
+			data = {
+					title : $('#insertBlogTitleDropdown option:selected').text(),
+					subject : $('#updateBlogContentSubject').val(),
+					content : $('#updateBlogContentContent').val()
+			}
+		}	
+		
 		$.ajax({
 			url 	: "/main/saveBlogContent",
 			type	: 'POST',
-			data	: formData,
-			contentType : false,
-			processData : false,
-//			contentType : "application/json, charset=utf-8",
+//			data    : formData,
+			data	: JSON.stringify(data),
+//			contentType : false,
+//			processData : false,
+			contentType : "application/json, charset=utf-8",
 			async 	: false,
 			success	: function(result){
 				if(result.SUCCESS){
