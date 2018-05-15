@@ -18,6 +18,8 @@
 		<script src="/resources/js/jquery.min.js"></script>
 		<script src="/resources/js/bootstrap.js"></script>
 		<script src="/resources/js/typed.min.js"></script>
+		<script src="/resources/js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+		
 		<script src="/resources/js/main.js"></script>
 		<!-- <script src="/resources/js/ckeditor/ckeditor.js"></script> -->
 	</head>
