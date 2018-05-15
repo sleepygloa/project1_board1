@@ -243,7 +243,7 @@ var mainJs = function(){
 	  }
 	
 	  function toMainPage(){
-		  window.location.href="/";
+	  window.location.href="/";
 	  }
 
 	  function loadingLoginPage(){
