@@ -36,7 +36,6 @@
 						<div class="input-group input-group-sm">
 							<span class="span-info input-group-addon" data-toggle="modal" data-target="#myModal">메뉴명</span>
 							<select class="form-control input-sm" id="insertBlogTitleDropdown">
-								<option value="0" id="insertBlogComboAdd" style="display:none"></option>
 							</select>
 						</div>
 					</div>

@@ -295,7 +295,7 @@
     <build>
     	<defaultGoal>install</defaultGoal>
 		<directory>${basedir}/target</directory>
-		<finalName>seonhoblog</finalName>
+		<finalName>ROOT</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>

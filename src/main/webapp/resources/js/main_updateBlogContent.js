@@ -71,8 +71,7 @@ var MainUpdateBlogContentJs = function(){
 		//메뉴 추가 버튼
 		$('#insertMenuAddBtn').click(function(){
 			var insertValue = $('#insertMenu').val();
-			$('#insertBlogComboAdd').text(insertValue);
-			$('#insertBlogComboAdd').css('display', 'show');
+			$('#insertBlogTitleDropdown').prepend('<option value="0" id="insertBlogComboAdd">'+insertValue+'</option>');
 		});
 		
 	}
