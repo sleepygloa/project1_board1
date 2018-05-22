@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="InstarService">
+      
+	<select id="getInstarContents" resultType="hashmap">
+	SELECT
+			IDX
+		,	TEXT
+		,	LIKES
+		,	IN_DT
+		,	UP_DT
+		,	IN_USER_ID
+		,	IMG
+	FROM
+			APP_INSTAR_M;
+	</select>
+	
+	<insert id="setInstarContents" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM APP_INSTAR_M WHERE DEL_YN = 'N'
+		</selectKey>
+		INSERT INTO 
+			APP_INSTAR_M
+		(	IDX
+		,	IN_USER_ID
+		,	TEXT
+		,	IMG
+		)
+		VALUES
+		(
+			#{IDX}
+		,	#{in_user_id}
+		,	#{text}
+		,	#{image}
+		);	
+	</insert>
+	
+</mapper>

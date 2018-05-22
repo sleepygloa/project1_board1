@@ -41,7 +41,7 @@
 	<mvc:resources mapping="/images/**" location="/resources/images/" /> 
 	<mvc:resources mapping="/js/**" location="/resources/js/" /> 
 	<mvc:resources mapping="/resources/**" location="/resources/" /> 
-	
+	<mvc:resources mapping="/uploads/**" location="/WEB-INF/views/uploads/"  />
 		
    	<bean class="com.core.web.servlet.mvc.ParagonRequestMappingHandlerAdapter">
 		<property name="paramsArgumentResolver" ref="paramsArgumentResolver" ></property> 
