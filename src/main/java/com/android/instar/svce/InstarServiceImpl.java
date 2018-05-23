@@ -25,4 +25,14 @@ public class InstarServiceImpl implements InstarService {
 	public void setInstarContents(Params inParams) throws Exception{
 		instarDAO.setInstarContents(inParams);
 	}
+	
+	@Override
+	public void addLike(Params inParams) throws Exception{
+		instarDAO.addLike(inParams);
+	}
+	
+	@Override
+	public void delLike(Params inParams) throws Exception{
+		instarDAO.delLike(inParams);
+	}
 }

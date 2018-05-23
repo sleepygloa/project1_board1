@@ -61,4 +61,26 @@ public class InstarController {
 			System.out.println("ERORR");
 		}
 	}
+	
+	@RequestMapping("/addLike")
+	public void addLike(Params inParams) {
+		System.out.println("addLike inParams : " + inParams);
+		try {
+			instarSerivce.addLike(inParams);
+		}catch(Exception e) {
+			System.out.println("ERORR");
+		}
+	}
+
+	
+	@RequestMapping("/delLike")
+	public void delLike(Params inParams) {
+		System.out.println("delLike inParams : " + inParams);
+		try {
+			instarSerivce.delLike(inParams);
+		}catch(Exception e) {
+			System.out.println("ERORR");
+		}
+	}
+	
 }

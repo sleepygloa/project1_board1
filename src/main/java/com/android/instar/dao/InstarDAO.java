@@ -19,4 +19,12 @@ public class InstarDAO extends AbstractDAO{
 	public void setInstarContents(Params inParams) throws Exception{
 		insert("InstarService.setInstarContents", inParams);
 	}
+	
+	public void addLike(Params inParams) throws Exception{
+		update("InstarService.addLike", inParams);
+	}
+	
+	public void delLike(Params inParams) throws Exception{
+		update("InstarService.delLike", inParams);
+	}
 }

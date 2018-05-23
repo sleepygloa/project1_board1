@@ -8,10 +8,9 @@
 			IDX
 		,	TEXT
 		,	LIKES
-		,	IN_DT
-		,	UP_DT
 		,	IN_USER_ID
 		,	IMG
+		,	USERLIKED
 	FROM
 			APP_INSTAR_M;
 	</select>
@@ -35,5 +34,19 @@
 		,	#{image}
 		);	
 	</insert>
+	
+	<update id="addLike" parameterType="hashmap">
+		UPDATE	APP_INSTAR_M
+		SET		LIKES 		= LIKES + 1
+		WHERE	IDX 		= #{idx}
+			,	IN_USER_ID	= #{in_user_id};
+	</update>
+	
+	<update id="delLike" parameterType="hashmap">
+		UPDATE	APP_INSTAR_M
+		SET		USE_YN 		= 'N'
+		WHERE	IDX 		= #{idx}
+			,	IN_USER_ID	= #{in_user_id};
+	</update>
 	
 </mapper>
