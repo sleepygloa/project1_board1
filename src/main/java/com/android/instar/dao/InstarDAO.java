@@ -27,4 +27,8 @@ public class InstarDAO extends AbstractDAO{
 	public void delLike(Params inParams) throws Exception{
 		update("InstarService.delLike", inParams);
 	}
+	
+	public void delFileList(Params inParams) throws Exception{
+	update("InstarService.delFileList", inParams);
+}
 }

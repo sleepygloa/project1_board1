@@ -3,6 +3,7 @@ package com.android.instar.ctrl;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
@@ -63,10 +64,10 @@ public class InstarController {
 	}
 	
 	@RequestMapping("/addLike")
-	public void addLike(Params inParams) {
+	public void addLike(Params inParams, HttpServletRequest request) {
 		System.out.println("addLike inParams : " + inParams);
 		try {
-			instarSerivce.addLike(inParams);
+			instarSerivce.addLike(inParams, request);
 		}catch(Exception e) {
 			System.out.println("ERORR");
 		}

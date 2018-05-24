@@ -35,18 +35,36 @@
 		);	
 	</insert>
 	
-	<update id="addLike" parameterType="hashmap">
-		UPDATE	APP_INSTAR_M
-		SET		LIKES 		= LIKES + 1
+	<insert id="addLike" parameterType="hashmap">
+		INSERT INTO APP_INSTAR_D
+		(
+			IDX
+		,	COUNT
+		,	USERLIKED
+		,	IN_USER_ID
+		)
+		VALUES
+		(
+			#{idx}
+		,	1
+		,	'true'
+		,	#{in_user_id}
+		);
+	</insert>
+	
+	<update id="delLike" parameterType="hashmap">
+		UPDATE	APP_INSTAR_D
+		SET		DEL_YN 		= 'Y'
 		WHERE	IDX 		= #{idx}
 			,	IN_USER_ID	= #{in_user_id};
 	</update>
 	
-	<update id="delLike" parameterType="hashmap">
-		UPDATE	APP_INSTAR_M
-		SET		USE_YN 		= 'N'
-		WHERE	IDX 		= #{idx}
-			,	IN_USER_ID	= #{in_user_id};
+	<update id="delFileList" parameterType="hashmap">
+		UPDATE 	APP_INSTAR_FILE 
+		SET 
+				DEL_YN 	= 'Y' 
+		WHERE 
+				APP_IDX = #{idx};
 	</update>
 	
 </mapper>
