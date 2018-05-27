@@ -5,14 +5,18 @@
       
 	<select id="getInstarContents" resultType="hashmap">
 	SELECT
-			IDX
-		,	TEXT
-		,	LIKES
-		,	IN_USER_ID
-		,	IMG
-		,	USERLIKED
+			M.IDX
+		,	M.TEXT
+		,	M.LIKES
+		,	M.IN_USER_ID
+		,	M.IMG
+		,	IFNULL(D.USERLIKED, 'FALSE') 	AS USERLIKED
+		,	IFNULL(D.COUNT, 0) 				AS COUNT
 	FROM
-			APP_INSTAR_M;
+			APP_INSTAR_M M 
+	LEFT OUTER JOIN	
+			APP_INSTAR_D D
+	ON	 M.IDX	= D.IDX;
 	</select>
 	
 	<insert id="setInstarContents" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
@@ -52,12 +56,23 @@
 		);
 	</insert>
 	
-	<update id="delLike" parameterType="hashmap">
-		UPDATE	APP_INSTAR_D
-		SET		DEL_YN 		= 'Y'
+	<select id="getReturnAddLikeResult" resultType="hashmap">
+		SELECT
+				IDX
+			,	IN_USER_ID
+			,	SUM(COUNT) 		AS LIKES
+		FROM
+				APP_INSTAR_D D
+		WHERE	IDX = #{idx}
+		GROUP BY IDX, IN_USER_ID;
+	</select>
+	
+	
+	<delete id="delLike" parameterType="hashmap">
+		DELETE FROM	APP_INSTAR_D
 		WHERE	IDX 		= #{idx}
-			,	IN_USER_ID	= #{in_user_id};
-	</update>
+		AND		IN_USER_ID	= #{in_user_id};
+	</delete>
 	
 	<update id="delFileList" parameterType="hashmap">
 		UPDATE 	APP_INSTAR_FILE 

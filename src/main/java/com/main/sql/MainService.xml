@@ -36,6 +36,7 @@
 		,	SUBJECT
 		,	CONTENT
 		,	IN_USER_ID
+		,	CONTENTLENGTH
 		)
 		VALUES
 		(
@@ -44,6 +45,7 @@
 		,	#{subject}
 		,	#{content}
 		,	#{s_userId}
+		,	#{contentLength}
 		);
 	</insert>
 
@@ -61,6 +63,7 @@
 		SET
 			SUBJECT	= #{subject}
 		,	CONTENT = #{content}
+		,	CONTENTLENGTH = #{contentLength}
 		WHERE
 			IDX	= #{idx};
 	</update>

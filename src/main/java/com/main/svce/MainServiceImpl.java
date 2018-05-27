@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.common.util.FileUtils;
 import com.core.parameters.Params;
+import com.core.parameters.datatable.DataTable;
 import com.main.dao.MainDAO;
 
 @Service("mainService")
@@ -74,25 +76,27 @@ public class MainServiceImpl implements MainService{
 		
 		if(inParams.getString("idx")!=null) {
 			mainDAO.saveBlogContent(inParams);
-			
-//			mainDAO.deleteMainBlogFileList(inParams);
-//			List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, multipartHttpServletRequest);
-//			Map<String,Object> tempMap = null;
-//			for(int i=0, size=list.size(); i<size; i++){
-//				tempMap = list.get(i);
-//				if(tempMap.get("IS_NEW").equals("Y")){
-//					mainDAO.insertMainBlogFile(tempMap);
-//				}else{
-//					mainDAO.updateMainBlogFile(tempMap);
-//				}
-//			}
 		}else {
 			mainDAO.insertBlogAddContent(inParams);
 		}
 		
+		DataTable dt = inParams.getDataTable("dtData");
+	}
+	
+	@Override
+	public void saveBlogFileUpload(Params inParams, MultipartHttpServletRequest req) throws Exception{
 		
-		
-
+		mainDAO.deleteMainBlogFileList(inParams);
+		List<Map<String,Object>> list = fileUtils.parseUpdateFileInfo(inParams, req);
+		Map<String,Object> tempMap = null;
+		for(int i=0, size=list.size(); i<size; i++){
+			tempMap = list.get(i);
+			if(tempMap.get("IS_NEW").equals("Y")){
+				mainDAO.insertMainBlogFile(tempMap);
+			}else{
+				mainDAO.updateMainBlogFile(tempMap);
+			}
+		}
 	}
 	
 	@Override

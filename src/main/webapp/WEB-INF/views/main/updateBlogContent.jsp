@@ -55,19 +55,24 @@
 						</div>
 					</div>
 				</div>
-
+				<div class="search-controls col-md-12">
+					<div class="form-group">
+						<button class="form-group col-xs-2" id="updateBlogAddText">글상자</button>
+						<button class="form-group col-xs-2" id="updateBlogAddCode">코드</button>
+						<button class="form-group col-xs-2" id="updateBlogAddImg">이미지</button>
+						<button class="form-group col-xs-2" id="updateBlogRemoveTrash">컨텐츠삭제</button>
+						<input type="file" id="blogUpdateImgInput" style="display:none"/>
+						<button class="form-group col-xs-1" id="typping">글</button>
+						<button class="form-group col-xs-1" id="typingView">뷰</button>
+					</div>
+				</div>
 
 	        	<div class="search-controls col-md-12" >
 					<!-- 내용 -->
-					<div class="form-group col-md-12">
-						<div class="input-group input-group-sm">
-							<span class="span-info  input-group-addon">내용</span>
-							<label></label>
-							<textarea id="updateBlogContentContent" name="updateBlogContentContent" class="form-control col-md-12" 
-							rows="50" style="height:450px;"
-							onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">
-							</textarea>
-						</div>
+					<div class="form-group col-md-12" id="sortable">
+						<textarea id="dddd">dfsfs</textarea>
+					</div>
+					<div class="form-group col-md-12" id="sortableView" style="display:none">
 					</div>
 				</div>
 			</div>
@@ -82,5 +87,4 @@
 		</div>
 	</form>
 </section>
-
 <script src="/resources/js/main_updateBlogContent.js"></script>

@@ -179,7 +179,7 @@ var MainViewBlogContentJs = function(){
 				$('#viewBlogContentIdx').val(list.IDX);
 				$('#viewBlogContentTitle').val(list.TITLE);
 				$('#viewBlogContentSubject').val(list.SUBJECT);
-				$('#viewBlogContentContent').html(list.CONTENT);
+				$('#viewBlogContentContent').html(list.CONTENT).attr('disabled', 'disabled');
 				
 				if(idCheck){
 					$('#viewBlogContentUpdateBtn').css('display', 'inline-block');

@@ -14,6 +14,7 @@ public interface InstarService {
 	void setInstarContents (Params inParams, MultipartHttpServletRequest request) throws Exception;
 
 	void addLike (Params inParams) throws Exception;
-
+	List<Map<String, Object>> getReturnAddLikeResult (Params inParams) throws Exception;
+	
 	void delLike (Params inParams) throws Exception;
 }

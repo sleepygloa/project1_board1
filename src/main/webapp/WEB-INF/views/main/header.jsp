@@ -12,6 +12,7 @@
 		
 		<link rel="stylesheet" href="/resources/css/bootstrap.css">
 		<link rel="stylesheet" href="/resources/css/fontawesome-all.min.css">
+		<link rel="stylesheet" href="/resources/css/jquery-ui.css">
 		<!-- <link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css"> -->
 <!-- 		<link rel="stylesheet" type="text/css" href="/resources/css/Semantic-UI-CSS/semantic.min.css"> -->
 		<link rel="stylesheet" href="/resources/css/main.css">
@@ -19,6 +20,7 @@
 		<script src="/resources/js/jquery.min.js"></script>
 		<script src="/resources/js/bootstrap.js"></script>
 		<script src="/resources/js/typed.min.js"></script>
+		<script src="/resources/js/jquery-ui.min.js"></script>
 <!--		<script src="/resources/js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>-->
 <!-- 		<script src="/resources/js/Semantic-UI-CSS/semantic.min.js"></script>	 -->	
 		<script src="/resources/js/main.js"></script>

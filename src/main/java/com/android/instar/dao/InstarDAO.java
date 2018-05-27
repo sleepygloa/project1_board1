@@ -24,11 +24,16 @@ public class InstarDAO extends AbstractDAO{
 		update("InstarService.addLike", inParams);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getReturnAddLikeResult(Params inParams) throws Exception{
+		return (List<Map<String, Object>>)selectList("InstarService.getReturnAddLikeResult", inParams);
+	}
+	
 	public void delLike(Params inParams) throws Exception{
 		update("InstarService.delLike", inParams);
 	}
 	
 	public void delFileList(Params inParams) throws Exception{
-	update("InstarService.delFileList", inParams);
-}
+		update("InstarService.delFileList", inParams);
+	}
 }

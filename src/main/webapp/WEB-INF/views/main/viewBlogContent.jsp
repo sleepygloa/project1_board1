@@ -32,13 +32,7 @@
 
 	        	<div class="search-controls col-md-12" >
 					<!-- 내용 -->
-					<div class="form-group col-md-12">
-						<div class="input-group input-group-sm">
-							<span class="span-info  input-group-addon">내용</span>
- 							<div id="viewBlogContentContent" class="form-control col-md-12" 
-							 style="height:500px; background:white;" >
-							</div>
-						</div>
+					<div id="viewBlogContentContent" class="form-group col-md-12" disabled>
 					</div>
 				</div>
 			</div>

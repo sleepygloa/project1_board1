@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,7 +18,7 @@ public class InstarServiceImpl implements InstarService {
 	@Resource(name="instarDAO")
 	private InstarDAO instarDAO;
 
-	@Resource(name="instarDAO")
+	@Resource(name="fileUtils")
     private FileUtils fileUtils;
 
 
@@ -49,11 +48,14 @@ public class InstarServiceImpl implements InstarService {
 
 	@Override
 	public void addLike(Params inParams) throws Exception{
-
 		instarDAO.addLike(inParams);
-
 	}
 
+	@Override
+	public List<Map<String, Object>> getReturnAddLikeResult(Params inParams) throws Exception{
+		return instarDAO.getReturnAddLikeResult(inParams);
+	}
+	
 	@Override
 	public void delLike(Params inParams) throws Exception{
 		instarDAO.delLike(inParams);
