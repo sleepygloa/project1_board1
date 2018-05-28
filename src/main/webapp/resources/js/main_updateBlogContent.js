@@ -2,6 +2,7 @@
 var MainUpdateBlogContentJs = function(){
 	"use strict";
 	var contentLength = 0;
+	var focusIdx = -1;
 
 	return {
 		init : function(){
@@ -77,7 +78,7 @@ var MainUpdateBlogContentJs = function(){
 
 		//글상자추가
 		$('#updateBlogAddText').click(function(){
-		    var str = '<div id="row_'+contentLength+'">';
+		    var str = '<div id="row_'+contentLength+'" onclick="focusIdx('+contentLength+')">';
 		    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
 		    str += '<input type="hidden" id="type_'+contentLength+'" value="text" />'
 	        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="height:100px;" ></textarea>'
@@ -88,20 +89,23 @@ var MainUpdateBlogContentJs = function(){
 
 		//코드추가
 		$('#updateBlogAddCode').click(function(){
-            var str = '<div id="row_'+contentLength+'">';
+            var str = '<div id="row_'+contentLength+'" onclick="focusIdx('+contentLength+')">';
             str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
             str += '<input type="hidden" id="type_'+contentLength+'" value="code" />'
             str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="height:100px; background:black; color:white;" ></textarea>'
             str += '</div>';
-			$('#sortable').append(
-					'<div><textarea id="text_'+contentLength+'" class=" form-control col-md-12" style="background:black; color:white;height:100px;" ></textarea></div>'
-			);
+			$('#sortable').append(str);
 			contentLength++;
 		});
 
 		//이미지추가
 		$('#updateBlogAddImg').click(function(){
-			$('#sortable').append('<div><img id="text_'+contentLength+'" src="#" alt="your image" /></div>');
+            var str = '<div id="row_'+contentLength+'" onclick="focusIdx('+contentLength+')">';
+            str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+            str += '<input type="hidden" id="type_'+contentLength+'" value="img" />'
+            str += '<img id="text_'+contentLength+'" src="#" alt="your image" />'
+            str += '</div>';
+			$('#sortable').append(str);
 			contentLength++;
 			$('#blogUpdateImgInput').trigger('click');
 		});
@@ -120,6 +124,12 @@ var MainUpdateBlogContentJs = function(){
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
+		//삭제
+		$('#updateBlogRemove').fucntion(){
+
+		    $('#focusIdx').remove();
+		}
+
 		//타이핑 화면
 		$('#typping').on('click', function(e){
 			e.preventDefault();
@@ -133,6 +143,8 @@ var MainUpdateBlogContentJs = function(){
 			$('#sortableView').css('display', 'block');
 //			getSortableView();
 		});
+
+
 	}
 	//글쓰기 드롭다운 리스
 	  function insertBlogTitleDropdown(){
@@ -227,6 +239,10 @@ var MainUpdateBlogContentJs = function(){
 				})
 			}
 		})
+	}
+
+	function focusIdx(idx){
+	    focusIdx = idx;
 	}
 
 //	function getSortableView(){

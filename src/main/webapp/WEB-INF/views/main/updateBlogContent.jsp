@@ -60,7 +60,7 @@
 						<button class="form-group col-xs-2" id="updateBlogAddText">글상자</button>
 						<button class="form-group col-xs-2" id="updateBlogAddCode">코드</button>
 						<button class="form-group col-xs-2" id="updateBlogAddImg">이미지</button>
-						<button class="form-group col-xs-2" id="updateBlogRemoveTrash">컨텐츠삭제</button>
+						<button class="form-group col-xs-2" id="updateBlogRemove">컨텐츠삭제</button>
 						<input type="file" id="blogUpdateImgInput" style="display:none"/>
 						<button class="form-group col-xs-1" id="typping">글</button>
 						<button class="form-group col-xs-1" id="typingView">뷰</button>
@@ -76,7 +76,7 @@
 					</div>
 				</div>
 			</div>
-			
+
         	<div class="search-button-group col-md-12" >
    				<div class="form-group col-md-12">
 					<!-- 버튼 -->
