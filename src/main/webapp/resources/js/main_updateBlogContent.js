@@ -2,18 +2,18 @@
 var MainUpdateBlogContentJs = function(){
 	"use strict";
 	var contentLength = 0;
-	
+
 	return {
 		init : function(){
-			
+
 			insertBlogTitleDropdown();
-			
+
 			loadingViewBlogContent();
-			
+
 			updateBlogContentEvent();
 		}
 	}
-	
+
 	function loadingViewBlogContent(){
 		$.ajax({
 			url	 : '/main/viewBlogContent',
@@ -34,9 +34,9 @@ var MainUpdateBlogContentJs = function(){
 			}
 		})
 	}
-	
+
 	function updateBlogContentEvent(){
-		
+
 		  $(".zeta-menu li").hover(function(){
 			    $('ul:first',this).show();
 			  }, function(){
@@ -48,15 +48,15 @@ var MainUpdateBlogContentJs = function(){
 			  $(".zeta-menu ul li:has(ul)")
 			    .find("a:first")
 			    .append("<p style='float:right;margin:-3px'>&#9656;</p>"); */
-		
+
 		$('#updateBlogContentCancelBtn').click(function(){
 			window.location.href="/";
 		})
-		
+
 		$('#updateBlogContentSaveBtn').click(function(){
 			save();
 		});
-		
+
 		//파일업로드
 		$('#updateBlogFileUploadBtn').click(function(){
 			$('#updateBlogFileUpload').trigger('click');
@@ -68,40 +68,48 @@ var MainUpdateBlogContentJs = function(){
 
 			$('#updateBlogFileUploadText').val(fileName);
 		});
-		
+
 		//메뉴 추가 버튼
 		$('#insertMenuAddBtn').click(function(){
 			var insertValue = $('#insertMenu').val();
 			$('#insertBlogTitleDropdown').prepend('<option value="0" id="insertBlogComboAdd">'+insertValue+'</option>');
 		});
-		
+
 		//글상자추가
 		$('#updateBlogAddText').click(function(){
-			$('#sortable').append(
-					'<div><textarea id="text_'+contentLength+'" class="blogText form-control col-md-12"  style="height:100px;" ></textarea></div>'
-			);
+		    var str = '<div id="row_'+contentLength+'">';
+		    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+		    str += '<input type="hidden" id="type_'+contentLength+'" value="text" />'
+	        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="height:100px;" ></textarea>'
+	        str += '</div>';
+			$('#sortable').append(str);
 			contentLength++;
 		});
-		
+
 		//코드추가
 		$('#updateBlogAddCode').click(function(){
+            var str = '<div id="row_'+contentLength+'">';
+            str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+            str += '<input type="hidden" id="type_'+contentLength+'" value="code" />'
+            str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="height:100px; background:black; color:white;" ></textarea>'
+            str += '</div>';
 			$('#sortable').append(
-					'<div><textarea id="text_'+contentLength+'" class=" blogCode form-control col-md-12" style="background:black; color:white;height:100px;" ></textarea></div>'
+					'<div><textarea id="text_'+contentLength+'" class=" form-control col-md-12" style="background:black; color:white;height:100px;" ></textarea></div>'
 			);
 			contentLength++;
 		});
-		
+
 		//이미지추가
 		$('#updateBlogAddImg').click(function(){
 			$('#sortable').append('<div><img id="text_'+contentLength+'" src="#" alt="your image" /></div>');
 			contentLength++;
 			$('#blogUpdateImgInput').trigger('click');
 		});
-		
+
 		$("#blogUpdateImgInput").change(function(){
 		    readURL(this);
 		});
-		
+
 		function readURL(input) {
 		    if (input.files && input.files[0]) {
 		        var reader = new FileReader();
@@ -143,7 +151,7 @@ var MainUpdateBlogContentJs = function(){
 							  listValue += 10;
 						  }
 						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
-					  }  
+					  }
 				  }
 				  $('#insertBlogTitleDropdown').append(options);
 			  }
@@ -153,9 +161,9 @@ var MainUpdateBlogContentJs = function(){
 	function save(){
 		var form = $('mainBlogUpdateForm')[0];
 		var formData = new FormData(form);
-		
+
 		formData.append('file', $('#blogUpdateImgInput')[0].files[0]);
-		
+
 		var dataDt = [];
 		for(var i = 0; i < contentLength; i++){
 			var dataList = {};
@@ -191,7 +199,7 @@ var MainUpdateBlogContentJs = function(){
 //					content : $('#updateBlogContentContent').val(),
 					contentLength : contentLength
 			}
-		}	
+		}
 
 		$.ajax({
 			url 	: "/main/saveBlogContent",
@@ -216,11 +224,11 @@ var MainUpdateBlogContentJs = function(){
 							window.location.href="/";
 						}
 					}
-				})	
+				})
 			}
 		})
 	}
-	
+
 //	function getSortableView(){
 //		$('#sortableView').empty();
 //		for(var i = 0; i < contentLength; i++){
@@ -233,7 +241,7 @@ var MainUpdateBlogContentJs = function(){
 //			}
 //		}
 //	}
-	
+
 }();
 
 $(document).ready(function(){
