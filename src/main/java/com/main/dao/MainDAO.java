@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.common.dao.AbstractDAO;
 import com.core.parameters.Params;
+import com.core.parameters.datatable.datarow.DataRow;
 
 @Repository("mainDAO")
 public class MainDAO extends AbstractDAO{
@@ -69,11 +70,23 @@ public class MainDAO extends AbstractDAO{
 	}
 	
 	public void deleteMainBlogFileList(Map<String, Object> map) throws Exception{
-	update("MainService.deleteMainBlogFileList", map);
+		update("MainService.deleteMainBlogFileList", map);
 	}
 	
 	public void updateMainBlogFile(Map<String, Object> map) throws Exception{
-	update("MainService.updateMainBlogFile", map);
+		update("MainService.updateMainBlogFile", map);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Map<String, Object> getBlogcontentLastIdx(Params inParams) throws Exception{
+		return (Map<String, Object>)selectOne("MainService.getBlogcontentLastIdx", inParams);
 	}
 	
+	public void deleteBlogContentBox(Map<String, Object> map) throws Exception{
+		delete("MainService.deleteBlogContentBox", map);
+	}
+
+	public void insertBlogContentBox(Params inParams) throws Exception{
+		delete("MainService.insertBlogContentBox", inParams);
+	}
 }

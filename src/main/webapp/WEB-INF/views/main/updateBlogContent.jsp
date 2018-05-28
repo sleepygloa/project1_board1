@@ -19,7 +19,7 @@
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-					        <button type="button" class="btn btn-primary" id="insertMenuAddBtn">추가</button>
+					        <button type="button" class="btn btn-primary" id="insertMenuAddBtn" data-dismiss="modal">추가</button>
 					      </div>
 					    </div>
 					  </div>

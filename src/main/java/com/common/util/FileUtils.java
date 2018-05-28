@@ -2,10 +2,12 @@ package com.common.util;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,8 +79,10 @@ public class FileUtils {
     	List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
         Map<String, Object> listMap = null;
 
+        List arrangeList = new ArrayList(inParams.keySet());
+        Collections.sort(arrangeList);
         int j = inParams.getInteger("j");
-
+        
         String boardIdx = (String)inParams.getString("idx");
         String requestName = null;
         String idx = null;

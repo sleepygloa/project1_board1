@@ -34,18 +34,14 @@
 			IDX
 		,	TITLE
 		,	SUBJECT
-		,	CONTENT
 		,	IN_USER_ID
-		,	CONTENTLENGTH
 		)
 		VALUES
 		(
 			#{IDX}
 		,	#{title}
 		,	#{subject}
-		,	#{content}
 		,	#{s_userId}
-		,	#{contentLength}
 		);
 	</insert>
 
@@ -62,7 +58,6 @@
 		UPDATE	TB_BLOG_M
 		SET
 			SUBJECT	= #{subject}
-		,	CONTENT = #{content}
 		,	CONTENTLENGTH = #{contentLength}
 		WHERE
 			IDX	= #{idx};
@@ -200,11 +195,45 @@
 	</update>
 	
 	<update id="updateMainBlogFile" parameterType="hashmap">
-			UPDATE
-				TB_BLOG_D_FILE
-			SET
-				DEL_YN = 'N'
-			WHERE
-				IDX = #{file_idx}	
+		UPDATE
+			TB_BLOG_D_FILE
+		SET
+			DEL_YN = 'N'
+		WHERE
+			IDX = #{file_idx}	
 	</update> 
+	
+	<select id="getBlogcontentLastIdx" parameterType="hashmap" resultType="hashmap">
+		SELECT 
+			MAX(IDX) AS idx
+		FROM
+			TB_BLOG_M
+		WHERE
+			IN_USER_ID = #{s_userId};
+	</select>
+	
+	<delete id="deleteBlogContentBox" parameterType="hashmap">
+		DELETE FROM 
+			TB_BLOG_D
+		WHERE IDX = #{idx};
+	</delete>
+
+	<insert id="insertBlogContentBox" parameterType="hashmap">
+		INSERT INTO
+			TB_BLOG_D
+		(
+			IDX
+		,	I
+		,	TYPE
+		,	CONTENT
+		)
+		VALUES
+		(
+			#{idx}
+		,	#{i}
+		,	#{type}
+		,	#{content}
+		);
+	</insert>
+	
 </mapper>
