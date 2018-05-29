@@ -22,6 +22,10 @@ var mainContentJs = function(){
 		  $.ajax({
 			  url		: "/main/loadingMainBlogContent",
 			  success	: function(result){
+				  if(result.ADMIN_YN != 'Y'){
+					  $('#blogAddBtn').css('display','none');
+				  }
+				  
 				  var contentMain = '';
 				  var title_count = 0;
 				  var title_subject_count = 0;
@@ -31,6 +35,7 @@ var mainContentJs = function(){
 				  }
 				  $('#blogContents_totalSectionCounts').text(title_count);
 				  $('#blogContents_totalCounts').text(title_subject_count);
+				  
 				  
 				  if(result.list){
 					  var list = result.list;
@@ -72,6 +77,7 @@ var mainContentJs = function(){
 				  }
 				  
 				  $('#main').append(contentMain);
+				  
 			  }
 		  })
 	  }

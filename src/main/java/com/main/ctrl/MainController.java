@@ -49,7 +49,7 @@ public class MainController {
 	}	
 	
 	@RequestMapping("/main/loadingMainBlogContent")
-	public ModelAndView loadingMainBlogContent() throws Exception {
+	public ModelAndView loadingMainBlogContent(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
@@ -60,6 +60,14 @@ public class MainController {
 		}
 		
 		mv.addObject("list", list);
+		
+		if(session.getAttribute("s_userId") != null) {
+			String in_user_id = (String)session.getAttribute("s_userId");
+			if(in_user_id.equals("sleepygloa")){
+				mv.addObject("ADMIN_YN", "Y");
+			}
+		}
+
 		return mv;
 	}
 	
