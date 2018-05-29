@@ -20,14 +20,27 @@ var MainUpdateBlogContentJs = function(){
 			data : mainData,
 			type : "POST",
 			success : function(result){
+				console.log(result);
 				if(result.map){
-					var map = result.map;
-					idx = map.IDX;
+					var list = result.map;
+					idx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
-					$('#updateBlogContentSubject').val(map.SUBJECT);
-					$('#sortable').append(map.CONTENT);
-					contentLength = map.CONTENTLENGTH;
-					var list = result.list;
+					$('#updateBlogContentSubject').val(list[0].SUBJECT);
+					
+					for(var i = 0; i < list.length; i++){
+						var str = '';
+						if(list[i].TYPE == 'IMG'){
+							str += list[i].CONTENT;
+							$('#sortable').append(str);
+						}else if(list[i].TYPE == 'CODE'){
+							addCodeTextArea();
+							$('#text_'+i).text(list[i].CONTENT);
+						}else{
+							addTextArea(list[i].CONTENT);
+							$('#text_'+i).text(list[i].CONTENT);
+						}
+					}
+					contentLength = list.length;
 				}else{
 					$('#sortable').text('');
 				}
@@ -36,18 +49,6 @@ var MainUpdateBlogContentJs = function(){
 	}
 
 	function updateBlogContentEvent(){
-
-		  $(".zeta-menu li").hover(function(){
-			    $('ul:first',this).show();
-			  }, function(){
-			/*     $('ul:first',this).hide(); */
-			  });
-			 /*  $(".zeta-menu>li:has(ul)>a").each( function() {
-			    $(this).html( $(this).html()+' &or;' );
-			  });
-			  $(".zeta-menu ul li:has(ul)")
-			    .find("a:first")
-			    .append("<p style='float:right;margin:-3px'>&#9656;</p>"); */
 
 		$('#updateBlogContentCancelBtn').click(function(){
 			window.location.href="/";
@@ -77,35 +78,17 @@ var MainUpdateBlogContentJs = function(){
 
 		//글상자추가
 		$('#updateBlogAddText').click(function(){
-		    var str = '<div id="row_'+contentLength+'">';
-		    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-		    str += '<input type="hidden" id="type_'+contentLength+'" value="text" />'
-	        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:100px;" ></textarea>'
-	        str += '</div>';
-			$('#sortable').append(str);
-			contentLength++;
+			addTextArea();
 		});
 
 		//코드추가
 		$('#updateBlogAddCode').click(function(){
-            var str = '<div id="row_'+contentLength+'">';
-            str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-            str += '<input type="hidden" id="type_'+contentLength+'" value="code" />'
-            str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:100px; background:black; color:white;"></textarea>'
-            str += '</div>';
-			$('#sortable').append(str);
-			contentLength++;
+			addCodeTextArea();
 		});
 
 		//이미지추가
 		$('#updateBlogAddImg').click(function(){
-            var str = '<div id="row_'+contentLength+'">';
-            str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-            str += '<input type="hidden" id="type_'+contentLength+'" value="img" />'
-            str += '<img id="text_'+contentLength+'" src="#" alt="your image" />'
-            str += '</div>';
-			$('#sortable').append(str);
-			contentLength++;
+			addImgArea();
 			$('#blogUpdateImgInput').trigger('click');
 		});
 
@@ -141,9 +124,39 @@ var MainUpdateBlogContentJs = function(){
 			$('#sortableView').css('display', 'block');
 			getSortableView();
 		});
-
-
 	}
+	
+	//글쓰기상자
+	function addTextArea(){
+	    var str = '<div id="row_'+contentLength+'">';
+	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" ></textarea>'
+        str += '</div>';
+		$('#sortable').append(str);
+		contentLength++;
+	}
+	
+	function addCodeTextArea(){
+        var str = '<div id="row_'+contentLength+'">';
+        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+        str += '<input type="hidden" id="type_'+contentLength+'" value="CODE" />'
+        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:black; color:white;"></textarea>'
+        str += '</div>';
+		$('#sortable').append(str);
+		contentLength++;
+	}
+	
+	function addImgArea(){
+        var str = '<div id="row_'+contentLength+'">';
+        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+        str += '<input type="hidden" id="type_'+contentLength+'" value="IMG" />'
+        str += '<img id="text_'+contentLength+'" src="#" alt="your image" />'
+        str += '</div>';
+		$('#sortable').append(str);
+		contentLength++;
+	}
+	
 	//글쓰기 드롭다운 리스
 	  function insertBlogTitleDropdown(){
 		  $.ajax({
@@ -171,17 +184,18 @@ var MainUpdateBlogContentJs = function(){
 	function save(){
 		var form = $('mainBlogUpdateForm')[0];
 		var formData = new FormData(form);
-
 		
+		if($('#updateBlogFileUploadText').val() != ''){
+			formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
+		}
 
 		var dataDt = [];
 		for(var i = 0; i < contentLength; i++){
 			var dataList = {};
 			var textareaVal = $('#text_'+i).val();
 			var typeVal = $('#type_'+i).val();
-			if(textareaVal == ''){
-				textareaVal = 'file';
-				formData.append(i, $('#text_'+i)[0].files[0]);
+			if(typeVal == 'IMG'){
+				textareaVal = $('#text_'+i).attr('src');
 			}
 			dataList = {
 					idx : idx,
@@ -219,20 +233,24 @@ var MainUpdateBlogContentJs = function(){
 			contentType : "application/json, charset=utf-8",
 			async 	: false,
 			success	: function(result){
-				$.ajax({
-					url 	: "/main/saveBlogFileUpload",
-					type	: 'POST',
-					data    : formData,
-					contentType : false,
-					processData : false,
-					async 	: false,
-					success	: function(){
-						if(result.SUCCESS){
-							alert(result.SUCCESS);
-							window.location.href="/";
+				if($('#updateBlogFileUploadText').val() != ''){
+					$.ajax({
+						url 	: "/main/saveBlogFileUpload",
+						type	: 'POST',
+						data    : formData,
+						contentType : false,
+						processData : false,
+						async 	: false,
+						success	: function(){
+							if(result.SUCCESS){
+								alert(result.SUCCESS);
+								
+							}
 						}
-					}
-				})
+					})
+				}
+				
+				window.location.href="/";
 			}
 		})
 	}

@@ -24,15 +24,8 @@
 					    </div>
 					  </div>
 					</div>
-					<!-- 고객사 -->
-	<!-- 				<div class="form-group col-md-p20" id="assetCompNmGroup">
-						<div class="input-group input-group-sm" >
-							<span class="span-info  input-group-addon">고객사명</span>
-							<input type="text" class="form-control input-sm" id="preventiveCheckListCompNm" >
-						</div>
-					</div> -->
 					<!-- 메뉴명 -->
-					<div class="form-group col-md-2">
+					<div class="form-group col-md-3">
 						<div class="input-group input-group-sm">
 							<span class="span-info input-group-addon" data-toggle="modal" data-target="#myModal">메뉴명</span>
 							<select class="form-control input-sm" id="insertBlogTitleDropdown">
@@ -40,7 +33,7 @@
 						</div>
 					</div>
 					<!-- 제목 -->
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-5">
 						<div class="input-group input-group-sm" >
 							<span class="span-info  input-group-addon">제목</span>
 							<input type="text" class="form-control input-sm" id="updateBlogContentSubject" >
@@ -70,7 +63,6 @@
 	        	<div class="search-controls col-md-12" >
 					<!-- 내용 -->
 					<div class="form-group col-md-12" id="sortable">
-						<textarea id="dddd">dfsfs</textarea>
 					</div>
 					<div class="form-group col-md-12" id="sortableView" style="display:none">
 					</div>

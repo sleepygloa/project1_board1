@@ -46,20 +46,25 @@ public class MainServiceImpl implements MainService{
 	
 	@Override
 	public Map<String, Object> viewBlogContent(Params inParams) throws Exception{
-//		blogDAO.updateHitCnt(map);
 		Map<String, Object> resultMap = new HashMap<String,Object>();
-		Map<String, Object> tempMap = mainDAO.viewBlogContent(inParams);
+//		Map<String, Object> tempMap
+		List<Map<String, Object>> list = mainDAO.viewBlogContent(inParams);
+		
 		if(inParams.getString("update") == null) {
-			System.out.println("ddd");
-			String content = (String)tempMap.get("CONTENT");
-			content = content.replace("\n", "<br />");
-			tempMap.put("CONTENT", content);
+			for(int i = 0; i < list.size(); i++) {
+				if(!(list.get(i)).get("TYPE").equals("img")) {
+					String content = (String)((list.get(i)).get("CONTENT"));
+					content = content.replace("\n", "<br />");
+					(list.get(i)).put("CONTENT", content);
+				}
+			}
 		}
-		resultMap.put("map", tempMap);
+		resultMap.put("contents", list);
+		
 		//아이디체크
-		if(inParams.getString("s_userId") != null && tempMap.get("IN_USER_ID") != null) {
+		if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
 			String s_userId = inParams.getString("s_userId");
-			String inUserId = (String)tempMap.get("IN_USER_ID");
+			String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
 			if(s_userId.equals(inUserId)) {
 				System.out.println("ID_CHECK_OK");
 				resultMap.put("S_CHECK_ID", true);
@@ -68,8 +73,10 @@ public class MainServiceImpl implements MainService{
 			resultMap.put("S_CHECK_ID", false);
 		}
 		
-		List<Map<String,Object>> list = mainDAO.selectFileList(inParams);
-		resultMap.put("list", list);
+		List<Map<String,Object>> fileList = mainDAO.selectFileList(inParams);
+		if(fileList != null) {
+			resultMap.put("fileList", fileList);
+		}
 		
 		return resultMap;
 	}

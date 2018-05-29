@@ -116,12 +116,15 @@ public class MainController {
 			
 			try {
 				map = mainService.viewBlogContent(inParams);
-				mv.addObject("map", map.get("map"));
-				mv.addObject("list", map.get("list"));
+				mv.addObject("map", map.get("contents"));
+				if(map.get("fileList") != null) {
+					mv.addObject("list", map.get("fileList"));
+				}
+				
 				mv.addObject("S_CHECK_ID", map.get("S_CHECK_ID"));
 			}catch(Exception e) {
 				mv.addObject("ERROR", "글 불러오 중 에러가 발생하였습니다.");
-				System.out.println("ERROR" + e);
+				e.printStackTrace();
 				return mv;
 			}
 		}else {

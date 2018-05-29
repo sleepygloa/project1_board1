@@ -6,14 +6,14 @@
 			<div class="search-form clearfix">
 	        	<div class="search-controls col-md-12" >
 					<!-- 메뉴명 -->
-					<div class="form-group col-md-2">
+					<div class="form-group col-md-3">
 						<div class="input-group input-group-sm">
 							<span class="span-info  input-group-addon">메뉴명</span>
 							<input id="viewBlogContentTitle" type="text" class="form-control input-sm" disabled />
 						</div>
 					</div>
 					<!-- 제목 -->
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-5">
 						<div class="input-group input-group-sm" >
 							<span class="span-info  input-group-addon">제목</span>
 							<input type="text" class="form-control input-sm" id="viewBlogContentSubject" disabled >
@@ -32,7 +32,7 @@
 
 	        	<div class="search-controls col-md-12" >
 					<!-- 내용 -->
-					<div id="viewBlogContentContent" class="form-group col-md-12" disabled>
+					<div id="viewBlogContentContent" class="form-group col-md-12" >
 					</div>
 				</div>
 			</div>

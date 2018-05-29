@@ -81,7 +81,9 @@ public class FileUtils {
 
         List arrangeList = new ArrayList(inParams.keySet());
         Collections.sort(arrangeList);
-        int j = inParams.getInteger("j");
+
+        
+        int j = arrangeList.size();
         
         String boardIdx = (String)inParams.getString("idx");
         String requestName = null;

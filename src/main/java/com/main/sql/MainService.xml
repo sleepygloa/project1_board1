@@ -47,18 +47,28 @@
 
 	<select id="viewBlogContent" parameterType="hashmap" resultType="hashmap">
 		SELECT
-			*
+			M.IDX			AS IDX
+		,	M.SUBJECT		AS SUBJECT
+		,	M.TITLE			AS TITLE
+		,	M.IN_USER_ID	AS IN_USER_ID
+		,	D.TYPE
+		,	D.I
+		,	D.CONTENT
 		FROM
-			TB_BLOG_M
+			TB_BLOG_M M
+		,	TB_BLOG_D D
 		WHERE
-			IDX		= #{idx};
+			M.IDX		= D.IDX
+		AND M.DEL_YN 	= 'N'
+		AND M.IDX		= #{idx}
+		ORDER BY D.I;
 	</select> 
 
 	<update id="saveBlogContent" parameterType="hashmap">
 		UPDATE	TB_BLOG_M
 		SET
-			SUBJECT	= #{subject}
-		,	CONTENTLENGTH = #{contentLength}
+			TITLE   = #{title}
+		,	SUBJECT	= #{subject}
 		WHERE
 			IDX	= #{idx};
 	</update>

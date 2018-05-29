@@ -174,12 +174,24 @@ var MainViewBlogContentJs = function(){
 			success : function(result){
 				console.log(result);
 				var list = result.map;
-				idx = list.IDX;
+				idx = list[0].IDX;
 				var idCheck = result.S_CHECK_ID;
-				$('#viewBlogContentIdx').val(list.IDX);
-				$('#viewBlogContentTitle').val(list.TITLE);
-				$('#viewBlogContentSubject').val(list.SUBJECT);
-				$('#viewBlogContentContent').html(list.CONTENT).attr('disabled', 'disabled');
+				$('#viewBlogContentIdx').val(list[0].IDX);
+				$('#viewBlogContentTitle').val(list[0].TITLE);
+				$('#viewBlogContentSubject').val(list[0].SUBJECT);
+				
+				for(var i = 0; i < list.length; i++){
+					var str = '<div class="col-xs-12" >';
+					if(list[i].TYPE == 'IMG'){
+						str += '<img style="max-width:75%; height:auto;" src="'+list[i].CONTENT+'" />';
+					}else if(list[i].TYPE == 'CODE'){
+						str += '<pre class="col-xs-12" style="background:black; color:white;">'+list[i].CONTENT+'</pre>';
+					}else{
+						str += '<pre class="col-xs-12">'+list[i].CONTENT+'</pre>';
+					}
+					str += '</div>';
+					$('#viewBlogContentContent').append(str);
+				}
 				
 				if(idCheck){
 					$('#viewBlogContentUpdateBtn').css('display', 'inline-block');
@@ -187,32 +199,14 @@ var MainViewBlogContentJs = function(){
 				
 				var list = result.list;
 				var str = '';
-				for (var i = 0; i < list.length; i++){
-					str += 
-						"<li>"
-						+	"<a href='#' id='file_text_"+i+"'>"+(i+1)+". "+list[i].ORIGINAL_FILE_NAME+"</a>"
-					+	"</li>";
-				}
+				//list[i].ORIGINAL_FILE_NAME
 
-				$("#zeta-li").append(str);
 			}
 		})
 	}
 	
 	//이벤트
 	function viewBlogContentEvent(){
-		
-	  $(".zeta-menu li").hover(function(){
-		    $('ul:first',this).show();
-		  }, function(){
-		/*     $('ul:first',this).hide(); */
-		  });
-		 /*  $(".zeta-menu>li:has(ul)>a").each( function() {
-		    $(this).html( $(this).html()+' &or;' );
-		  });
-		  $(".zeta-menu ul li:has(ul)")
-		    .find("a:first")
-		    .append("<p style='float:right;margin:-3px'>&#9656;</p>"); */
 		
 		$('#viewBlogContentCancelBtn').click(function(){
 			window.location.href="/";

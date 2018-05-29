@@ -31,8 +31,8 @@ public class MainDAO extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> viewBlogContent(Params inParams) throws Exception{
-		return (Map<String, Object>)selectOne("MainService.viewBlogContent", inParams);
+	public List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.viewBlogContent", inParams);
 	}
 	
 	public void saveBlogContent(Params inParams) throws Exception{
