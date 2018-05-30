@@ -85,8 +85,30 @@ public class MainServiceImpl implements MainService{
 	public void saveBlogContent(Params inParams) throws Exception{
 		if(inParams.getString("idx")!=null) {
 			mainDAO.saveBlogContent(inParams);
+			
+			mainDAO.deleteBlogContentBox(inParams);
+			List<Map<String, Object>> list = (ArrayList<Map<String, Object>>)inParams.getParam("dataDt");
+			for(int i = 0; i < list.size(); i++) {
+				inParams.setParam("idx", list.get(i).get("idx"));
+				inParams.setParam("i", list.get(i).get("i"));
+				inParams.setParam("type", list.get(i).get("type"));
+				inParams.setParam("content", list.get(i).get("content"));
+				mainDAO.insertBlogContentBox(inParams);
+			}
+			
 		}else {
 			mainDAO.insertBlogAddContent(inParams);
+			
+			Map<String, Object> map = (Map<String, Object>)mainDAO.getBlogcontentLastIdx(inParams);
+			mainDAO.deleteBlogContentBox(map);
+			List<Map<String, Object>> list = (ArrayList<Map<String, Object>>)inParams.getParam("dataDt");
+			for(int i = 0; i < list.size(); i++) {
+				inParams.setParam("idx", map.get("idx"));
+				inParams.setParam("i", list.get(i).get("i"));
+				inParams.setParam("type", list.get(i).get("type"));
+				inParams.setParam("content", list.get(i).get("content"));
+				mainDAO.insertBlogContentBox(inParams);
+			}
 		}
 		Map<String, Object> map = (Map<String, Object>)mainDAO.getBlogcontentLastIdx(inParams);
 		mainDAO.deleteBlogContentBox(map);

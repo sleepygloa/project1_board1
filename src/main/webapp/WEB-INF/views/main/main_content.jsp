@@ -29,6 +29,10 @@
 		      <a href="https://github.com/sleepygloa" target="_blank">
 		        <i class="fa fa-github"></i>
 		      </a>
+   		      <a href="https://blog.naver.com/sleepygloa" target="_blank">
+		        <img width="50px" height="20px" src="/resources/img/naverblog.png"/>
+		      </a>
+		      
 		 	</p>
 		
 		    <p class="copyright">© 2018&nbsp;&nbsp;KIM SEONHO</p>
@@ -36,6 +40,7 @@
 			    <a href="https://github.com/sleepygloa">GitHub Pages&nbsp;
 		        	<i class="fa fa-github"></i>
 		      	</a>
+		      	
 			  </p>
 		  </div>
 		</footer>
