@@ -25,10 +25,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.core.parameters.CommParams;
 import com.core.parameters.Params;
 import com.core.parameters.ParamsFactory;
+import com.core.parameters.datatable.CommDataTable;
+import com.core.parameters.datatable.DataTable;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paragon.core.conversion.CommDataTable;
-import com.paragon.core.conversion.DataTable;
 
 
 
