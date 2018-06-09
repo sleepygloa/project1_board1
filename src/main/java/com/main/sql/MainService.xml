@@ -56,10 +56,11 @@
 		,	D.CONTENT
 		FROM
 			TB_BLOG_M M
-		,	TB_BLOG_D D
-		WHERE
-			M.IDX		= D.IDX
-		AND M.DEL_YN 	= 'N'
+		LEFT OUTER JOIN	
+			TB_BLOG_D D
+		ON	M.IDX = D.IDX
+		WHERE 
+			M.DEL_YN 	= 'N'
 		AND M.IDX		= #{idx}
 		ORDER BY D.I;
 	</select> 

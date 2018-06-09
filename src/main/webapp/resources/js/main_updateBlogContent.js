@@ -26,7 +26,9 @@ var MainUpdateBlogContentJs = function(){
 					idx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
 					$('#updateBlogContentSubject').val(list[0].SUBJECT);
-					
+					$('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
+					console.log(list[0].TITLE);
+					console.log($('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']"));
 					for(var i = 0; i < list.length; i++){
 						var str = '';
 						if(list[i].TYPE == 'IMG'){
@@ -222,7 +224,7 @@ var MainUpdateBlogContentJs = function(){
 					dataDt  : dataDt
 			}
 		}
-
+		
 		$.ajax({
 			url 	: "/main/saveBlogContent",
 			type	: 'POST',

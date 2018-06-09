@@ -86,12 +86,13 @@ public class MainController {
 	
 	//블로그 글쓰기 콤보박스
 	@RequestMapping("/main/getBlogTitleDropdown")
-	public ModelAndView getBlogTitleDropdown() {
+	public ModelAndView getBlogTitleDropdown(Params inParams) {
+		System.out.println("getBlogTitleDropdown inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		try {
-			list = mainService.getBlogTitleDropdown();
+			list = mainService.getBlogTitleDropdown(inParams);
 		}catch(Exception e) {
 			
 		}

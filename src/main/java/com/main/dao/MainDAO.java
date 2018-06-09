@@ -22,7 +22,7 @@ public class MainDAO extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getBlogTitleDropdown() throws Exception{
+	public List<Map<String, Object>> getBlogTitleDropdown(Params inParams) throws Exception{
 		return (List<Map<String, Object>>)selectList("MainService.getBlogTitleDropdown");
 	}
 	

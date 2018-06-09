@@ -35,8 +35,8 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	@Override
-	public List<Map<String, Object>> getBlogTitleDropdown() throws Exception{
-		return mainDAO.getBlogTitleDropdown();
+	public List<Map<String, Object>> getBlogTitleDropdown(Params inParams) throws Exception{
+		return mainDAO.getBlogTitleDropdown(inParams);
 	}
 	
 	@Override
@@ -52,7 +52,9 @@ public class MainServiceImpl implements MainService{
 		
 		if(inParams.getString("update") == null) {
 			for(int i = 0; i < list.size(); i++) {
-				if(!(list.get(i)).get("TYPE").equals("img")) {
+				if(list.get(i).get("TYPE") == null){
+					
+				}else if(!(list.get(i)).get("TYPE").equals("img")) {
 					String content = (String)((list.get(i)).get("CONTENT"));
 					content = content.replace("\n", "<br />");
 					(list.get(i)).put("CONTENT", content);
