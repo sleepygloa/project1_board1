@@ -32,8 +32,8 @@ var MainUpdateBlogContentJs = function(){
 					for(var i = 0; i < list.length; i++){
 						var str = '';
 						if(list[i].TYPE == 'IMG'){
-							str += list[i].CONTENT;
-							$('#sortable').append(str);
+							addImgArea();
+							$('#text_'+i).attr('src', list[i].CONTENT);
 						}else if(list[i].TYPE == 'CODE'){
 							addCodeTextArea();
 							$('#text_'+i).text(list[i].CONTENT);
@@ -138,7 +138,7 @@ var MainUpdateBlogContentJs = function(){
 		$('#sortable').append(str);
 		contentLength++;
 	}
-	
+	//코드상자
 	function addCodeTextArea(){
         var str = '<div id="row_'+contentLength+'">';
         str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
@@ -148,7 +148,7 @@ var MainUpdateBlogContentJs = function(){
 		$('#sortable').append(str);
 		contentLength++;
 	}
-	
+	//이미지상자
 	function addImgArea(){
         var str = '<div id="row_'+contentLength+'">';
         str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
