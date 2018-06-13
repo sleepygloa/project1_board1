@@ -87,6 +87,6 @@ public class MainDAO extends AbstractDAO{
 	}
 
 	public void insertBlogContentBox(Params inParams) throws Exception{
-		delete("MainService.insertBlogContentBox", inParams);
+		insert("MainService.insertBlogContentBox", inParams);
 	}
 }

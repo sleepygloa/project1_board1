@@ -143,11 +143,8 @@ var MainUpdateBlogContentJs = function(){
 			$('#sortableView').css('display', 'block');
 			getSortableView();
 		});
-		
-		
-		
 	}
-	
+
 	//글쓰기상자
 	function addTextArea(){
 	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
@@ -224,12 +221,12 @@ var MainUpdateBlogContentJs = function(){
 				var dataList = {};
 				var textareaVal = $('#text_'+i).val();
 				var typeVal = $('#type_'+i).val();
-				var imgWitdhScale = $('#text_'+i).attr('width');
+				var imgWidthScale = $('#text_'+i).attr('width');
 				
 				if(typeVal == 'IMG'){
 					textareaVal = $('#text_'+i).attr('src');
-					if(imgWitdhScale != ''){
-						imgWitdhScale = fnReplaceOnlyNum(imgWitdhScale);
+					if(imgWidthScale != ''){
+						imgWidthScale = fnReplaceOnlyNum(imgWitdhScale);
 					}
 				}
 				dataList = {
@@ -237,7 +234,7 @@ var MainUpdateBlogContentJs = function(){
 						i   			: i-count,
 						type 			: typeVal,
 						content 		: textareaVal,
-						imgWitdhScale 	: imgWitdhScale
+						imgWidthScale 	: imgWidthScale
 				}
 				dataDt.push(dataList);
 			}else{

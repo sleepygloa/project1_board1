@@ -115,16 +115,7 @@ public class MainServiceImpl implements MainService{
 				mainDAO.insertBlogContentBox(inParams);
 			}
 		}
-		Map<String, Object> map = (Map<String, Object>)mainDAO.getBlogcontentLastIdx(inParams);
-		mainDAO.deleteBlogContentBox(map);
-		List<Map<String, Object>> list = (ArrayList<Map<String, Object>>)inParams.getParam("dataDt");
-		for(int i = 0; i < list.size(); i++) {
-			inParams.setParam("idx", map.get("idx"));
-			inParams.setParam("i", list.get(i).get("i"));
-			inParams.setParam("type", list.get(i).get("type"));
-			inParams.setParam("content", list.get(i).get("content"));
-			mainDAO.insertBlogContentBox(inParams);
-		}
+		System.out.println("dd = "+ inParams);
 	}
 	
 	@Override
