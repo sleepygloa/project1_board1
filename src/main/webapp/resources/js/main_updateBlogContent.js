@@ -1,7 +1,26 @@
+ function fnImgWidthChg(data){
+	var per = data.width+'%';
+	$('#text_'+data.length).attr('width', per);
+	console.log(data.length);
+	console.log(data.width);
+}
+
+function fnImgController(length){
+	$('.imgContWidth_'+length).css('display', 'block');
+}
+ 
+function fnRvImgController(length){
+	$('.imgContWidth_'+length).css('display', 'none');
+}
+
+function fnSaveIdx(i){
+	focusIdx = i;
+}
+
+var focusIdx = -1;
 var MainUpdateBlogContentJs = function(){
 	"use strict";
 	var contentLength = 0;
-	var focusIdx = -1;
 
 	return {
 		init : function(){
@@ -20,20 +39,18 @@ var MainUpdateBlogContentJs = function(){
 			data : mainData,
 			type : "POST",
 			success : function(result){
-				console.log(result);
 				if(result.map){
 					var list = result.map;
 					idx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
 					$('#updateBlogContentSubject').val(list[0].SUBJECT);
 					$('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
-					console.log(list[0].TITLE);
-					console.log($('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']"));
 					for(var i = 0; i < list.length; i++){
 						var str = '';
 						if(list[i].TYPE == 'IMG'){
 							addImgArea();
 							$('#text_'+i).attr('src', list[i].CONTENT);
+							$('#text_'+i).attr('width', list[i].IMGWIDTHSCALE);
 						}else if(list[i].TYPE == 'CODE'){
 							addCodeTextArea();
 							$('#text_'+i).text(list[i].CONTENT);
@@ -110,7 +127,7 @@ var MainUpdateBlogContentJs = function(){
 		
 		//삭제
 		$('#updateBlogRemove').click(function(){
-		    $('#focusIdx').remove();
+			$('#row_'+focusIdx).remove();
 		});
 
 		//타이핑 화면
@@ -126,11 +143,14 @@ var MainUpdateBlogContentJs = function(){
 			$('#sortableView').css('display', 'block');
 			getSortableView();
 		});
+		
+		
+		
 	}
 	
 	//글쓰기상자
 	function addTextArea(){
-	    var str = '<div id="row_'+contentLength+'">';
+	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
 	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
 	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
         str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" ></textarea>'
@@ -140,7 +160,7 @@ var MainUpdateBlogContentJs = function(){
 	}
 	//코드상자
 	function addCodeTextArea(){
-        var str = '<div id="row_'+contentLength+'">';
+        var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
         str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
         str += '<input type="hidden" id="type_'+contentLength+'" value="CODE" />'
         str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:black; color:white;"></textarea>'
@@ -150,13 +170,19 @@ var MainUpdateBlogContentJs = function(){
 	}
 	//이미지상자
 	function addImgArea(){
-        var str = '<div id="row_'+contentLength+'">';
+        var str = '<div id="row_'+contentLength+'" onmouseover="fnImgController('+contentLength+');" onmouseleave="fnRvImgController('+contentLength+')" onclick="fnSaveIdx('+contentLength+');">';
         str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
         str += '<input type="hidden" id="type_'+contentLength+'" value="IMG" />'
-        str += '<img id="text_'+contentLength+'" src="#" alt="your image" />'
+        str += '<img id="text_'+contentLength+'" src="#" alt="your image" width="" />'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onclick="fnImgWidthChg({length : '+contentLength+', width : 10})" style="display:none">10%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 25})" style="display:none">25%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 50})" style="display:none">50%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 75})" style="display:none">75%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 100})" style="display:none">100%</button>'
         str += '</div>';
 		$('#sortable').append(str);
 		contentLength++;
+		
 	}
 	
 	//글쓰기 드롭다운 리스
@@ -192,20 +218,31 @@ var MainUpdateBlogContentJs = function(){
 		}
 
 		var dataDt = [];
+		var count = 0;
 		for(var i = 0; i < contentLength; i++){
-			var dataList = {};
-			var textareaVal = $('#text_'+i).val();
-			var typeVal = $('#type_'+i).val();
-			if(typeVal == 'IMG'){
-				textareaVal = $('#text_'+i).attr('src');
+			if($('#row_'+i).val() != undefined){
+				var dataList = {};
+				var textareaVal = $('#text_'+i).val();
+				var typeVal = $('#type_'+i).val();
+				var imgWitdhScale = $('#text_'+i).attr('width');
+				
+				if(typeVal == 'IMG'){
+					textareaVal = $('#text_'+i).attr('src');
+					if(imgWitdhScale != ''){
+						imgWitdhScale = fnReplaceOnlyNum(imgWitdhScale);
+					}
+				}
+				dataList = {
+						idx 			: idx,
+						i   			: i-count,
+						type 			: typeVal,
+						content 		: textareaVal,
+						imgWitdhScale 	: imgWitdhScale
+				}
+				dataDt.push(dataList);
+			}else{
+				count++;
 			}
-			dataList = {
-					idx : idx,
-					i   : i,
-					type 	: typeVal,
-					content : textareaVal
-			}
-			dataDt.push(dataList);
 		}
 		
 		var data = {}
@@ -224,7 +261,6 @@ var MainUpdateBlogContentJs = function(){
 					dataDt  : dataDt
 			}
 		}
-		
 		$.ajax({
 			url 	: "/main/saveBlogContent",
 			type	: 'POST',
@@ -285,7 +321,12 @@ var MainUpdateBlogContentJs = function(){
 		}
 		$('#sortableView').attr('disabled', 'disabled');
 	}
-
+	function fnReplaceOnlyNum(str){
+	    var res;
+	    res = str.replace(/[^0-9]/g,"");
+	    return res;
+	}
+	
 }();
 
 $(document).ready(function(){

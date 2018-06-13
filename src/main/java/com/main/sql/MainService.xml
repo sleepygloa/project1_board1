@@ -54,6 +54,7 @@
 		,	D.TYPE
 		,	D.I
 		,	D.CONTENT
+		,	D.IMGWIDTHSCALE
 		FROM
 			TB_BLOG_M M
 		LEFT OUTER JOIN	
@@ -237,6 +238,7 @@
 		,	I
 		,	TYPE
 		,	CONTENT
+		,	IMGWIDTHSCALE
 		)
 		VALUES
 		(
@@ -244,6 +246,7 @@
 		,	#{i}
 		,	#{type}
 		,	#{content}
+		,	#{imgWidthScale}
 		);
 	</insert>
 	

@@ -85,6 +85,8 @@ public class MainServiceImpl implements MainService{
 	
 	@Override
 	public void saveBlogContent(Params inParams) throws Exception{
+		
+		//글 수정
 		if(inParams.getString("idx")!=null) {
 			mainDAO.saveBlogContent(inParams);
 			
@@ -99,6 +101,7 @@ public class MainServiceImpl implements MainService{
 			}
 			
 		}else {
+		//새글
 			mainDAO.insertBlogAddContent(inParams);
 			
 			Map<String, Object> map = (Map<String, Object>)mainDAO.getBlogcontentLastIdx(inParams);
