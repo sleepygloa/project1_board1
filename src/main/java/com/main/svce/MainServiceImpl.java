@@ -97,6 +97,7 @@ public class MainServiceImpl implements MainService{
 				inParams.setParam("i", list.get(i).get("i"));
 				inParams.setParam("type", list.get(i).get("type"));
 				inParams.setParam("content", list.get(i).get("content"));
+				inParams.setParam("imgWidthScale", list.get(i).get("imgWidthScale"));
 				mainDAO.insertBlogContentBox(inParams);
 			}
 			
@@ -112,6 +113,7 @@ public class MainServiceImpl implements MainService{
 				inParams.setParam("i", list.get(i).get("i"));
 				inParams.setParam("type", list.get(i).get("type"));
 				inParams.setParam("content", list.get(i).get("content"));
+				inParams.setParam("imgWidthScale", list.get(i).get("imgWidthScale"));
 				mainDAO.insertBlogContentBox(inParams);
 			}
 		}

@@ -50,7 +50,7 @@ var MainUpdateBlogContentJs = function(){
 						if(list[i].TYPE == 'IMG'){
 							addImgArea();
 							$('#text_'+i).attr('src', list[i].CONTENT);
-							$('#text_'+i).attr('width', list[i].IMGWIDTHSCALE);
+							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
 						}else if(list[i].TYPE == 'CODE'){
 							addCodeTextArea();
 							$('#text_'+i).text(list[i].CONTENT);
@@ -226,7 +226,7 @@ var MainUpdateBlogContentJs = function(){
 				if(typeVal == 'IMG'){
 					textareaVal = $('#text_'+i).attr('src');
 					if(imgWidthScale != ''){
-						imgWidthScale = fnReplaceOnlyNum(imgWitdhScale);
+						imgWidthScale = fnReplaceOnlyNum(imgWidthScale);
 					}
 				}
 				dataList = {

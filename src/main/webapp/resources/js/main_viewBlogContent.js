@@ -186,7 +186,7 @@ var MainViewBlogContentJs = function(){
 						}else{
 							var str = '<div class="col-xs-12" >';
 							if(list[i].TYPE == 'IMG'){
-								str += '<img style="max-width:75%; height:auto;" src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'" />';
+								str += '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />';
 							}else if(list[i].TYPE == 'CODE'){
 								str += '<pre class="col-xs-12" style="background:black; color:white;">'+list[i].CONTENT+'</pre>';
 							}else{
