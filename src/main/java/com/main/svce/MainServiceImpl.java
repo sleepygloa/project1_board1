@@ -55,8 +55,10 @@ public class MainServiceImpl implements MainService{
 				if(list.get(i).get("TYPE") == null){
 					
 				}else if(!(list.get(i)).get("TYPE").equals("img")) {
+				
 					String content = (String)((list.get(i)).get("CONTENT"));
-					content = content.replace("\n", "<br />");
+//					content = content.replaceAll(System.getProperty("line.separator"), "<br />");
+					content = content.replaceAll("<", "&lt");
 					(list.get(i)).put("CONTENT", content);
 				}
 			}

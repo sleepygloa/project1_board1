@@ -1,15 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 		<div id="main" class="page-body">
-			<section class="page-index">
-				<div class="introBox" style="opacity: 1;">
-					<h1>Become a Full-Stack Web Developer</h1>
-					<div class="type-wrap">
-					  Learn to code
-					  <span id="typed" style="white-space:pre;">Express.</span><span class="typed-cursor">|</span>
-					</div>
-				</div>
-			</section>
-
 			<div class="page-content-title">Learning Paths</div>
 			<section class="cont-head">
 				<div class="container">

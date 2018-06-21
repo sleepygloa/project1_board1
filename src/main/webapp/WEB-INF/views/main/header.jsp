@@ -33,13 +33,11 @@
 		<input type="hidden" id="pageUrl" value="" />
 		<input type="hidden" id="pageData" value="" />
 		<input type="hidden" id="pageJsp" value="" />
-		<div class="page-title">
-			<header class="page-header">
-				<div class="container">
-				  <a id="logo" class="logo">SEONHO blog</a>
-				  <a id="login" class="login" href="#">login</a>
-				  <a id="logout" class="login" href="#" style="display:none">logout</a>
-				</div>
-			</header>
-		</div>
+		<header class="page-header">
+			<div class="container">
+			  <a id="logo" class="logo">SEONHO blog</a>
+			  <a id="login" class="login" href="#">login</a>
+			  <a id="logout" class="login" href="#" style="display:none">logout</a>
+			</div>
+		</header>
 		

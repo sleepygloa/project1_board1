@@ -853,36 +853,6 @@ footer strong {
 	margin: 0 auto;
 }
 
-
-/* .loginChild{
-	position : relative;
-}
-
-#loginTitle {
-  width: 100%;
-  font-family: 'Montserrat', sans-serif;
-  color: #E90052;
-  font-size: 6vw;
-  text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-  top : 100px;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-#loginTitle h1 {
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  color:gray;
-  font-size: 3vw;
-  font-weight: 300;
-}
-
-#loginContentBody{
-	width:500px;
-	margin: 0 auto;
-}
- */
  
 .p-0{padding:0 auto;}
 .p-5{padding:5 auto;}
