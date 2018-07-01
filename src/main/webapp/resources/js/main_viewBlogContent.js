@@ -184,16 +184,29 @@ var MainViewBlogContentJs = function(){
 						if(list[i].CONTENT == undefined){
 							
 						}else{
-							var str = '<div class="col-xs-12" >';
 							if(list[i].TYPE == 'IMG'){
-								str += '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />';
+								var str = '<div id="content_'+i+'" class="col-xs-12" >'
+										+ '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />'
+										+ '</div>';
 							}else if(list[i].TYPE == 'CODE'){
-								str += '<pre class="col-xs-12" style="background:black; color:white;">'+list[i].CONTENT+'</pre>';
+								var str = '<div id="content_'+i+'" class="col-xs-12" style="background:black; color:white;"></div>';
 							}else{
-								str += '<pre class="col-xs-12">'+list[i].CONTENT+'</pre>';
+								var str = '<div id="content_'+i+'" class="col-xs-12"></div>';
 							}
-							str += '</div>';
 							$('#viewBlogContentContent').append(str);
+							
+							var content = list[i].CONTENT;
+							
+							if(list[i].TYPE != 'IMG'){
+								content = content.replace(/</gi, '&lt')
+												 .replace(/>/gi, '&gt')
+												 .split("\n");
+								var rc = '';
+					           $.each(content, function(j){
+					        	   rc += '<span>'+content[j]+'<br /></span>';
+					            });
+					           $('#content_'+i).append(rc);
+							}
 						}
 					}
 					

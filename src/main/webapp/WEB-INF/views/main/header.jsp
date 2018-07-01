@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html class="route-index route-default">
+<html>
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -13,9 +13,8 @@
 		<link rel="stylesheet" href="/resources/css/bootstrap.css">
 		<link rel="stylesheet" href="/resources/css/jquery-ui.min.css">
 		<link rel="stylesheet" href="/resources/css/fa-svg-with-js.css">
-		<!-- <link rel="stylesheet" href="/resources/css/assets/vendor/devicon/devicon.min.css"> -->
-<!-- 		<link rel="stylesheet" type="text/css" href="/resources/css/Semantic-UI-CSS/semantic.min.css"> -->
 		<link rel="stylesheet" href="/resources/css/main.css">
+		<link rel="stylesheet" href="/resources/css/font.css">
 
 		<script src="/resources/js/jquery.min.js"></script>
 		<script src="/resources/js/bootstrap.min.js"></script>
@@ -23,10 +22,7 @@
 		<script src="/resources/js/jquery-ui.min.js"></script>
 		<script src="/resources/js/fontawesome-all.min.js"></script>
 		<script src="/resources/js/jquery.jqgrid.src.js"></script>
-<!--		<script src="/resources/js/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>-->
-<!-- 		<script src="/resources/js/Semantic-UI-CSS/semantic.min.js"></script>	 -->	
 		<script src="/resources/js/main.js"></script>
-		<!-- <script src="/resources/js/ckeditor/ckeditor.js"></script> -->
 	</head>
 
 	<body>

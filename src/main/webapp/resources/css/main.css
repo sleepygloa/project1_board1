@@ -2,13 +2,7 @@
 @import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import "https://fonts.googleapis.com/css?family=Baloo+Tamma|Source+Sans+Pro:300,300i,400,400i,700,700i|Source+Code+Pro|Lora:400,400i,700,700i|Montserrat|Open+Sans:300,400";
-@font-face {
-/*   font-family: "LexiSaebom";
-  src: url("font/LexiSaebom/LexiSaebomR.eot");
-  IE 9 호환성 보기 모드 대응
-  src: local("☺"), url("font/LexiSaebom/LexiSaebomR.eot?#iefix") format("embedded-opentype"), url("font/LexiSaebom/LexiSaebomR.woff") format("woff");
-  표준 브라우저 */
-}
+
 html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
   margin: 0;
   padding: 0;
@@ -169,9 +163,6 @@ sub {
   bottom: -0.25em;
 }
 
-pre, code, kbd, samp {
-  font-family: monospace, sans-serif;
-}
 
 .clickable,
 label,
@@ -300,15 +291,8 @@ pre {
   word-break: break-all;
 }
 
-body,
-button,
-input,
-textarea {
-  font-family: "Lora", "LexiSaebom", "Times New Roman", serif;
-}
-
-h1, h2, h3, h4, h5 {
-  font-family: 'Montserrat', 'Noto Sans KR', Arial, sans-serif;
+body{
+  font-family: "Nanum Barunpen;
 }
 
 img {
@@ -323,12 +307,6 @@ img {
   img {
     max-width: 70%;
   }
-}
-
-code,
-pre {
-  font-family: "Source Code Pro", "Noto Sans KR", "Inconsolata", monospace;
-  font-weight: 400;
 }
 
 /* main */
@@ -380,7 +358,6 @@ pre {
 }
 .page-body .page-index .introBox {
   width: 100%;
-  font-family: 'Montserrat', sans-serif;
   color: #E90052;
   font-size: 6vw;
   text-align: center;
@@ -397,7 +374,6 @@ pre {
   }
 }
 .page-body .page-index .introBox h1 {
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
   /* color: #f4f1ce; */
   color:gray;
   font-size: 3vw;
@@ -460,7 +436,6 @@ pre {
 }
 
 .logo {
-  font-family: 'Baloo Tamma', cursive;
   font-size: 1.8em;
   color: black;
   float: left;
@@ -676,7 +651,6 @@ pre {
 }
 
 .article-title {
-  font-family: 'Montserrat', 'Noto Sans KR', Arial, sans-serif;
   padding: 15px;
   position: relative;
 }
@@ -817,7 +791,6 @@ footer strong {
 	width:60px;
 	right:0px;
 	font-size:1.5em;
-	font-family:'Baloo Tamma', cursive;
 	padding-top:10px;
 }
 

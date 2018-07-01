@@ -1,0 +1,5 @@
+@font-face {
+    font-family: "Nanum Barunpen";
+    font-style: normal;
+    src: url(/resources/fonts/NanumBarunpenB.ttf) format("truetype"); /* If not support woff */
+}
