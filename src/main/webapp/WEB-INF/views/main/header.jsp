@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -24,16 +24,3 @@
 		<script src="/resources/js/jquery.jqgrid.src.js"></script>
 		<script src="/resources/js/main.js"></script>
 	</head>
-
-	<body>
-		<input type="hidden" id="pageUrl" value="" />
-		<input type="hidden" id="pageData" value="" />
-		<input type="hidden" id="pageJsp" value="" />
-		<header class="page-header">
-			<div class="container">
-			  <a id="logo" class="logo">SEONHO blog</a>
-			  <a id="login" class="login" href="#">login</a>
-			  <a id="logout" class="login" href="#" style="display:none">logout</a>
-			</div>
-		</header>
-		

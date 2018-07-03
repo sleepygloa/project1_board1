@@ -1,315 +1,155 @@
 @charset "UTF-8";
-@import url(http://fonts.googleapis.com/earlyaccess/kopubbatang.css);
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-@import "https://fonts.googleapis.com/css?family=Baloo+Tamma|Source+Sans+Pro:300,300i,400,400i,700,700i|Source+Code+Pro|Lora:400,400i,700,700i|Montserrat|Open+Sans:300,400";
 
 html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font-weight: 400;
-  vertical-align: baseline;
-  background: transparent;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font-weight: 400;
+	vertical-align: baseline;
+	background: transparent;
 }
 
 article, aside, figure, footer, header, nav, section, details, summary {
-  display: block;
+	display: block;
 }
 
 html {
-  box-sizing: border-box;
+	box-sizing: border-box;
+	overflow-y: scroll;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-img,
-object,
-embed {
-  max-width: 100%;
-}
-
-html {
-  overflow-y: scroll;
-}
-
-ul {
-  list-style: none;
-}
-
-blockquote, q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-
-a {
-  margin: 0;
-  padding: 0;
-  font-size: 100%;
-  vertical-align: baseline;
-  background: transparent;
-}
-
-del {
-  text-decoration: line-through;
-}
-
-abbr[title], dfn[title] {
-  border-bottom: 1px dotted #000;
-  cursor: help;
-}
-
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-th {
-  font-weight: 700;
-  vertical-align: bottom;
-}
-
-td {
-  font-weight: 400;
-  vertical-align: top;
-}
-
-hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 1em 0;
-  padding: 0;
-}
-
-input, select {
-  vertical-align: middle;
-}
-
-pre {
-  white-space: pre;
-  white-space: pre-wrap;
-  white-space: pre-line;
-  word-wrap: break-word;
-}
-
-input[type="radio"] {
-  vertical-align: text-bottom;
-}
-
-input[type="checkbox"] {
-  vertical-align: bottom;
-}
-
-.ie7 input[type="checkbox"] {
-  vertical-align: baseline;
-}
-
-.ie6 input {
-  vertical-align: text-bottom;
-}
-
-select, input, textarea {
-  font: 99% sans-serif;
-}
-
-input, textarea {
-	border: none;
-}
-input:focus, textarea:focus {
-	border:none;
-}
-
-table {
-  font-size: inherit;
-  font: 100%;
-}
-
-small {
-  font-size: 85%;
-}
-
-strong {
-  font-weight: 700;
-}
-
-td, td img {
-  vertical-align: top;
-}
-
-sub, sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-}
-
-sup {
-  top: -0.5em;
-}
-
-sub {
-  bottom: -0.25em;
-}
-
-
-.clickable,
-label,
-input[type=button],
-input[type=submit],
-input[type=file],
-button {
-  cursor: pointer;
-}
-
-button, input, select, textarea {
-  margin: 0;
-}
-
-button,
-input[type=button] {
-  width: auto;
-  overflow: visible;
-}
-
-.ie7 img {
-  -ms-interpolation-mode: bicubic;
-}
-
-.clearfix {
-  zoom: 1;
-}
-.clearfix:before, .clearfix:after {
-  content: " ";
-  display: block;
-  height: 0;
-  overflow: hidden;
-}
-.clearfix:after {
-  clear: both;
-}
-
-.page-close {
-  z-index: 2002;
-}
-
-.page-menu {
-  z-index: 2001;
-}
-
-.page-header {
-  z-index: 1999;
-}
-
-.page-overlay {
-  z-index: 2000;
-}
-
-.breadcrumb.affix {
-  z-index: 1986;
-}
-
-.elevator {
-  z-index: 29;
-}
-
-
-html {
-  font-size: 16px;
-  min-width: 320px;
-  overflow: hidden;
-  overflow-y: scroll;
-}
-
-body {
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
-  position: relative;
-  color: #333333;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.8;
-  min-height: 100vh;
-  text-rendering: optimizeLegibility;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-}
-
-a {
-  color: #d16098;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all .3s;
-}
-a:hover {
-  color: crimson;
-}
-
-input[type="checkbox"] {
-  vertical-align: baseline;
-}
-
-strong {
-  color: #434b4f;
-  font-weight: 600;
-}
-
-pre {
-  /*
-  white-space: pre-wrap
-  line break	space/tab	wrapping(자동줄바꿈)
-  반영	      반영	            O
-  */
-  white-space: pre-wrap;
-  word-wrap: normal;
-  word-break: break-all;
+img, object, embed {
+	max-width: 100%;
 }
 
 body{
-  font-family: "Nanum Barunpen;
+	font-family: "Nanum Barunpen;
+	width:80%;
 }
 
-img {
-  max-width: 90%;
+/* header */
+.page-header {
+  position: relative;
+  top: 0;
+  left: 0;
+  margin-top:0px;
+  width: 100%;
+  background-color:white;
+  height : 40px
 }
-@media screen and (min-width: 400px) {
-  img {
-    max-width: 90%;
-  }
-}
-@media screen and (min-width: 600px) {
-  img {
-    max-width: 70%;
-  }
+.page-header .container {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	height: 40px;
 }
 
-/* main */
+#page-logo {
+	top:7px;
+	font-size: 1.2em;
+	color: black;
+	float: left;
+	position: absolute;
+	transition: text-shadow 0.5s ease;
+	height : 100%;
+}
+#logo:visited {
+  color: black;
+}
+#logo:hover {
+  color: green;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+}
+
+#login, #logout{
+	position:absolute;
+	display:inline-block;
+	height:100%;
+	width:60px;
+	right:0px;
+	font-size:1em;
+	top:7px;
+}
+
+
+/**/
+#main_content{
+	width:100%;
+}
+/*
+Left Navi
+기본화면 화면비율 20%
+작을때 아이콘표시
+핸드폰아이콘 뷰앤하이드
+*/
+nav{
+	margin-top:40px;
+	position:relative;
+	display:block;
+	float:left;
+}
+.nav-container{
+	overflow-y: scroll;
+	height:100%;
+	width:100%;
+}
+
+
+/*
+Blog영
+*/
+#body {
+	left:200px;
+	margin-top:40px;
+	position:relative;
+	width:75%;
+	display:block;
+}
+
+@media screen and (min-width: 680px) {
+	nav{
+		width:200px;
+	}
+	#body{
+		left:200px;
+	}
+}
+@media screen and (max-width: 679.9px) {
+	nav{
+		width:50px;
+	}
+	#body{
+		left:50px;
+	}
+}
+@media screen and (max-width: 500px) {
+	nav{
+		display:none;
+	}
+}
+
+
+#loginTitle{
+	height:44px;
+}
+.loginInputTotal{
+	width:100%;
+	height:40px;
+	padding-left:10px;
+}
+.loginInputLeft{
+	width:80%;
+	height:40px;
+	padding-left:10px;
+}
+.loginInputRight{
+	display:inline-block;
+	width:20%;
+	height:40px;
+	padding-left:5px;
+	background:white;
+}
+
 
 .page-title {
   bottom: 0;
@@ -325,19 +165,6 @@ img {
   height:60px;
 }
 
-.page-header {
-  position: relative;
-  top: 0;
-  left: 0;
-  margin-top:0px;
-  width: 100%;
-  background-color:white;
-}
-.page-header .container {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
-  height: 69px;
-}
 
 .page-body {
   position: relative;
@@ -432,28 +259,6 @@ img {
 @media screen and (min-width: 1200px) {
   .container {
     max-width: 1140px;
-  }
-}
-
-.logo {
-  font-size: 1.8em;
-  color: black;
-  float: left;
-  left: 10px;
-  position: absolute;
-  top: 15px;
-  transition: text-shadow 0.5s ease;
-}
-.logo:visited {
-  color: black;
-}
-.logo:hover {
-  color: green;
-  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
-}
-@media screen and (max-width: 959px) {
-  .logo {
-    font-size: 1.5em;
   }
 }
 
@@ -783,48 +588,6 @@ footer strong {
   }
 }
 
-
-#login, #logout{
-	position:absolute;
-	display:inline-block;
-	height:60px;
-	width:60px;
-	right:0px;
-	font-size:1.5em;
-	padding-top:10px;
-}
-
-.login{
-	position : relative;
-	width:30%;
-}
-
-#loginTitle{
-	height:44px;
-}
-.loginInputTotal{
-	width:100%;
-	height:40px;
-	padding-left:10px;
-}
-.loginInputLeft{
-	width:80%;
-	height:40px;
-	padding-left:10px;
-}
-.loginInputRight{
-	display:inline-block;
-	width:20%;
-	height:40px;
-	padding-left:5px;
-	background:white;
-}
-
-#body > section {
-	top : 100px;
-	max-width:1140px;
-	margin: 0 auto;
-}
 
  
 .p-0{padding:0 auto;}
