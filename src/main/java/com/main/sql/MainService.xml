@@ -3,7 +3,17 @@
 
 <mapper namespace="MainService">
 
-	<select id="mainBlogContent" resultType="hashmap">
+	<select id="loadingBlogTitle" resultType="hashmap">
+		SELECT 
+			IDX
+		,	TITLE
+		FROM
+			TB_BLOG_M M
+		GROUP BY TITLE
+		ORDER BY TITLE;
+	</select>
+
+	<select id="loadingMainBlogContent" resultType="hashmap">
 		SELECT 
 			IDX
 		,	TITLE

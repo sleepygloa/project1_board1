@@ -47,6 +47,29 @@ public class MainController {
 		mv.addObject("s_userId", s_userId);
 		return mv;
 	}	
+
+	@RequestMapping("/main/loadingBlogTitle")
+	public ModelAndView loadingBlogTitle(HttpSession session) throws Exception {
+		ModelAndView mv = new ModelAndView("jsonView");
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		
+		try {
+			list = mainService.loadingBlogTitle();	
+		}catch(Exception e) {
+			
+		}
+		
+		mv.addObject("list", list);
+		
+		if(session.getAttribute("s_userId") != null) {
+			String in_user_id = (String)session.getAttribute("s_userId");
+			if(in_user_id.equals("sleepygloa")){
+				mv.addObject("ADMIN_YN", "Y");
+			}
+		}
+
+		return mv;
+	}
 	
 	@RequestMapping("/main/loadingMainBlogContent")
 	public ModelAndView loadingMainBlogContent(HttpSession session) throws Exception {
@@ -54,7 +77,7 @@ public class MainController {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		
 		try {
-			list = mainService.mainBlogContent();	
+			list = mainService.loadingMainBlogContent();	
 		}catch(Exception e) {
 			
 		}

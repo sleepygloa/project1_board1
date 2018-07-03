@@ -30,9 +30,15 @@ public class MainServiceImpl implements MainService{
 	private FileUtils fileUtils;
 	
 	@Override
-	public List<Map<String, Object>> mainBlogContent() throws Exception{
-		return mainDAO.mainBlogContent();
+	public List<Map<String, Object>> loadingBlogTitle() throws Exception{
+		return mainDAO.loadingBlogTitle();
 	}
+	
+	@Override
+	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{
+		return mainDAO.loadingMainBlogContent();
+	}
+
 	
 	@Override
 	public List<Map<String, Object>> getBlogTitleDropdown(Params inParams) throws Exception{

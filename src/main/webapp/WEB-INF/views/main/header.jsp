@@ -10,14 +10,15 @@
 		
 		<meta name="author" content="SeonHo Kim">
 		
-		<link rel="stylesheet" href="/resources/css/bootstrap.css">
+		<link rel="stylesheet" href="/resources/plugins/bootstrap4.1.1/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="/resources/plugins/bootstrap4.1.1/dist/css/bootstrap-grid.css">
 		<link rel="stylesheet" href="/resources/css/jquery-ui.min.css">
 		<link rel="stylesheet" href="/resources/css/fa-svg-with-js.css">
 		<link rel="stylesheet" href="/resources/css/main.css">
 		<link rel="stylesheet" href="/resources/css/font.css">
 
 		<script src="/resources/js/jquery.min.js"></script>
-		<script src="/resources/js/bootstrap.min.js"></script>
+		<script src="/resources/plugins/bootstrap4.1.1/dist/js/bootstrap.min.js"></script><!-- 4.1.1 -->
 		<script src="/resources/js/typed.min.js"></script>
 		<script src="/resources/js/jquery-ui.min.js"></script>
 		<script src="/resources/js/fontawesome-all.min.js"></script>

@@ -13,13 +13,27 @@
 			  <a id="logout" href="#" style="display:none">logout</a>
 			</div>
 		</header>
-		<div id="main_content">
-			<nav>1</nav>
-			<article id="body"></article>
+		<div id="body" >
 		</div>
 
-		
-		<!-- <footer></footer> -->
 	</body>
-	
+		<footer>
+			<div class="container">
+				<p class="social-icons">
+					<a href="https://github.com/sleepygloa" target="_blank">
+						<i class="fa fa-github"></i>
+					</a>
+ 					<a href="https://blog.naver.com/sleepygloa" target="_blank">
+						<img width="50px" height="20px" src="/resources/img/naverblog.png"/>
+					</a>
+				</p>
+
+				<p class="copyright">© 2018&nbsp;&nbsp;KIM SEONHO</p>
+				<p class="theme-by">Hosted on
+				<a href="https://github.com/sleepygloa">GitHub Pages&nbsp;
+					<i class="fa fa-github"></i>
+				</a>
+				</p>
+			</div>
+		</footer>
 </html>

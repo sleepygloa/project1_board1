@@ -12,9 +12,31 @@ var mainContentJs = function(){
 	return {
 		init : function(){
 			
+			loadingBlogTitle();
+			
 			loadingMainContent();
 			
 		}
+	}
+	
+	function loadingBlogTitle(){
+		  $.ajax({
+			  url		: "/main/loadingBlogTitle",
+			  success	: function(result){
+				  var blogNavi = $('#blogLeftNavi');
+				  
+				  var st = '<ul>';
+				  var list = result.list;
+				  if(list.length > 0){
+					  for (var i in list){
+						  st += '<li>'+list[i].TITLE+'</li>'
+					  }
+				  }
+				  st += '</li>';
+				  
+				  blogNavi.append(st);
+			  }
+		  })
 	}
 	
 	  function loadingMainContent(){
