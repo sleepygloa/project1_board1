@@ -29,10 +29,6 @@ public class MainServiceImpl implements MainService{
 	@Resource(name="fileUtils")
 	private FileUtils fileUtils;
 	
-	@Override
-	public List<Map<String, Object>> loadingBlogTitle() throws Exception{
-		return mainDAO.loadingBlogTitle();
-	}
 	
 	@Override
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{

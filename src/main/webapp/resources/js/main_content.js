@@ -1,3 +1,27 @@
+var mainData = '';
+
+function loadingPgSetting(data){
+  	mainData = data; //?
+  	$.ajax({
+  		url		: "/main/viewPg",
+  		data	: data,
+  		type	: "POST",
+  		success	: function(result){
+  			$('#main').empty();
+  			$('#main').html(result);
+  		}
+  	})
+}
+  
+//글쓰기버튼 
+function mainBlogInsertBtn(){
+	  var data = {
+			  idx  : '',
+			  page : '/main/updateBlogContent'
+	  }
+	  loadingPgSetting(data);
+}
+
 function viewBlogContentPg(idx){
 	var data = {
 			idx  : idx,
@@ -6,57 +30,43 @@ function viewBlogContentPg(idx){
 	loadingPgSetting(data);
 }
 
+function blogChileListToggle(count){
+	var listCss = $('.blogSubject_'+count);
+	if(listCss.is(":visible")){
+		listCss.css('display', 'none');
+	}else{
+		listCss.css('display', 'block');
+	}
+	
+}
 var mainContentJs = function(){
 	"use strict";
 	
 	return {
 		init : function(){
 			
-			loadingBlogTitle();
-			
 			loadingMainContent();
+			
+			mainContentEvent();
 			
 		}
 	}
 	
-	function loadingBlogTitle(){
-		  $.ajax({
-			  url		: "/main/loadingBlogTitle",
-			  success	: function(result){
-				  var blogNavi = $('#blogLeftNavi');
-				  
-				  var st = '<ul>';
-				  var list = result.list;
-				  if(list.length > 0){
-					  for (var i in list){
-						  st += '<li>'+list[i].TITLE+'</li>'
-					  }
-				  }
-				  st += '</li>';
-				  
-				  blogNavi.append(st);
-			  }
-		  })
-	}
 	
 	  function loadingMainContent(){
 		  var id = null;
 		  $.ajax({
 			  url		: "/main/loadingMainBlogContent",
 			  success	: function(result){
-				  if(result.ADMIN_YN != 'Y'){
-					  $('#blogAddBtn').css('display','none');
-				  }
+				  if(result.ADMIN_YN == 'Y') $('#blogAddBtn').css('display','block');
 				  
 				  var contentMain = '';
 				  var title_count = 0;
-				  var title_subject_count = 0;
+				  
 				  if(result.list.length > 0){
 					  title_count = result.list[0].TITLE_COUNT;
-					  title_subject_count = result.list[0].TOTAL_SUBJECT_COUNT;
 				  }
 				  $('#blogContents_totalSectionCounts').text(title_count);
-				  $('#blogContents_totalCounts').text(title_subject_count);
 				  
 				  
 				  if(result.list){
@@ -67,43 +77,34 @@ var mainContentJs = function(){
 					  
 					  for(var i in list){
 						  if(title != list[i].TITLE){
-							  title = list[i].TITLE
-							  subCount = 0;
-							  contentMain += 					  
-								  '<section class="cont-article">'
-								  +'<div class="container">'
-								  +'<article class="article article--html">';
-							  contentMain += 					  
-							  '<div class="article-menu">'
-								  +'<i class="devicon-html5-plain"></i>'
-								  +'<h3 id="menuName">'+ list[i].TITLE +'</h3>'
-								  +'<small><span id="menuCount">'+list[i].SUBJECT_COUNT+'</span> lessons</small>'
-							  +'</div>'
-							  +'<ol class="article-title">'
+							  title = list[i].TITLE;
+							  contentMain += '<ul class="blogLeftList blogTitle_'+count+'" onclick="blogChileListToggle('+count+')"><h6 id="menuName">'+ list[i].TITLE +'</h6>';
 						  }
-						  count++;
 						  subCount++;
-						  contentMain += 					  
-						   '<li class="title">'
-							  +'<a onclick="viewBlogContentPg('+list[i].IDX+')"><em id="contentsNum">'+count+'</em> '+list[i].SUBJECT+'</a>'
-						  +'</li>'
-						  if(subCount == list[i].SUBJECT_COUNT){
-							  contentMain += 					  
-					  				'</ol>'
-						  			+'</article>'
-						  			+'</div>'
-						  			+'</section>';
+						  contentMain += '<li class="blogLeftList blogSubject_'+count+'" style="display:none;"><a onclick="viewBlogContentPg('+list[i].IDX+')">'+list[i].SUBJECT+'</a></li>'
+						  
+						  if(subCount == list[i].SUBJECT_COUNT) {
+							  contentMain += '</ul>';
+							  count++;
 						  }
 					  }
 
 				  }
 				  
-				  $('#main').append(contentMain);
+				  $('#blogLeftNavi').append(contentMain);
 				  
 			  }
 		  })
 	  }
 	  
+	  
+	  
+	  function mainContentEvent(){
+		//글쓰기
+		  $(document).on('click', '#blogAddBtn', function(){
+			  mainBlogInsertBtn();
+		  })
+	  }
 	  
 }();
 

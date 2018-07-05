@@ -11,8 +11,6 @@ import com.core.parameters.Params;
 
 public interface MainService{
 
-	List<Map<String, Object>> loadingBlogTitle() throws Exception;
-	
 	List<Map<String, Object>> loadingMainBlogContent() throws Exception;
 	
 	List<Map<String, Object>> getBlogTitleDropdown(Params inParams) throws Exception;

@@ -13,7 +13,7 @@
 			  <a id="logout" href="#" style="display:none">logout</a>
 			</div>
 		</header>
-		<div id="body" >
+		<div id="body" class="row" >
 		</div>
 
 	</body>

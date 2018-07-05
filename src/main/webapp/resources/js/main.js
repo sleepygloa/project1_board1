@@ -1,21 +1,6 @@
 var s_userId = '';
 var idx = '';
 
-var mainData = '';
-
-function loadingPgSetting(data){
-	mainData = data; //?
-	$.ajax({
-		url		: "/main/viewPg",
-		data	: data,
-		type	: "POST",
-		success	: function(result){
-			$('#body').empty();
-			$('#body').html(result);
-		}
-	})
-}
-
 var mainJs = function(){
 	"use strict";
 
@@ -74,10 +59,6 @@ var mainJs = function(){
 			  logout();
 		  })
 		  
-		  //글쓰기
-		  $(document).on('click', '#blogAddBtn', function(){
-			  mainBlogInsertBtn();
-		  })
 	  }
 	
 	  function toMainPage(){
@@ -101,14 +82,6 @@ var mainJs = function(){
 				  window.location.href="/";
 			  }
 		  })
-	  }
-	  //글쓰기버튼 
-	  function mainBlogInsertBtn(){
-		  var data = {
-				  idx  : '',
-				  page : '/main/updateBlogContent'
-		  }
-		  loadingPgSetting(data);
 	  }
 	  
 }();

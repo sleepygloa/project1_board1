@@ -10,6 +10,7 @@
 		
 		<meta name="author" content="SeonHo Kim">
 		
+		<link rel="stylesheet" href="/resources/plugins/bootstrap4.1.1/dist/css/bootstrap-reboot.css">
 		<link rel="stylesheet" href="/resources/plugins/bootstrap4.1.1/dist/css/bootstrap.css">
 		<link rel="stylesheet" href="/resources/plugins/bootstrap4.1.1/dist/css/bootstrap-grid.css">
 		<link rel="stylesheet" href="/resources/css/jquery-ui.min.css">

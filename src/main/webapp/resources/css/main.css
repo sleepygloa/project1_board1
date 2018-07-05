@@ -1,28 +1,5 @@
 @charset "UTF-8";
 
-html, body, body div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, figure, footer, header, menu, nav, section, time, mark, audio, video, details, summary {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font-weight: 400;
-	vertical-align: baseline;
-	background: transparent;
-}
-
-article, aside, figure, footer, header, nav, section, details, summary {
-	display: block;
-}
-
-html {
-	box-sizing: border-box;
-	overflow-y: scroll;
-}
-
-img, object, embed {
-	max-width: 100%;
-}
-
 body{
 	font-family: "Nanum Barunpen;
 	width:80%;
@@ -84,7 +61,8 @@ Left Navi
 핸드폰아이콘 뷰앤하이드
 */
 nav{
-	
+	background:gray;
+	height:100vh;
 }
 .nav-container{
 	overflow-y: scroll;
@@ -97,6 +75,18 @@ Blog영
 */
 article {
 }
+
+
+ul{
+   list-style:none;
+   padding-left:0px;
+}
+
+.blogLeftList{
+	width:150px; overflow:hidden;white-space:nowrap; text-overflow:ellipsis;
+	font-size:10px;
+}
+
 
 
 #loginTitle{
@@ -220,5 +210,11 @@ article {
  
 .genderSelect, .genderSelect:active, .genderSelect:hover, .genderSelect:focus{
 	background:#1FBC02;
+}
+
+
+
+.wrapper{
+	display:grid;
 }
 

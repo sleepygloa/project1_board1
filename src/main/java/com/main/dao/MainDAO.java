@@ -16,10 +16,6 @@ public class MainDAO extends AbstractDAO{
 //		insert("LoginService.loginInsert", map);
 //	}
 //	
-	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> loadingBlogTitle() throws Exception{
-		return (List<Map<String, Object>>)selectList("MainService.loadingBlogTitle");
-	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{

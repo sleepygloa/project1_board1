@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<div>ddd
+</div>
+<div>dddddd
+</div>
+
 <section>
 	<form id="mainBlogUpdateForm" name="mainBlogUpdateForm" onsubmit="return false;" enctype="multipart/form-data">
 		<div class="container" style="padding-top:100px;">
