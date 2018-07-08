@@ -13,6 +13,4 @@
 		</div>
 	</article>
 
-
-
 	<script src="/resources/js/main_content.js"></script>

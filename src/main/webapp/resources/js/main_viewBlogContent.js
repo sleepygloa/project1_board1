@@ -189,7 +189,7 @@ var MainViewBlogContentJs = function(){
 										+ '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />'
 										+ '</div>';
 							}else if(list[i].TYPE == 'CODE'){
-								var str = '<div id="content_'+i+'" class="col-xs-12" style="background:black; color:white;"></div>';
+								var str = '<div id="content_'+i+'" class="col-xs-12" style="background:gray; color:white;"></div>';
 							}else{
 								var str = '<div id="content_'+i+'" class="col-xs-12"></div>';
 							}

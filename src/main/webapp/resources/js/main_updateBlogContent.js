@@ -17,6 +17,11 @@ function fnSaveIdx(i){
 	focusIdx = i;
 }
 
+function resize(obj) {
+	  obj.style.height = "1px";
+	  obj.style.height = (12+obj.scrollHeight)+"px";
+	}
+
 var focusIdx = -1;
 var MainUpdateBlogContentJs = function(){
 	"use strict";
@@ -150,7 +155,7 @@ var MainUpdateBlogContentJs = function(){
 	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
 	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
 	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" ></textarea>'
+        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" onchange="resize('+this+')" ></textarea>'
         str += '</div>';
 		$('#sortable').append(str);
 		contentLength++;
@@ -160,7 +165,7 @@ var MainUpdateBlogContentJs = function(){
         var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
         str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
         str += '<input type="hidden" id="type_'+contentLength+'" value="CODE" />'
-        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:black; color:white;"></textarea>'
+        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:gray; color:white;"></textarea>'
         str += '</div>';
 		$('#sortable').append(str);
 		contentLength++;

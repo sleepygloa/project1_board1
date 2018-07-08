@@ -6,7 +6,7 @@ body{
 }
 
 /* header */
-.page-header {
+.header {
   position: relative;
   top: 0;
   left: 0;
@@ -15,7 +15,7 @@ body{
   background-color:white;
   height : 40px
 }
-.page-header .container {
+.header .container {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	height: 40px;
@@ -51,8 +51,9 @@ body{
 
 /**/
 #body{
-	margin-top:40px;
+	margin-top:20px;
 	width:100%;
+	height:100%;
 }
 /*
 Left Navi
@@ -62,7 +63,7 @@ Left Navi
 */
 nav{
 	background:gray;
-	height:100vh;
+	height:100%;
 }
 .nav-container{
 	overflow-y: scroll;
@@ -216,5 +217,21 @@ ul{
 
 .wrapper{
 	display:grid;
+}
+
+#viewBlogSubject{
+	top:50px;
+	border-bottom:1px solid gray;
+}
+.form-control, .inputWhite, .inputWhite:disabled, .spanWhite{
+	background-color:white;
+	color:black;
+	border:0px solid;
+	width:100%;
+}
+
+#footer{
+	padding-top:50px;
+	text-align:center;
 }
 

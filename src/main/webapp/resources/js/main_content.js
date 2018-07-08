@@ -76,17 +76,20 @@ var mainContentJs = function(){
 					  var subCount = 0;
 					  
 					  for(var i in list){
+						  console.log(title + " : " + list[i].TITLE);
 						  if(title != list[i].TITLE){
 							  title = list[i].TITLE;
 							  contentMain += '<ul class="blogLeftList blogTitle_'+count+'" onclick="blogChileListToggle('+count+')"><h6 id="menuName">'+ list[i].TITLE +'</h6>';
 						  }
-						  subCount++;
 						  contentMain += '<li class="blogLeftList blogSubject_'+count+'" style="display:none;"><a onclick="viewBlogContentPg('+list[i].IDX+')">'+list[i].SUBJECT+'</a></li>'
+						  subCount++;
 						  
-						  if(subCount == list[i].SUBJECT_COUNT) {
+						  if(subCount == (list[i].SUBJECT_COUNT)) {
 							  contentMain += '</ul>';
 							  count++;
+							  subCount = 0;
 						  }
+						  console.log(subCount + " : " + list[i].TITLE_COUNT);
 					  }
 
 				  }
