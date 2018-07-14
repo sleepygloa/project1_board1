@@ -13,6 +13,7 @@
 </div>
 <div class="form-control">
 	<!-- 버튼 -->
+	<button id="viewBlogContentDeleteBtn" type="button" class="btn btn-sm btn-info" style="display:none">삭제하기</button>
 	<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-sm btn-info" style="display:none">수정하기</button>
 	<button id="viewBlogContentCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</button>
 </div>

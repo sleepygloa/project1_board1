@@ -22,6 +22,8 @@ public interface MainService{
 	void saveBlogContent(Params inParams) throws Exception;
 	void saveBlogFileUpload(Params inParams, MultipartHttpServletRequest req) throws Exception;
 	
+	void deleteBlogContent(Params inParams) throws Exception;
+	
 	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
 	
 	void insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception;

@@ -58,7 +58,7 @@ var MainUpdateBlogContentJs = function(){
 							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
 						}else if(list[i].TYPE == 'CODE'){
 							addCodeTextArea();
-							$('#text_'+i).text(str);
+							$('#text_'+i).text(list[i].CONTENT);
 						}else{
 							addTextArea(list[i].CONTENT);
 							$('#text_'+i).text(list[i].CONTENT);

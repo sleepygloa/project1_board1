@@ -40,6 +40,10 @@ public class MainDAO extends AbstractDAO{
 		insert("MainService.saveBlogContent", inParams);
 	}
 	
+	public void deleteBlogTitleContent(Params inParams) throws Exception{
+		delete("MainService.deleteBlogTitleContent", inParams);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getMainViewReContent(Map<String, Object> map) throws Exception{
 		return (List<Map<String, Object>>)selectList("MainService.getMainViewReContent", map);

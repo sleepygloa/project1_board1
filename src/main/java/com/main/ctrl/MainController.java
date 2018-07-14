@@ -159,6 +159,22 @@ public class MainController {
 		return mv;
 	}
 	
+	//블로그 글 수정하기
+	@RequestMapping("/main/deleteBlogContent")
+	@ResponseBody
+	public ModelAndView deleteBlogContent(Params inParams) {
+		System.out.println("/main/deleteBlogContent inParams : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+		try {
+			mainService.deleteBlogContent(inParams);
+		}catch(Exception e) {
+			System.out.println("ERROR" + e);
+			e.printStackTrace();
+		}
+		mv.addObject("SUCCESS", "글이 수정되었습니다.");
+		return mv;
+	}
+	
 	//블로그 글 수정완료 후 파일 업로드
 	@RequestMapping("/main/saveBlogFileUpload")
 	@ResponseBody
@@ -224,5 +240,7 @@ public class MainController {
 			mainService.insertViewBlogReReContent(inParams, request);
     	return mv;
 	}
+	
+	
 	
 }

@@ -212,6 +212,7 @@ var MainViewBlogContentJs = function(){
 					
 					if(idCheck){
 						$('#viewBlogContentUpdateBtn').css('display', 'inline-block');
+						$('#viewBlogContentDeleteBtn').css('display', 'inline-block');
 					}
 					
 					var list = result.list;
@@ -237,6 +238,32 @@ var MainViewBlogContentJs = function(){
 			}
 			loadingPgSetting(data);
 		});
+		
+		$('#viewBlogContentDeleteBtn').click(function(){
+			
+			if(confirm("정말삭제하시겠습니까?")) {
+				var data = {
+						idx  : $('#viewBlogContentIdx').val(),
+						page : "/main/deleteBlogContent"
+				}
+				
+				$.ajax({
+					url : "/main/deleteBlogContent",
+					data : data,
+					async : false,
+					success : function(result){
+						alert('삭제하였습니다.');
+						window.location.href="/";
+					},
+					error : function(result){
+						alert('삭제를 실했습니다.');
+					}
+				});
+				
+				loadingPgSetting(data);
+			}
+		});
+		
 		
 		//댓글달기
 		$(document).on('click', '#viewBlogReSaveBtn', function(){

@@ -126,6 +126,15 @@ public class MainServiceImpl implements MainService{
 	}
 	
 	@Override
+	public void deleteBlogContent(Params inParams) throws Exception{
+			
+		mainDAO.deleteBlogContentBox(inParams);
+		
+		mainDAO.deleteBlogTitleContent(inParams);
+	}
+	
+	
+	@Override
 	public void saveBlogFileUpload(Params inParams, MultipartHttpServletRequest req) throws Exception{
 		
 		mainDAO.deleteMainBlogFileList(inParams);

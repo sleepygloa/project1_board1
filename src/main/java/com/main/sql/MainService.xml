@@ -75,6 +75,13 @@
 			IDX	= #{idx};
 	</update>
 
+	<delete id="deleteBlogTitleContent" parameterType="hashmap">
+		DELETE FROM	
+			TB_BLOG_M
+		WHERE
+			IDX	= #{idx};
+	</delete>
+
 	<select id="getMainViewReContent" parameterType="hashmap" resultType="hashmap">
 		SELECT 
 				REF
