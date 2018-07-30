@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config-root>
+    <maxDataRows>100000</maxDataRows>
+    <language>
+    	<code>SC0013</code>
+    	<key>codeGroupCd</key>
+    </language>
+    <operation>
+    <!-- 모드 
+    	REL : 운영서버
+    	 @ blockAdmin 값으로 운영서버는 관리자 로그인 못하게 막음... 이를테면 운영 WAS 서버엔 true, DB 관리자 WAS 서버엔 false
+    	DEV : 개발서버
+    	LOC : 로컬
+     -->
+<!-- #### 운영서버 시작 #### -->
+        <mode>REL</mode>
+        <blockAdmin>false</blockAdmin>
+<!-- 운영서버 끝 -->
+
+<!-- #### 개발서버 시작 #### -->
+<!--         <mode>DEV</mode> -->
+<!-- 개발서버 끝 -->
+
+<!-- #### 로컬피씨 시작 #### -->
+<!--         <mode>LOC</mode> -->
+<!-- 로컬피씨 끝 -->
+
+    </operation>
+    <masterCompany>VERTEXID</masterCompany>
+    <locale>
+    	<defaultLang>ko</defaultLang>
+    	<defaultCountry>kr</defaultCountry>
+    </locale>
+    <charset>
+    	<default>UTF-8</default>
+    </charset>
+    <authKeyPath>
+    	<ios>classpath:/config/authorization/push/paragon_ios_rel.p12</ios>    	
+    	<android>AAAAOluSHD0:APA91bEQeVctzzFEONPYyiicnuBFA2me4hc874FIlQfYUlZ856j-opmYfGGweGW4DFSKon4WQp5ZxLB3FtJR2riHd12sGPjye52HIlvuvMOlJcHZIUZDxWjJ97APaBTDooW_kTrWJAiZ</android>    	
+    </authKeyPath>
+    <location>
+    	<interval>60000</interval>
+    	<uri>/ctrl/settings/user/mobileLoc</uri>
+    </location>
+    <excelTempLoc>
+    	<preventiveCheck>classpath:\config\excelTemp\PreventiveCheckReport.xlsx</preventiveCheck>
+    	<serviceReport>classpath:\config\excelTemp\ServiceReport.xls</serviceReport>
+ 	    <assetUploadTempDown>classpath:\config\excelTemp\ExcelUploadAssetTemplete.xlsx</assetUploadTempDown>
+    </excelTempLoc>
+	<session>
+		<timeoutSec>18000</timeoutSec>
+	</session>
+	<cipher>
+		<key>e/4sadtkzEQT77E32K9bZw==</key>
+	</cipher>
+	<sendMail>
+<!-- 		<ldccHost>localhost</ldccHost> -->
+		<ldccHost>201.93.181.53</ldccHost>
+		<ldccPort>25</ldccPort>
+		<user>pos_system@pos.ldcc.co.kr</user>
+		<linkUrl>https://pos.ldcc.co.kr</linkUrl>
+	</sendMail>
+	<!-- 서버 리로드 설정(언어,Allowed URI) 미설정시 10초후 20초 간격 리로딩 -->
+	<timerTask>
+		<domainUtil>
+			<reloadDelay>10000</reloadDelay>
+			<reloadPeriod>5000</reloadPeriod>
+		</domainUtil>
+		<allowedURIListUtil>
+			<reloadDelay>10000</reloadDelay>
+			<reloadPeriod>30000</reloadPeriod>
+		</allowedURIListUtil>
+	</timerTask>
+	
+	<!-- 파일 업로드 설정 -->
+	<upload>
+		<!-- 업로드 경로-->
+		<root>/upload</root>
+		<miliSec>30000</miliSec>
+		
+		<!--
+			각 업무별 파일 업로드 유효성 검사 기준
+			- limit : 업로드 파일 최대 크기(KB), -1을 입력할 경우 무제한
+			- extention : 허용할 파일 확장자 정의 ("|"로 구분)
+		-->
+		<config>
+			<temp>
+				<limit>-1</limit>
+				<extention>ppt|doc|xls|pptx|xlsx|docx|txt|jpg|gif|bmp|jpeg|pdf</extention>
+			</temp>
+			
+            <!-- 게시판 업로드 파일 -->
+            <attfile_bbs> 
+                <limit>7168</limit>
+                <!-- office문서, pdf, image파일 --> 
+                <extention>ppt|doc|xls|pptx|docx|xlsx|txt|pdf|hwp|jpg|jpeg|gif|bmp|png</extention>
+            </attfile_bbs>
+            <!-- 사용자 이미지 파일 -->
+            <image_user> 
+                <limit>300</limit>
+                <!-- image파일 --> 
+                <extention>jpg|jpeg|gif|bmp</extention>
+            </image_user>
+            <!-- 엑셀 업로드 -->
+            <excel_upload> 
+                <limit>-1</limit>
+                <extention>xlsx|xls</extention>
+            </excel_upload>
+		</config>
+	</upload>
+</config-root>

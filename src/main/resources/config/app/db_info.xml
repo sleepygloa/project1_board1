@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd" >
+
+<properties>
+	
+	<entry key="driver">org.mariadb.jdbc.Driver</entry>
+	<!-- LDCC 운영 DB 서버 -->
+  	<entry key="url">jdbc:mysql://10.131.4.197/MMS?autoReconnect=true</entry>
+	<!-- LDCC 클라우드 개발서버 -->
+<!-- 	<entry key="url">jdbc:mysql://10.131.4.198/MMS?autoReconnect=true</entry> -->
+	<!-- 개발자 피씨 -->
+<!-- 	<entry key="url">jdbc:mysql://localhost/MMS?autoReconnect=true</entry> -->
+	<entry key="id">mms</entry>
+	<entry key="pw">e/4sadtkzEQT77E32K9bZw==</entry>
+	  
+</properties> 
