@@ -29,6 +29,10 @@ public class MainServiceImpl implements MainService{
 	@Resource(name="fileUtils")
 	private FileUtils fileUtils;
 	
+	@Override
+	public List<Map<String, Object>> getSidebarMenu() throws Exception{
+		return mainDAO.getSidebarMenu();
+	}
 	
 	@Override
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{

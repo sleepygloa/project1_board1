@@ -19,9 +19,26 @@ var coreJs = function(){
 
 	function getMenu(){
 		$.ajax({
-			url		: "",
+			url		: "/getSidebarMenu",
 			success : function(data){
+				console.log(data);
+				$('#sidebarMenu').empty();
 				
+				var menuStr = '<li class="nav-item active">'
+					+'<a class="nav-link" href="index.html">'
+					+'<img src="images/icons/1.png" alt="">'
+					+'<span class="menu-title">Dashboard</span>'
+					+'</a>'
+					+'</li>'
+				
+	              
+	                
+	                
+	              
+	            
+				
+				
+				$('#sidebarMenu');
 			}
 		});
 	}

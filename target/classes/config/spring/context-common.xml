@@ -15,6 +15,12 @@
        					http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     
    	<aop:aspectj-autoproxy/>
+   	
+	<context:component-scan base-package="com">
+		<context:include-filter type="annotation" expression="com.core.web.observer.ConfigCheck"/>
+	</context:component-scan>
+   	
+   	
 	<bean id="loggerAspect" class="com.common.logger.LoggerAspect" />
     
     <context:component-scan base-package="com">
@@ -50,5 +56,7 @@
 	</bean>
 
 	<bean id="paramsArgumentResolver" class="com.core.conversion.ParamsArgumentResolver" />
-	<bean id="paramsReturnValueHandler" class="com.core.conversion.ParamsReturnValueHandler" /> 
+	<bean id="paramsReturnValueHandler" class="com.core.conversion.ParamsReturnValueHandler" />
+	
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/> 
 </beans>

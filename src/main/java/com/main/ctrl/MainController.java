@@ -79,7 +79,11 @@ public class MainController {
 //		}
 	}
 	
-	
+	//사이드바 메뉴불러오기
+	@RequestMapping("/getSidebarMenu")
+	public List<Map<String, Object>> getSidebarMenu() throws Exception {
+		return mainService.getSidebarMenu();
+	}	
 	
 	
 	

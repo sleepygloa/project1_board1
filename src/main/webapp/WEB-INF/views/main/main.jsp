@@ -83,7 +83,7 @@
             <p class="designation">Manager</p>
             <span class="online"></span>
           </div>
-          <ul class="nav">
+          <ul class="nav" id="sidebarMenu">
             <li class="nav-item active">
               <a class="nav-link" href="index.html">
                 <img src="images/icons/1.png" alt="">

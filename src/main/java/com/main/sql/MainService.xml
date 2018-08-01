@@ -3,6 +3,14 @@
 
 <mapper namespace="MainService">
 
+	<select id="getSidebarMenu" resultType="hashmap">
+		SELECT 
+			*
+		FROM
+			TB_NAMBI_MENU M;
+	</select>
+
+
 	<select id="loadingMainBlogContent" resultType="hashmap">
 		SELECT 
 			IDX

@@ -16,6 +16,10 @@ public class MainDAO extends AbstractDAO{
 //		insert("LoginService.loginInsert", map);
 //	}
 //	
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getSidebarMenu() throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.getSidebarMenu");
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{

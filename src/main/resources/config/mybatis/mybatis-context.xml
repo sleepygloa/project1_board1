@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 캐시 사용 설정. default: true -->
+		<setting name="cacheEnabled" value="true" />
+		<!-- lazy loading 설정. default: true -->
+		<setting name="lazyLoadingEnabled" value="false" />
+		<!-- 하나의 statement에서 다수 ResultSet 허락여부. default: true -->
+		<setting name="multipleResultSetsEnabled" value="false" />
+		<!-- 기본 executor지정. default: SIMPLE, 이 설정으로 batch 처리가 가능하다. -->
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<!-- null 값에 대한 JDBC 타입을 지정 -->
+		<setting name="jdbcTypeForNull" value="VARCHAR" />
+		<!-- Map사용시null값컬럼 누락방지default: false -->
+		<setting name="callSettersOnNulls" value="true" />
+	</settings>
+	<typeAliases>
+		<typeAlias alias="HMap" type="java.util.HashMap" />
+		<typeAlias alias="LHMap" type="java.util.LinkedHashMap" />
+	</typeAliases>
+
+
+	<plugins>
+		<plugin interceptor="paragon.core.interceptor.PrepareStatementInterceptor" />
+		<plugin interceptor="paragon.core.interceptor.StatementInterceptor" />
+		<plugin interceptor="paragon.core.interceptor.ResultSetMetaDataInterceptor" />
+	</plugins>
+
+</configuration>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="AllowedURIService">
+
+	<select id="getAllowedURIList" resultType="HMap" > 
+		SELECT /* [AllowUrlService.query][getAllowedURIList][AllowdURI 목록조회 조회][Kim Jin Ho][2016-11-13] */
+		       ALLOW_SEQ
+		     , ALLOW_URI
+		     , ALLOW_DESC
+		     , ALLOW_GBN
+		     , USE_YN
+		     , IN_USER_ID
+		     , DATE_FORMAT(IN_DT,'%Y-%m-%d') IN_DT
+		  FROM TB_PARAGON_ALLOWED_URI  
+		 WHERE DEL_YN = 'N'
+		   <if test="allowUriCode != null and !allowUriCode.equals('')"> 
+		   AND ALLOW_URI LIKE CONCAT('%',#{allowUriCode},'%')
+		   </if>
+		   <if test="allowUriName != null and !allowUriName.equals('')"> 
+		   AND ALLOW_DESC LIKE CONCAT('%',#{allowUriName},'%')
+		   </if>
+		   <if test="allowGbn != null and !allowGbn.equals('')"> 
+		   AND ALLOW_GBN = #{allowGbn}
+		   </if>
+		 ORDER BY ALLOW_SEQ ASC
+	</select>
+
+	<select id="getCheckUpdate" resultType="String" > 
+		SELECT /* [AllowUrlService.query][getCheckUpdate][AllowdURI 목록조회 조회][Kim Jin Ho][2016-11-13] */
+		       MAX(DATE_FORMAT(UP_DT,'%Y%m%d%H%i%s')) UP_DT
+		  FROM TB_PARAGON_ALLOWED_URI  
+		 WHERE DEL_YN = 'N'
+	</select>
+	 
+
+	<update id="updateAllowedURI" > 
+		UPDATE /* [AllowUrlService.query][updateAllowedURI][AllowedURI 정보 수정][Kim Jin Ho][2016-09-13] */ 
+		       TB_PARAGON_ALLOWED_URI 
+		   SET ALLOW_URI 	= #{allowUri}
+		     , ALLOW_DESC 	= #{allowDesc}
+		     , ALLOW_GBN 	= #{allowGbn}
+		     , USE_YN 		= #{useYn}
+		     , UP_USER_ID 	= #{s_userId}
+		 WHERE ALLOW_SEQ =	 #{allowSeq}
+	</update>
+	
+	<insert id="insertAllowedURI" > 
+		INSERT /* [AllowUrlService.query][insertAllowedURI][AllowedURI 정보 등록][Kim Jin Ho][2016-09-13] */
+		  INTO TB_PARAGON_ALLOWED_URI (
+		  		  ALLOW_URI
+				, ALLOW_DESC
+				, ALLOW_GBN
+				, USE_YN
+				, IN_USER_ID 	
+				, UP_USER_ID 	
+				, IN_DT 		
+		  )
+		VALUES(	  #{allowUri}
+				, #{allowDesc}
+				, #{allowGbn}
+				, #{useYn}
+				, #{s_userId}
+				, #{s_userId}
+				, NOW()
+		)
+	</insert>
+	
+	<delete id="deleteAllowedURI" > 
+		DELETE /* [CodeService.query][deleteAllowedURI][AllowedURI 정보 삭제][Kim Jin Ho][2016-09-13] */
+		  FROM TB_PARAGON_ALLOWED_URI
+		  WHERE ALLOW_SEQ = #{allowSeq}
+	</delete>
+	
+	
+</mapper>
+ 
