@@ -35,24 +35,24 @@ import com.main.svce.MainService;
 @EnableWebMvc
 @RequestMapping("")
 public class MainController {
-	
+
 	@Autowired
 	private MainService mainService;
-	
+
 //	@Autowired(required = true)
 //	private AuthorityRule authRule;
-	
+
 	private static final Log LOG = LogFactory.getLog(MainController.class);
-	
-	
-	//관리자 메인화면  
+
+
+	//관리자 메인화면
 	@RequestMapping("/")
 	public String home(HttpSession session, HttpServletRequest request) throws Exception {
 		LOG.debug("MainController home() ... ");
 		LOG.debug("MAIN CHECK::"+Config.getString("session.timeoutSec"));
-		
+
 //		if(!authRule.isLogin(request)){
-			
+
 			session.setAttribute("s_ip", (String)request.getAttribute(ParagonConstants.CLIENT_IP));
 			session.setAttribute("s_logined", false);
 //			session.setAttribute("s_language", LocaleUtil.getUserLocale(session).getLanguage());
@@ -64,7 +64,7 @@ public class MainController {
 //			session.setAttribute("s_language_nm", LocaleUtil.getUserLocale(session).getDisplayLanguage());
 			session.setAttribute("s_jSessionId", request.getRequestedSessionId());
 			session.setAttribute("s_multiLogin", false);
-			
+
 			if(LOG.isDebugEnabled()){
 				Enumeration<String> se = session.getAttributeNames();
 				while(se.hasMoreElements()){
@@ -78,58 +78,58 @@ public class MainController {
 //			return "main/main";
 //		}
 	}
-	
+
 	//사이드바 메뉴불러오기
 	@RequestMapping("/getSidebarMenu")
 	public List<Map<String, Object>> getSidebarMenu() throws Exception {
 		return mainService.getSidebarMenu();
-	}	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	@RequestMapping("/main/loadingSession")
 	public ModelAndView loadingSession(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
 		String s_userId = (String)session.getAttribute("s_userId");
-		
+
 		mv.addObject("s_userId", s_userId);
 		return mv;
-	}	
+	}
 
 	@RequestMapping("/main/loadingMainBlogContent")
 	public ModelAndView loadingMainBlogContent(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
+
 		try {
-			list = mainService.loadingMainBlogContent();	
+			list = mainService.loadingMainBlogContent();
 		}catch(Exception e) {
-			
+
 		}
-		
+
 		mv.addObject("list", list);
-		
+
 		if(session.getAttribute("s_userId") != null) {
 			String in_user_id = (String)session.getAttribute("s_userId");
 			if(in_user_id.equals("sleepygloa")){
@@ -139,36 +139,36 @@ public class MainController {
 
 		return mv;
 	}
-	
+
 	//블로그 글 페이지
 	@RequestMapping("/main/viewPg")
 	@ResponseBody
 	public ModelAndView viewPg(Params inParams) {
 		System.out.println("viewPg : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
-		
+
 		mv.setViewName(inParams.getString("page"));
 		return mv;
 	}
-	
-///////////////////////////////////////////////////	
-	
+
+///////////////////////////////////////////////////
+
 	//블로그 글쓰기 콤보박스
 	@RequestMapping("/main/getBlogTitleDropdown")
 	public ModelAndView getBlogTitleDropdown(Params inParams) {
 		System.out.println("getBlogTitleDropdown inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		
+
 		try {
 			list = mainService.getBlogTitleDropdown(inParams);
 		}catch(Exception e) {
-			
+
 		}
 		mv.addObject("list", list);
 		return mv;
 	}
-	
+
 	//블로그 글쓰기 완료
 	@RequestMapping("/main/insertBlogAddContent")
 	@ResponseBody
@@ -187,18 +187,18 @@ public class MainController {
 	public ModelAndView viewBlogContent(Params inParams) {
 		System.out.println("viewBlogContent : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
-		
+
 		String idx = inParams.getString("idx");
 		if(idx != "") {
 			Map<String, Object> map = new HashMap<String, Object>();
-			
+
 			try {
 				map = mainService.viewBlogContent(inParams);
 				mv.addObject("map", map.get("contents"));
 				if(map.get("fileList") != null) {
 					mv.addObject("list", map.get("fileList"));
 				}
-				
+
 				mv.addObject("S_CHECK_ID", map.get("S_CHECK_ID"));
 			}catch(Exception e) {
 				mv.addObject("ERROR", "글 불러오 중 에러가 발생하였습니다.");
@@ -208,10 +208,10 @@ public class MainController {
 		}else {
 			mv.addObject("S_CHECK_ID", inParams.getString("s_userId"));
 		}
-		
+
 		return mv;
 	}
-	
+
 	//블로그 글 수정하기
 	@RequestMapping("/main/saveBlogContent")
 	@ResponseBody
@@ -227,7 +227,7 @@ public class MainController {
 		mv.addObject("SUCCESS", "글이 수정되었습니다.");
 		return mv;
 	}
-	
+
 	//블로그 글 수정하기
 	@RequestMapping("/main/deleteBlogContent")
 	@ResponseBody
@@ -243,7 +243,7 @@ public class MainController {
 		mv.addObject("SUCCESS", "글이 수정되었습니다.");
 		return mv;
 	}
-	
+
 	//블로그 글 수정완료 후 파일 업로드
 	@RequestMapping("/main/saveBlogFileUpload")
 	@ResponseBody
@@ -259,21 +259,21 @@ public class MainController {
 		mv.addObject("SUCCESS", "글이 수정되었습니다.");
 		return mv;
 	}
-	
+
 	//블로그글 중 댓글 불러오기
 	@RequestMapping("/main/getMainViewReContent")
 	@ResponseBody
 	public ModelAndView getMainViewReContent(Params inParams) {
 		System.out.println("getMainViewReContent : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
-		
+
 		try {
 			List<Map<String,Object>> list = mainService.getMainViewReContent(inParams);
 			mv.addObject("list", list);
 		}catch(Exception e) {
-			
+
 		}
-		
+
 		return mv;
 	}
 	//메일 블로그 댓글 쓰기
@@ -284,24 +284,24 @@ public class MainController {
 		mainService.insertMainBlogReContent(inParams, request);
 		return mv;
 	}
-	
+
 	//블로그 댓글 삭제
 	@RequestMapping(value="/main/deleteMainBlogReContent")
 	@ResponseBody
 	public ModelAndView deleteMainBlogReContent(Params inParams) throws Exception{
 			ModelAndView mv = new ModelAndView("jsonView");
 			mainService.deleteMainBlogReContent(inParams);
-			
+
 			//프로시저 대체 항목
 			int re_step = inParams.getInteger("re_step");
 			if(re_step == 0) {
 				mainService.deleteMainBlogReContentRefAll(inParams);
 			}
-			
+
 		return mv;
 	}
-	
-	
+
+
 	@RequestMapping(value="/main/insertViewBlogReReContent")
 	@ResponseBody
 	public ModelAndView insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception{
@@ -309,7 +309,7 @@ public class MainController {
 			mainService.insertViewBlogReReContent(inParams, request);
     	return mv;
 	}
-	
-	
-	
+
+
+
 }

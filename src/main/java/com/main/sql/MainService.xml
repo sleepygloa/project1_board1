@@ -3,16 +3,9 @@
 
 <mapper namespace="MainService">
 
-	<select id="getSidebarMenu" resultType="hashmap">
-		SELECT 
-			*
-		FROM
-			TB_NAMBI_MENU M;
-	</select>
-
 
 	<select id="loadingMainBlogContent" resultType="hashmap">
-		SELECT 
+		SELECT
 			IDX
 		,	TITLE
 		,	MAX(SUBJECT) AS SUBJECT
@@ -26,13 +19,13 @@
 	</select>
 
 	<select id="getBlogTitleDropdown" resultType="hashmap">
-		SELECT 
+		SELECT
 			TITLE AS NAME
 		FROM
 			TB_BLOG_M M
 		GROUP BY TITLE;
 	</select>
-	
+
 	<insert id="insertBlogAddContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
 			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM TB_BLOG_M WHERE DEL_YN = 'N'
@@ -65,14 +58,14 @@
 		,	D.IMGWIDTHSCALE
 		FROM
 			TB_BLOG_M M
-		LEFT OUTER JOIN	
+		LEFT OUTER JOIN
 			TB_BLOG_D D
 		ON	M.IDX = D.IDX
-		WHERE 
+		WHERE
 			M.DEL_YN 	= 'N'
 		AND M.IDX		= #{idx}
 		ORDER BY D.I;
-	</select> 
+	</select>
 
 	<update id="saveBlogContent" parameterType="hashmap">
 		UPDATE	TB_BLOG_M
@@ -84,22 +77,22 @@
 	</update>
 
 	<delete id="deleteBlogTitleContent" parameterType="hashmap">
-		DELETE FROM	
+		DELETE FROM
 			TB_BLOG_M
 		WHERE
 			IDX	= #{idx};
 	</delete>
 
 	<select id="getMainViewReContent" parameterType="hashmap" resultType="hashmap">
-		SELECT 
+		SELECT
 				REF
-			, 	RE_LEVEL	
+			, 	RE_LEVEL
 			, 	RE_STEP
 			,	IDX
 			, 	CONTENT
 			, 	IN_USER_ID
 			, 	DATE_FORMAT(IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
-		FROM 
+		FROM
 				TB_BLOG_RE_M
 	    WHERE   DEL_YN = 'N'
 	    AND		IDX = #{idx}
@@ -127,7 +120,7 @@
 			,	#{writer}
 			)
 	</insert>
-	
+
 	<update id="deleteMainBlogReContent" parameterType="hashmap">
 			UPDATE TB_BLOG_RE_M
 			SET
@@ -137,7 +130,7 @@
 			AND REF		= #{ref}
 			AND RE_STEP = #{re_step}
 	</update>
-	
+
 	<update id="deleteMainBlogReContentRefAll" parameterType="hashmap">
 			UPDATE TB_BLOG_RE_M
 			SET
@@ -146,7 +139,7 @@
 				IDX		= #{idx}
 			AND REF		= #{ref}
 	</update>
-	
+
 	<insert id="insertViewBlogReReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
  	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
 			SELECT MAX(RE_STEP)+1 FROM TB_BLOG_RE_M WHERE REF = #{ref} AND DEL_YN = 'N'
@@ -215,32 +208,32 @@
 	<update id="deleteMainBlogFileList" parameterType="hashmap">
 		UPDATE
 			TB_BLOG_D_FILE
-		SET 
-			DEL_YN = 'Y' 
-		WHERE 
-			BOARD_IDX = #{idx}	
+		SET
+			DEL_YN = 'Y'
+		WHERE
+			BOARD_IDX = #{idx}
 	</update>
-	
+
 	<update id="updateMainBlogFile" parameterType="hashmap">
 		UPDATE
 			TB_BLOG_D_FILE
 		SET
 			DEL_YN = 'N'
 		WHERE
-			IDX = #{file_idx}	
-	</update> 
-	
+			IDX = #{file_idx}
+	</update>
+
 	<select id="getBlogcontentLastIdx" parameterType="hashmap" resultType="hashmap">
-		SELECT 
+		SELECT
 			MAX(IDX) AS idx
 		FROM
 			TB_BLOG_M
 		WHERE
 			IN_USER_ID = #{s_userId};
 	</select>
-	
+
 	<delete id="deleteBlogContentBox" parameterType="hashmap">
-		DELETE FROM 
+		DELETE FROM
 			TB_BLOG_D
 		WHERE IDX = #{idx};
 	</delete>
@@ -264,5 +257,5 @@
 		,	#{imgWidthScale}
 		);
 	</insert>
-	
+
 </mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ProgramService">
+
+	<select id="getProgramList" resultType="HMap" >
+		SELECT /* [ProgramService.query][getProgramList][프로그램 목록조회 조회][Kim Jin Ho][2016-09-13] */
+		       PRO_CD
+		     , PRO_NM
+		     , PRO_DESC
+		     , CALL_URL
+		     , JS_PATH
+		     , USE_YN
+		     , IN_USER_ID
+		     , TO_CHAR(IN_DT,'YYYY-MM-DD') IN_DT
+		  FROM TB_PARAGON_PRO
+		 WHERE COMPANY_CD = #{s_companyCd}
+		<if test="proNm != null and !proNm.equals('')">
+		   AND PRO_NM LIKE '%${proNm}%'
+		</if>
+        <if test="useYn != null and !useYn.equals('')">
+           AND USE_YN LIKE '%${useYn}%'
+        </if>
+		 ORDER BY PRO_CD DESC
+	</select>
+
+	<update id="updateProgram"  >
+		UPDATE TB_PARAGON_PRO /* [ProgramService.query][updateProgram][프로그램 정보 수정][Kim Jin Ho][2016-09-13] */
+		   SET PRO_NM 	  = #{proNm}
+		     , PRO_DESC   = #{proDesc}
+		     , CALL_URL   = #{callUrl}
+		     , JS_PATH 	  = #{jsPath}
+		     , USE_YN 	  = #{useYn}
+		     , IN_USER_ID = #{s_userId}
+		     , UP_DT = SYSDATE
+		 WHERE PRO_CD = #{proCd}
+	</update>
+
+	<insert id="insertProgram" >
+		INSERT /* [ProgramService.query][insertProgram][프로그램 정보 등록][Kim Jin Ho][2016-09-13] */
+		  INTO TB_PARAGON_PRO (
+		  		  COMPANY_CD
+		  		, PRO_CD
+				, PRO_NM
+				, PRO_DESC
+				, CALL_URL
+				, JS_PATH
+				, USE_YN
+				, IN_USER_ID
+				, IN_DT
+		  )
+		VALUES(	  #{s_companyCd}
+				, #{proCd}
+				, #{proNm}
+				, #{proDesc}
+				, #{callUrl}
+				, #{jsPath}
+				, #{useYn}
+				, #{s_userId}
+				, SYSDATE
+		)
+	</insert>
+	<delete id="deleteProgram" >
+		DELETE /* [ProgramService.query][updateProgram][프로그램 정보 삭제][Kim Jin Ho][2016-09-13] */
+		  FROM TB_PARAGON_PRO
+		  WHERE PRO_CD = #{proCd}
+	</delete>
+
+
+</mapper>

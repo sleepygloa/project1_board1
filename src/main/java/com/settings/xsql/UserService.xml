@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserService">
+
+	<select id="getListUser" resultType="HMap" >
+		SELECT /* [UserService.query][getUserList][사용자 목록 조회][Kim Jin Ho][2016-09-13] */
+		       COMPANY_CD
+		     , USER_NO
+		     , USER_ID
+		     , USER_NM
+		     , USER_POSITION
+		     , FN_COMM_CODE_NM(COMPANY_CD, 'SC0016', USER_POSITION , #{s_language}) USER_POSITION_NM
+		     , USER_PHONE
+		     , USER_EMAIL
+		     , DECODE(USE_YN, 'Y', '재직중', '퇴사자') AS LIVE_YN
+		     , USER_JOIN_DATE
+		     , NVL2(USER_JOIN_DATE,TRUNC(MONTHS_BETWEEN(SYSDATE, TO_DATE(USER_JOIN_DATE,'YYYY-MM-DD')), 0),0) as LIVE_DATE
+		  FROM TB_PARAGON_USER_INFO
+		 WHERE DEL_YN = 'N'
+<!-- 		   AND USE_YN = 'Y'  -->
+		   AND ADMIN_YN &lt;&gt; 'Y'
+		  <if test="userId != null and !userId.equals('')">
+		   AND USER_ID LIKE '%'||#{userId}||'%'
+		  </if>
+		  <if test="userNm != null and !userNm.equals('')">
+		   AND USER_NM LIKE '%'||#{userNm}||'%'
+		  </if>
+		  ORDER BY IN_DT DESC
+
+
+	</select>
+
+	<select id="getUserInfo" resultType="HMap" >
+		SELECT /* [UserService.query][getDetailUserInfo][사용자 정보 조회][Han Seong Jin][2016-09-13] */
+		       COMPANY_CD
+			 , USER_NO
+			 , USER_ID
+		     , USER_PWD
+		     , USER_NM
+		     , USER_JOIN_DATE
+		     , USER_BIRTH_DATE
+		     , USER_POSITION
+		     , USER_PHONE
+		     , USER_EMAIL
+		     , USE_YN
+		  FROM TB_PARAGON_USER_INFO
+		 WHERE USER_ID = #{userId}
+	</select>
+
+<!-- 	<select id="getCheckUserNo" resultType="HMap" >
+		SELECT /* [UserService.query][getCheckNo][사번 중복 조회][Han Seong Jin][2016-09-13] */
+			   USER_NO
+		  FROM TB_PARAGON_USER_INFO
+		  WHERE
+		  	  USER_NO = #{userNo}
+	</select> -->
+
+    <select id="getCheckUserId" resultType="HMap" >
+        SELECT /* [UserService.query][getCheckUserId][아이디 중복 조회][최 판 석][2018-03-07] */
+                USER_ID
+          FROM
+                TB_PARAGON_USER_INFO
+          WHERE
+                USER_ID = #{userId}
+    </select>
+
+
+	<insert id="insertUser" >
+		INSERT /* [UserService.query][insertUser][사용자 등록][Han Seong Jin][2016-11-01] */
+        INTO    TB_PARAGON_USER_INFO
+        (
+                USER_SEQ
+            ,   COMPANY_CD
+            ,   USER_NO
+            ,   USER_ID
+            ,   USER_PWD
+            ,   USER_NM
+            ,   USER_POSITION
+            ,   USER_JOIN_DATE
+            ,   USER_BIRTH_DATE
+            ,   USER_PHONE
+            ,   USER_EMAIL
+            ,   IN_USER_ID
+            ,   IN_DT
+            ,   PWD_CHG_DATE
+        )
+        VALUES
+        (
+                SQ_USER01.NEXTVAL
+            ,   #{s_companyCd}
+            ,   #{userNo}
+            ,   #{userId}
+            ,   #{userPwd}
+            ,   #{userNm}
+            ,   #{userPosition}
+            ,   #{userJoinDate}
+            ,   #{userBirthDate}
+            ,   #{userPhone}
+            ,   #{userEmail}
+            ,   #{s_userId}
+            ,   SYSDATE
+            ,   SYSDATE
+		)
+	</insert>
+
+	<update id="updateUser" >
+        UPDATE /* [UserService.query][updateUser][사용자 정보 수정][Han Seong Jin][2016-09-13] */
+            TB_PARAGON_USER_INFO
+        SET COMPANY_CD      = #{s_companyCd}
+        ,   USER_NO         = #{userNo}
+        ,   USER_ID         = #{userId}
+        ,   USER_NM         = #{userNm}
+		  <if test="userPwd != null and !userPwd.equals('')">
+        ,   USER_PWD        = #{userPwd}
+        ,   PWD_CHG_DATE    = SYSDATE
+		  </if>
+        ,   USER_POSITION   = #{userPosition}
+        ,   USER_JOIN_DATE  = #{userJoinDate}
+        ,   USER_BIRTH_DATE = #{userBirthDate}
+        ,   USER_PHONE      = #{userPhone}
+        ,   USER_EMAIL      = #{userEmail}
+        ,   USE_YN          = #{useYn}
+        ,   UP_USER_ID      = #{s_userId}
+        ,   UP_DT           = SYSDATE
+	  WHERE	USER_ID = #{userId}
+	</update>
+
+	<delete id="deleteUser" >
+		DELETE /* [UserService.query][updateUser][사용자 정보 삭제][Han Seong Jin][2016-09-13] */
+		  FROM TB_PARAGON_USER_INFO
+		 WHERE USER_ID = #{userId}
+	</delete>
+
+
+</mapper>
