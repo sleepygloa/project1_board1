@@ -48,8 +48,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="bg-white text-center navbar-brand-wrapper">
-        <a class="navbar-brand brand-logo" href="index.html"><img src="/resourcesimages/logo_star_black.png" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/resourcesimages/logo_star_mini.jpg" alt=""></a>
+        <a class="navbar-brand brand-logo" href="index.html"><img src="/resources/images/logo_star_black.png" /></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/resources/images/logo_star_mini.jpg" alt=""></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <button class="navbar-toggler navbar-toggler d-none d-lg-block navbar-dark align-self-center mr-3" type="button" data-toggle="minimize">
@@ -60,7 +60,7 @@
         </form>
         <ul class="navbar-nav ml-lg-auto d-flex align-items-center flex-row">
           <li class="nav-item">
-            <a class="nav-link profile-pic" href="#"><img class="rounded-circle" src="/resourcesimages/face.jpg" alt=""></a>
+            <a class="nav-link profile-pic" href="#"><img class="rounded-circle" src="/resources/images/face.jpg" alt=""></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="fa fa-th"></i></a>
@@ -121,7 +121,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="pages/icons/index.html">
+              <a class="nav-link" href="/menu/getIcon">
                 <img src="images/icons/7.png" alt="">
                 <span class="menu-title">Icons</span>
               </a>
@@ -169,7 +169,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
-                <img src="images/icons/10.png" alt="">
+                <img src="images/icons/settings/setting.png" alt="">
                 <span class="menu-title">Settings</span>
               </a>
             </li>
@@ -177,7 +177,7 @@
         </nav>
 
         <!-- partial -->
-        <div class="content-wrapper">
+        <div id="content_wrapper" class="content-wrapper">
           <h3 class="page-heading mb-4">Dashboard</h3>
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 mb-4">

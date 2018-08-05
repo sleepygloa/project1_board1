@@ -30,11 +30,6 @@ public class MainServiceImpl implements MainService{
 	private FileUtils fileUtils;
 	
 	@Override
-	public List<Map<String, Object>> getSidebarMenu() throws Exception{
-		return mainDAO.getSidebarMenu();
-	}
-	
-	@Override
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{
 		return mainDAO.loadingMainBlogContent();
 	}

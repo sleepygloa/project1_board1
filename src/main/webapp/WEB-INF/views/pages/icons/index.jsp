@@ -6,10 +6,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Star Admin</title>
-  <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="../../node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css" />
-  <link rel="stylesheet" href="../../css/style.css" />
-  <link rel="shortcut icon" href="../../images/favicon.png" />
+  <link rel="stylesheet" href="/resources/plugins/font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="/resources/plugins/perfect-scrollbar/dist/css/perfect-scrollbar.min.css" />
+  <link rel="stylesheet" href="/resources/plugins/css/style.css" />
+  <link rel="shortcut icon" href="/resources/plugins/images/favicon.png" />
 </head>
 
 <body>

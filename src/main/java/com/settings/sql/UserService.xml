@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="UserService">
-
+<!-- 
 	<select id="getListUser" resultType="HMap" >
 		SELECT /* [UserService.query][getUserList][사용자 목록 조회][Kim Jin Ho][2016-09-13] */
 		       COMPANY_CD
@@ -18,7 +18,7 @@
 		     , NVL2(USER_JOIN_DATE,TRUNC(MONTHS_BETWEEN(SYSDATE, TO_DATE(USER_JOIN_DATE,'YYYY-MM-DD')), 0),0) as LIVE_DATE
 		  FROM TB_PARAGON_USER_INFO
 		 WHERE DEL_YN = 'N'
-<!-- 		   AND USE_YN = 'Y'  -->
+		   AND USE_YN = 'Y' 
 		   AND ADMIN_YN &lt;&gt; 'Y'
 		  <if test="userId != null and !userId.equals('')">
 		   AND USER_ID LIKE '%'||#{userId}||'%'
@@ -48,13 +48,13 @@
 		 WHERE USER_ID = #{userId}
 	</select>
 
-<!-- 	<select id="getCheckUserNo" resultType="HMap" >
+	<select id="getCheckUserNo" resultType="HMap" >
 		SELECT /* [UserService.query][getCheckNo][사번 중복 조회][Han Seong Jin][2016-09-13] */
 			   USER_NO
 		  FROM TB_PARAGON_USER_INFO
 		  WHERE
 		  	  USER_NO = #{userNo}
-	</select> -->
+	</select>
 
     <select id="getCheckUserId" resultType="HMap" >
         SELECT /* [UserService.query][getCheckUserId][아이디 중복 조회][최 판 석][2018-03-07] */
@@ -131,6 +131,6 @@
 		  FROM TB_PARAGON_USER_INFO
 		 WHERE USER_ID = #{userId}
 	</delete>
-
+ -->
 
 </mapper>

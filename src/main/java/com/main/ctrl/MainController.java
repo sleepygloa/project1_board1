@@ -19,10 +19,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.core.authority.rule.AuthorityRule;
 import com.core.common.ParagonConstants;
 import com.core.parameters.Params;
-import com.core.utility.common.LocaleUtil;
 import com.core.utility.config.Config;
 import com.main.svce.MainService;
 
@@ -33,7 +31,7 @@ import com.main.svce.MainService;
  */
 @Controller
 @EnableWebMvc
-@RequestMapping("")
+@RequestMapping("/")
 public class MainController {
 
 	@Autowired
@@ -46,7 +44,7 @@ public class MainController {
 
 
 	//관리자 메인화면
-	@RequestMapping("/")
+	@RequestMapping("")
 	public String home(HttpSession session, HttpServletRequest request) throws Exception {
 		LOG.debug("MainController home() ... ");
 		LOG.debug("MAIN CHECK::"+Config.getString("session.timeoutSec"));
@@ -79,16 +77,11 @@ public class MainController {
 //		}
 	}
 
-	//사이드바 메뉴불러오기
-	@RequestMapping("/getSidebarMenu")
-	public List<Map<String, Object>> getSidebarMenu() throws Exception {
-		return mainService.getSidebarMenu();
+	@RequestMapping("/main/toProgram")
+	public ModelAndView toProgram(Params inParams) throws Exception {
+		ModelAndView mv = new ModelAndView("pages/icons/index");
+		return mv;
 	}
-
-
-
-
-
 
 
 

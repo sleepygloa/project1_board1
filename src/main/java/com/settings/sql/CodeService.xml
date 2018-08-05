@@ -3,7 +3,7 @@
 
 <mapper namespace="CodeService">
 
-	<select id="getCodeGroupList" resultType="HMap" >
+	<!-- <select id="getCodeGroupList" resultType="HMap" >
 		SELECT /* [CodeService.query][getCodeGroupList][코드그룹 목록조회 조회][Kim Jin Ho][2016-09-13] */
 		       CODE_GROUP_SEQ
 		     , CODE_GROUP_CD
@@ -161,6 +161,6 @@
 		  FROM TB_PARAGON_COMM_CODE
 		  WHERE CODE_SEQ = #{codeSeq}
 		    AND COMPANY_CD = #{s_companyCd}
-	</delete>
+	</delete> -->
 
 </mapper>

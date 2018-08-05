@@ -3,7 +3,24 @@
 
 <mapper namespace="MenuService">
 
-	<select id="getLeftMenu" resultType="HMap" >
+	<select id="getSidebarMenu" resultType="hashmap">
+		SELECT 
+				MENU.MENU_PARENT_SEQ
+			,	MENU.PRO_CD
+			,	MENU.MENU_NM
+			,	MENU.MENU_ICO
+			,	MENU.MENU_ORDER
+			,	(SELECT COUNT(MENU_PARENT_SEQ) FROM TB_NAMBI_MENU CNT
+				WHERE MENU.MENU_PARENT_SEQ = CNT.MENU_PARENT_SEQ ) COUNT
+		FROM	
+				TB_NAMBI_MENU MENU
+		WHERE
+				MENU.USE_YN = 'Y';
+		
+	</select>
+
+
+	<!-- <select id="getLeftMenu" resultType="HMap" >
 		SELECT /* [MenuService.query][getLeftMenu][LEFT 메뉴조회 조회][Kim Jin Ho][2016-09-13] */
 		       PM.MENU_SEQ
 		     , NVL(MENU_PARENT_SEQ,'0') MENU_PARENT_SEQ
@@ -133,6 +150,6 @@
 		  FROM TB_PARAGON_MENU
 		 WHERE MENU_SEQ = #{menuSeq}
 		   AND COMPANY_CD = #{s_companyCd}
-	</delete>
+	</delete> -->
 
 </mapper>

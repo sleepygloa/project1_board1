@@ -57,6 +57,6 @@
 
 	<bean id="paramsArgumentResolver" class="com.core.conversion.ParamsArgumentResolver" />
 	<bean id="paramsReturnValueHandler" class="com.core.conversion.ParamsReturnValueHandler" />
-	
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/> 
+	<!-- 
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"/>  -->
 </beans>
