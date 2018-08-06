@@ -3,6 +3,12 @@
 
 <mapper namespace="MainService">
 
+	<select id="getProgramPath" resultType="hashmap">
+		SELECT
+			*
+		FROM
+			TB_NAMBI_PRO;
+	</select>
 
 	<select id="loadingMainBlogContent" resultType="hashmap">
 		SELECT

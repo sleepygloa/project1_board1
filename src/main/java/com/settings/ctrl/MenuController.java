@@ -30,12 +30,12 @@ public class MenuController {
 	}
 	
 	
-	
-	
 	//사이드바 메뉴불러오기
-		@RequestMapping("/getIcon")
-		public ModelAndView getIcon() throws Exception {
-			ModelAndView mv = new ModelAndView("pages/icons/index");
+	@RequestMapping("/getIcon")
+	public ModelAndView getIcon() throws Exception {
+		ModelAndView mv = new ModelAndView("pages/icons/index");
 			return mv;
-		}
+	}
+	
+	
 }

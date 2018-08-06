@@ -77,9 +77,11 @@ public class MainController {
 //		}
 	}
 
-	@RequestMapping("/main/toProgram")
-	public ModelAndView toProgram(Params inParams) throws Exception {
+	@RequestMapping("/main/getProgramPath")
+	public ModelAndView getProgramPath(Params inParams) throws Exception {
+		List<Map<String, Object>> list = mainService.getProgramPath(inParams);
 		ModelAndView mv = new ModelAndView("pages/icons/index");
+		
 		return mv;
 	}
 

@@ -18,6 +18,11 @@ public class MainDAO extends AbstractDAO{
 //	
 	
 	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> getProgramPath(Params inParams) throws Exception{
+		return (List<Map<String, Object>>)selectList("MainService.getProgramPath", inParams);
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{
 		return (List<Map<String, Object>>)selectList("MainService.loadingMainBlogContent");
 	}

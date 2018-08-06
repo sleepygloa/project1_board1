@@ -30,6 +30,11 @@ public class MainServiceImpl implements MainService{
 	private FileUtils fileUtils;
 	
 	@Override
+	public List<Map<String, Object>> getProgramPath(Params inParams) throws Exception{
+		return mainDAO.getProgramPath(inParams);
+	}
+	
+	@Override
 	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{
 		return mainDAO.loadingMainBlogContent();
 	}
