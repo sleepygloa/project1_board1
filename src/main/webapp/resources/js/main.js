@@ -1,16 +1,17 @@
-function toProgram(proCd){
+$(document).on('click', 'a.nav-link', function(){
+	var value = $(this).children('input').val();
 	$.ajax({
 		url  : "/main/toProgram",
 		data : {
-			proCd : proCd
+			proCd : value
 		},
 		type : "POST",
 		success : function(data){
 			$('#content_wrapper').empty();
 			$('#content_wrapper').html(data);
 		}
-	})
-}
+	});
+});
 
 var coreJs = function(){
 	"use strict";
@@ -27,11 +28,17 @@ var coreJs = function(){
 //			loadingSession();
 
 //			mainEvents();
+			getEvents();
 
 		}
 	}
 
 
+	function getEvents(){
+		
+
+		
+	}
 	
 	function getMenu(){
 		$.ajax({
@@ -62,7 +69,8 @@ var coreJs = function(){
 						pCnt++;
 					}else{
 						menuStr += '<li class="nav-item">'
-							+'<a class="nav-link" href="#" onclick="toProgram('+menuData.PRO_CD+')">'
+							+'<a class="nav-link" href="#" >'
+							+'<input type="hidden" value="'+menuData.PRO_CD+'" />'
 							+'<img src="'+menuData.MENU_ICO+'" alt="">'
 							+'<span class="menu-title">'+menuData.MENU_NM+'</span>'
 							+'</a>'

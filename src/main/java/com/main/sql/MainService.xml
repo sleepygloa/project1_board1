@@ -5,9 +5,11 @@
 
 	<select id="getProgramPath" resultType="hashmap">
 		SELECT
-			*
+			CALL_URL
 		FROM
-			TB_NAMBI_PRO;
+			TB_NAMBI_PRO
+		WHERE
+			PRO_CD = #{proCd};
 	</select>
 
 	<select id="loadingMainBlogContent" resultType="hashmap">

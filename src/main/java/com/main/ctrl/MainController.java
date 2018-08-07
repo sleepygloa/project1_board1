@@ -77,10 +77,12 @@ public class MainController {
 //		}
 	}
 
-	@RequestMapping("/main/getProgramPath")
-	public ModelAndView getProgramPath(Params inParams) throws Exception {
+	@RequestMapping("/main/toProgram")
+	public ModelAndView toProgram(Params inParams) throws Exception {
+		System.out.println("toProgram");
 		List<Map<String, Object>> list = mainService.getProgramPath(inParams);
-		ModelAndView mv = new ModelAndView("pages/icons/index");
+		String path = (String)list.get(0).get("CALL_URL");
+		ModelAndView mv = new ModelAndView(path);
 		
 		return mv;
 	}

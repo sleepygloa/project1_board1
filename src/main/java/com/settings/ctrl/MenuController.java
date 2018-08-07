@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.core.parameters.Params;
 import com.settings.svce.MenuService;
 
 @Controller
@@ -28,7 +29,6 @@ public class MenuController {
 		mv.addObject("list", menuService.getSidebarMenu());
 		return mv;
 	}
-	
 	
 	//사이드바 메뉴불러오기
 	@RequestMapping("/getIcon")
