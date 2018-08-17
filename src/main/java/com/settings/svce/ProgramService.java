@@ -13,22 +13,13 @@
  * VertexID         	2016. 12. 20. 		First Draft.
  */
 package com.settings.svce;
-import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.core.parameters.Params;
-import com.core.parameters.ParamsFactory;
-import com.core.parameters.datatable.DataTable;
-import com.core.parameters.datatable.datarow.DataRow;
 
 /**
  * 프로그램관리 Service
@@ -39,7 +30,12 @@ import com.core.parameters.datatable.datarow.DataRow;
  * @version 1.0
  */
 @Service
-public class ProgramService {
+public interface ProgramService {
+	
+	List<Map<String, Object>> getProgram() throws Exception;
+	
+	void modifyProgram(Params inParams) throws Exception;
+	
 //
 //    @Autowired
 //    @Resource(name="sqlSession2")

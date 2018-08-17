@@ -1,18 +1,3 @@
-$(document).on('click', 'a.nav-link', function(){
-	var value = $(this).children('input').val();
-	$.ajax({
-		url  : "/main/toProgram",
-		data : {
-			proCd : value
-		},
-		type : "POST",
-		success : function(data){
-			$('#content_wrapper').empty();
-			$('#content_wrapper').html(data);
-		}
-	});
-});
-
 var coreJs = function(){
 	"use strict";
 
@@ -21,13 +6,6 @@ var coreJs = function(){
 
 			getMenu();
 
-//			getAuth();
-
-//			loadingMainContent();
-
-//			loadingSession();
-
-//			mainEvents();
 			getEvents();
 
 		}
@@ -35,7 +13,21 @@ var coreJs = function(){
 
 
 	function getEvents(){
-		
+
+		$(document).on('click', 'a.nav-link', function(){
+			var value = $(this).children('input').val();
+			$.ajax({
+				url  : "/main/toProgram",
+				data : {
+					proCd : value
+				},
+				type : "POST",
+				success : function(data){
+					$('#content_wrapper').empty();
+					$('#content_wrapper').html(data);
+				}
+			});
+		});
 
 		
 	}
@@ -46,7 +38,6 @@ var coreJs = function(){
 			type	 : "POST",
 			dataType : "json",
 			success : function(data){
-				console.log(data);
 //				$('#sidebarMenu').empty();
 
 				var menuStr = '';
@@ -55,7 +46,6 @@ var coreJs = function(){
 				var menuDataList = data.list;
 				$.each(menuDataList, function(i, v){
 					var menuData = menuDataList[i];
-					console.log(menuData);
 					
 					if(pIdx != menuData.MENU_PARENT_SEQ){
 						pIdx = menuData.MENU_PARENT_SEQ;
@@ -99,13 +89,9 @@ var coreJs = function(){
 //	}
 
 
-
-
-
-
-
 }();
 
 $(document).ready(function(){
 	coreJs.init();
 });
+

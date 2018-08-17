@@ -513,6 +513,7 @@
   <script src="/resources/js/chart.js"></script>
   <script src="/resources/js/maps.js"></script>
   <script src="/resources/js/main.js"></script>
+  <script src="/resources/js/table.js"></script>
 </body>
 
 </html>
