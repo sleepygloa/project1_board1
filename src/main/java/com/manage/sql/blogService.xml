@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="blogService">
+
+	<select id="loadingMainBlogContent" resultType="hashmap">
+		SELECT
+			IDX
+		,	TITLE
+		,	MAX(SUBJECT) AS SUBJECT
+		,	(SELECT COUNT(DISTINCT(TITLE)) FROM TB_BLOG_M) AS TITLE_COUNT
+		,	(SELECT COUNT(SUBJECT) FROM TB_BLOG_M) AS TOTAL_SUBJECT_COUNT
+		,	(SELECT COUNT(SUBJECT) FROM TB_BLOG_M SUB WHERE SUB.TITLE = M.TITLE) AS SUBJECT_COUNT
+		FROM
+			TB_BLOG_M M
+		GROUP BY IDX, TITLE
+		ORDER BY TITLE, IDX;
+	</select>
+
+	<select id="getBlogTitleDropdown" resultType="hashmap">
+		SELECT
+			TITLE AS NAME
+		FROM
+			TB_BLOG_M M
+		GROUP BY TITLE;
+	</select>
+
+	<insert id="insertBlogAddContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
+			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM TB_BLOG_M WHERE DEL_YN = 'N'
+		</selectKey>
+		INSERT INTO TB_BLOG_M
+		(
+			IDX
+		,	TITLE
+		,	SUBJECT
+		,	IN_USER_ID
+		)
+		VALUES
+		(
+			#{IDX}
+		,	#{title}
+		,	#{subject}
+		,	#{s_userId}
+		);
+	</insert>
+
+	<select id="viewBlogContent" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			M.IDX			AS IDX
+		,	M.SUBJECT		AS SUBJECT
+		,	M.TITLE			AS TITLE
+		,	M.IN_USER_ID	AS IN_USER_ID
+		,	D.TYPE
+		,	D.I
+		,	D.CONTENT
+		,	D.IMGWIDTHSCALE
+		FROM
+			TB_BLOG_M M
+		LEFT OUTER JOIN
+			TB_BLOG_D D
+		ON	M.IDX = D.IDX
+		WHERE
+			M.DEL_YN 	= 'N'
+		AND M.IDX		= #{idx}
+		ORDER BY D.I;
+	</select>
+
+	<update id="saveBlogContent" parameterType="hashmap">
+		UPDATE	TB_BLOG_M
+		SET
+			TITLE   = #{title}
+		,	SUBJECT	= #{subject}
+		WHERE
+			IDX	= #{idx};
+	</update>
+
+	<delete id="deleteBlogTitleContent" parameterType="hashmap">
+		DELETE FROM
+			TB_BLOG_M
+		WHERE
+			IDX	= #{idx};
+	</delete>
+
+	<select id="getMainViewReContent" parameterType="hashmap" resultType="hashmap">
+		SELECT
+				REF
+			, 	RE_LEVEL
+			, 	RE_STEP
+			,	IDX
+			, 	CONTENT
+			, 	IN_USER_ID
+			, 	DATE_FORMAT(IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
+		FROM
+				TB_BLOG_RE_M
+	    WHERE   DEL_YN = 'N'
+	    AND		IDX = #{idx}
+	   ORDER BY REF ASC, RE_STEP ASC
+	</select>
+
+	<insert id="insertMainBlogReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
+	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
+			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M WHERE DEL_YN = 'N'
+		</selectKey>
+			INSERT INTO TB_BLOG_RE_M
+			(
+				IDX
+			,	REF
+			,	CONTENT
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{idx}
+			,	#{REF}
+			,	#{content}
+			,	now()
+			,	#{writer}
+			)
+	</insert>
+
+	<update id="deleteMainBlogReContent" parameterType="hashmap">
+			UPDATE TB_BLOG_RE_M
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+			AND RE_STEP = #{re_step}
+	</update>
+
+	<update id="deleteMainBlogReContentRefAll" parameterType="hashmap">
+			UPDATE TB_BLOG_RE_M
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+	</update>
+
+	<insert id="insertViewBlogReReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
+ 	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
+			SELECT MAX(RE_STEP)+1 FROM TB_BLOG_RE_M WHERE REF = #{ref} AND DEL_YN = 'N'
+		</selectKey>
+			INSERT INTO TB_BLOG_RE_M
+			(
+				IDX
+			,	CONTENT
+			,	REF
+			,	RE_LEVEL
+			,	RE_STEP
+			,	IN_DT
+			,	IN_USER_ID
+			)
+			VALUES
+			(
+				#{idx}
+			,	#{content}
+			,	#{ref}
+			,	'2'
+			,	#{RE_STEP}
+			,	now()
+			,	#{writer}
+			)
+	</insert>
+<!-- 파일 업로드 -->
+	<insert id="insertMainBlogFile" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+ 	 	<selectKey keyProperty="IDX" resultType="int" order="BEFORE">
+			SELECT IFNULL(MAX(IDX) + 1, 1) AS IDX FROM TB_BLOG_D_FILE
+		</selectKey>
+			INSERT INTO TB_BLOG_D_FILE
+			(
+				IDX,
+				BOARD_IDX,
+				ORIGINAL_FILE_NAME,
+				STORED_FILE_NAME,
+				FILE_SIZE,
+			    IN_DT,
+				S_USERID
+			)
+			VALUES
+			(
+				#{IDX},
+				#{boardIdx},
+				#{originalFileName},
+				#{storedFileName},
+				#{fileSize},
+				now(),
+				#{s_userId}
+			)
+	</insert>
+
+	<select id="getMainBlogSelectFileList" parameterType="hashmap" resultType="hashmap">
+		SELECT
+		    IDX
+		,	BOARD_IDX
+		,	ORIGINAL_FILE_NAME
+		,   ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		FROM
+		    TB_BLOG_D_FILE
+		WHERE
+		    BOARD_IDX = #{idx}
+		    AND DEL_YN = 'N'
+	</select>
+
+	<update id="deleteMainBlogFileList" parameterType="hashmap">
+		UPDATE
+			TB_BLOG_D_FILE
+		SET
+			DEL_YN = 'Y'
+		WHERE
+			BOARD_IDX = #{idx}
+	</update>
+
+	<update id="updateMainBlogFile" parameterType="hashmap">
+		UPDATE
+			TB_BLOG_D_FILE
+		SET
+			DEL_YN = 'N'
+		WHERE
+			IDX = #{file_idx}
+	</update>
+
+	<select id="getBlogcontentLastIdx" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			MAX(IDX) AS idx
+		FROM
+			TB_BLOG_M
+		WHERE
+			IN_USER_ID = #{s_userId};
+	</select>
+
+	<delete id="deleteBlogContentBox" parameterType="hashmap">
+		DELETE FROM
+			TB_BLOG_D
+		WHERE IDX = #{idx};
+	</delete>
+
+	<insert id="insertBlogContentBox" parameterType="hashmap">
+		INSERT INTO
+			TB_BLOG_D
+		(
+			IDX
+		,	I
+		,	TYPE
+		,	CONTENT
+		,	IMGWIDTHSCALE
+		)
+		VALUES
+		(
+			#{idx}
+		,	#{i}
+		,	#{type}
+		,	#{content}
+		,	#{imgWidthScale}
+		);
+	</insert>
+
+</mapper>

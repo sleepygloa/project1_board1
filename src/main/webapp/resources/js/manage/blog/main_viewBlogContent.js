@@ -1,16 +1,17 @@
-	var getRef = '';
+var blogIdx = '';	
+var getRef = '';
 	
 	//대댓글추가
 	function viewBlogAddReReContent(getRef){
 		var sendData = {
-				idx		:	idx,
+				idx		:	blogIdx,
 				ref		:	getRef,
 				writer	:	$("#viewBlogReReWriter").val(),
 				content	:	$("#viewBlogReReContent").val()
 		}
 		
 		$.ajax({
-			url		: "/main/insertViewBlogReReContent",
+			url		: "/manage/blog/insertViewBlogReReContent",
 			type	: "POST",
 			data	: sendData,
 			async	: false,
@@ -56,13 +57,13 @@
 		}
 		
 		var sendData = {
-				idx		:	idx,
+				idx		:	blogIdx,
 				writer	:	$("#viewBlogReWriter").val(),
 				content	:	$("#viewBlogReContent").val()
 		}
 		
 		$.ajax({
-			url		: "/main/insertMainBlogReContent",
+			url		: "/manage/blog/insertMainBlogReContent",
     		type	: "POST",
     		data	: sendData,
     		dataType : "json",
@@ -78,12 +79,12 @@
 			return false;
 		}
 		var sendData = {
-				idx		:	idx,
+				idx		:	blogIdx,
 				ref		:	ref,
 				re_step	:	re_step
 		}
 		$.ajax({
-			url		: "/main/deleteMainBlogReContent",
+			url		: "/manage/blog/deleteMainBlogReContent",
 			type	: "POST",
 			data	: sendData,
 			async 	: false,
@@ -97,9 +98,9 @@
 	//댓글불러오기
 	function getMainViewReContent(){
 		$.ajax({
-			url  	: "/main/getMainViewReContent",
+			url  	: "/manage/blog/getMainViewReContent",
 			data 	: {
-				idx : idx
+				idx : blogIdx
 			},
 			type	: "POST",
 			async:false,
@@ -167,14 +168,14 @@ var MainViewBlogContentJs = function(){
 	
 	function loadingViewBlogContent(){
 		$.ajax({
-			url	 : '/main/viewBlogContent',
+			url	 : '/manage/blog/viewBlogContent',
 			data : mainData,
 			type : "POST",
 			async:false,
 			success : function(result){
 				console.log(result);
 				var list = result.map;
-					idx = list[0].IDX;
+					blogIdx = list[0].IDX;
 					var idCheck = result.S_CHECK_ID;
 					$('#viewBlogContentIdx').val(list[0].IDX);
 					$('#viewBlogContentTitle').val(list[0].TITLE);
@@ -233,7 +234,7 @@ var MainViewBlogContentJs = function(){
 		$('#viewBlogContentUpdateBtn').click(function(){
 			var data = {
 					idx  : $('#viewBlogContentIdx').val(),
-					page : "/main/updateBlogContent",
+					page : "/manage/blog/updateBlogContent",
 					update : "Y"
 			}
 			loadingPgSetting(data);
@@ -244,11 +245,11 @@ var MainViewBlogContentJs = function(){
 			if(confirm("정말삭제하시겠습니까?")) {
 				var data = {
 						idx  : $('#viewBlogContentIdx').val(),
-						page : "/main/deleteBlogContent"
+						page : "/manage/blog/deleteBlogContent"
 				}
 				
 				$.ajax({
-					url : "/main/deleteBlogContent",
+					url : "/manage/blog/deleteBlogContent",
 					data : data,
 					async : false,
 					success : function(result){

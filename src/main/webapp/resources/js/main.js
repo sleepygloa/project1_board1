@@ -61,6 +61,7 @@ var coreJs = function(){
 						}else{
 							menuStr += '<li class="nav-item">'
 								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
+								+ '<input type="hidden" value="'+menuData.PRO_CD+'" />'
 								+ '<img src="images/icons/1.png" alt="">'
 								+ '<span class="menu-title">'+menuData.MENU_NM+'</span>'
 								+ '</a></li>'

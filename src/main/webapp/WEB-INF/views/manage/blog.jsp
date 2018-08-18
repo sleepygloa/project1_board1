@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+
 
 
 	<nav id="blogLeftNavi" class="col-md-2" >					
@@ -7,10 +10,8 @@
 			<span id="blogAddBtn" style="display:none">글쓰기</span>
 		</p>
 	</nav>
-	<article class="col-md-10 col-xs-12">
-		<div id="main" class="wrapper">
-		
-		</div>
-	</article>
+	<div id="manageBlog" class="wrapper">
+	
+	</div>
 
-	<script src="/resources/js/main_content.js"></script>
+	<script src="/resources/js/manage/blog/blog.js"></script>

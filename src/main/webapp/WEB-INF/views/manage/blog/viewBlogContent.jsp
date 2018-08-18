@@ -18,4 +18,4 @@
 	<button id="viewBlogContentCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</button>
 </div>
 
-<script src="/resources/js/main_viewBlogContent.js"></script>
+<script src="/resources/js/manage/blog/main_viewBlogContent.js"></script>

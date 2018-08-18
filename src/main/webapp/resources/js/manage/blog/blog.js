@@ -3,12 +3,12 @@ var mainData = '';
 function loadingPgSetting(data){
   	mainData = data; //?
   	$.ajax({
-  		url		: "/main/viewPg",
+  		url		: "/manage/blog/viewPg",
   		data	: data,
   		type	: "POST",
   		success	: function(result){
-  			$('#main').empty();
-  			$('#main').html(result);
+  			$('#manageBlog').empty();
+  			$('#manageBlog').html(result);
   		}
   	})
 }
@@ -17,7 +17,7 @@ function loadingPgSetting(data){
 function mainBlogInsertBtn(){
 	  var data = {
 			  idx  : '',
-			  page : '/main/updateBlogContent'
+			  page : '/manage/blog/updateBlogContent'
 	  }
 	  loadingPgSetting(data);
 }
@@ -25,7 +25,7 @@ function mainBlogInsertBtn(){
 function viewBlogContentPg(idx){
 	var data = {
 			idx  : idx,
-			page : "/main/viewBlogContent"
+			page : "/manage/blog/viewBlogContent"
 	}
 	loadingPgSetting(data);
 }
@@ -56,13 +56,14 @@ var mainContentJs = function(){
 	  function loadingMainContent(){
 		  var id = null;
 		  $.ajax({
-			  url		: "/main/loadingMainBlogContent",
+			  url		: "/manage/blog/loadingMainBlogContent",
+			  asysnc	: false,
 			  success	: function(result){
-				  if(result.ADMIN_YN == 'Y') $('#blogAddBtn').css('display','block');
+				  if(result.ADMIN_YN == 'Y') $('#manageBlogAddBtn').css('display','block');
 				  
 				  var contentMain = '';
 				  var title_count = 0;
-				  
+				  console.log(result.list);
 				  if(result.list.length > 0){
 					  title_count = result.list[0].TITLE_COUNT;
 				  }
@@ -104,7 +105,7 @@ var mainContentJs = function(){
 	  
 	  function mainContentEvent(){
 		//글쓰기
-		  $(document).on('click', '#blogAddBtn', function(){
+		  $(document).on('click', '#manageBlogAddBtn', function(){
 			  mainBlogInsertBtn();
 		  })
 	  }

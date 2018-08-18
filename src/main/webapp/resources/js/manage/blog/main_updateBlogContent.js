@@ -40,7 +40,7 @@ var MainUpdateBlogContentJs = function(){
 
 	function loadingViewBlogContent(){
 		$.ajax({
-			url	 : '/main/viewBlogContent',
+			url	 : '/manage/blog/viewBlogContent',
 			data : mainData,
 			type : "POST",
 			success : function(result){
@@ -190,7 +190,7 @@ var MainUpdateBlogContentJs = function(){
 	//글쓰기 드롭다운 리스
 	  function insertBlogTitleDropdown(){
 		  $.ajax({
-			  url : "/main/getBlogTitleDropdown",
+			  url : "/manage/blog/getBlogTitleDropdown",
 			  success : function(result){
 				  $('#insertBlogTitleDropdown').empty();
 				  var options = '';
@@ -264,7 +264,7 @@ var MainUpdateBlogContentJs = function(){
 			}
 		}
 		$.ajax({
-			url 	: "/main/saveBlogContent",
+			url 	: "/manage/blog/saveBlogContent",
 			type	: 'POST',
 //			data    : formData,
 			data	: JSON.stringify(data),
@@ -275,7 +275,7 @@ var MainUpdateBlogContentJs = function(){
 			success	: function(result){
 				if($('#updateBlogFileUploadText').val() != ''){
 					$.ajax({
-						url 	: "/main/saveBlogFileUpload",
+						url 	: "/manage/blog/saveBlogFileUpload",
 						type	: 'POST',
 						data    : formData,
 						contentType : false,

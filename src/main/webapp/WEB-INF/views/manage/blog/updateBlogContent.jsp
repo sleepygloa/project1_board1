@@ -52,4 +52,4 @@
 	</div>
 </div>
 
-<script src="/resources/js/main_updateBlogContent.js"></script>
+<script src="/resources/js/manage/blog/main_updateBlogContent.js"></script>
