@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.core.parameters.Params;
 import com.settings.svce.MenuService;
 
 @Controller
 @ResponseBody
-@RequestMapping("/menu")
+@RequestMapping("/ctrl/set/menu")
 public class MenuController {
 	
 	@Autowired
@@ -18,7 +19,7 @@ public class MenuController {
 
 	
 	//사이드바 메뉴불러오기
-	@RequestMapping("/getSidebarMenu")
+	@RequestMapping("/getMenu")
 	public ModelAndView getSidebarMenu() throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
 		mv.addObject("list", menuService.getSidebarMenu());
@@ -32,5 +33,12 @@ public class MenuController {
 			return mv;
 	}
 
+	//추가, 수정, 삭제
+	@RequestMapping("/modifyMenu")
+	public ModelAndView modifyMenu(Params inParams) throws Exception{
+		ModelAndView mv = new ModelAndView("jsonView");
+		menuService.modifyMenu(inParams);
+		return mv;
+	}
 	
 }

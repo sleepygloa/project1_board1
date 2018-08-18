@@ -34,7 +34,7 @@ var coreJs = function(){
 	
 	function getMenu(){
 		$.ajax({
-			url		 : "/menu/getSidebarMenu",			
+			url		 : "/ctrl/set/menu/getMenu",			
 			type	 : "POST",
 			dataType : "json",
 			success : function(data){
@@ -46,17 +46,25 @@ var coreJs = function(){
 				var menuDataList = data.list;
 				$.each(menuDataList, function(i, v){
 					var menuData = menuDataList[i];
-					
 					if(pIdx != menuData.MENU_PARENT_SEQ){
-						pIdx = menuData.MENU_PARENT_SEQ;
-						menuStr += '<li class="nav-item">'
-							+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
-							+ '<img src="images/icons/9.png" alt="">'
-							+ '<span class="menu-title">'+menuData.MENU_NM+'<i class="fa fa-sort-down"></i></span>'
-							+ '</a>'
-							+ '<div class="collapse" id="'+menuData.PRO_CD+'">'
-							+ '<ul class="nav flex-column sub-menu">';
-						pCnt++;
+						
+						if(menuData.COUNT != 1){
+							pIdx = menuData.MENU_PARENT_SEQ;
+							menuStr += '<li class="nav-item">'
+								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
+								+ '<img src="images/icons/9.png" alt="">'
+								+ '<span class="menu-title">'+menuData.MENU_NM+'<i class="fa fa-sort-down"></i></span>'
+								+ '</a>'
+								+ '<div class="collapse" id="'+menuData.PRO_CD+'">'
+								+ '<ul class="nav flex-column sub-menu">';
+							pCnt++;
+						}else{
+							menuStr += '<li class="nav-item">'
+								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
+								+ '<img src="images/icons/1.png" alt="">'
+								+ '<span class="menu-title">'+menuData.MENU_NM+'</span>'
+								+ '</a></li>'
+						}
 					}else{
 						menuStr += '<li class="nav-item">'
 							+'<a class="nav-link" href="#" >'
@@ -65,10 +73,10 @@ var coreJs = function(){
 							+'<span class="menu-title">'+menuData.MENU_NM+'</span>'
 							+'</a>'
 							+'</li>';
-						
+						pCnt++;
 						if(pCnt == menuData.COUNT){
 							menuStr += '</ul></div></li>';
-							cnt = 0;
+							pCnt = 0;
 						}
 					}
 					

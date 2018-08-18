@@ -282,7 +282,7 @@
     		data	: JSON.stringify(gridData),
             dataType: 'json',
             async	: false,
-            contentType: 'application/json',
+			contentType : "application/json, charset=utf-8",
     		success : function(data){
     			$('#'+programId+'Grid').remove();
     			$('#'+programId+'Grid').fnList(initData);
