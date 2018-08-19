@@ -1,34 +1,33 @@
-var mainData = '';
+//
+//function loadingPgSetting(data){
+//  	mainData = data; //?
+//  	$.ajax({
+//  		url		: "/manage/blog/viewPg",
+//  		data	: data,
+//  		type	: "POST",
+//  		success	: function(result){
+//  			$('#manageBlog').empty();
+//  			$('#manageBlog').html(result);
+//  		}
+//  	})
+//}
+//  
+////글쓰기버튼 
+//function mainBlogInsertBtn(){
+//	  var data = {
+//			  idx  : '',
+//			  page : '/manage/blog/updateBlogContent'
+//	  }
+//	  loadingPgSetting(data);
+//}
 
-function loadingPgSetting(data){
-  	mainData = data; //?
-  	$.ajax({
-  		url		: "/manage/blog/viewPg",
-  		data	: data,
-  		type	: "POST",
-  		success	: function(result){
-  			$('#manageBlog').empty();
-  			$('#manageBlog').html(result);
-  		}
-  	})
-}
-  
-//글쓰기버튼 
-function mainBlogInsertBtn(){
-	  var data = {
-			  idx  : '',
-			  page : '/manage/blog/updateBlogContent'
-	  }
-	  loadingPgSetting(data);
-}
-
-function viewBlogContentPg(idx){
-	var data = {
-			idx  : idx,
-			page : "/manage/blog/viewBlogContent"
-	}
-	loadingPgSetting(data);
-}
+//function viewBlogContentPg(idx){
+//	var data = {
+//			idx  : idx,
+//			page : "/manage/blog/viewBlogContent"
+//	}
+//	loadingPgSetting(data);
+//}
 
 function blogChileListToggle(count){
 	var listCss = $('.blogSubject_'+count);
@@ -39,71 +38,35 @@ function blogChileListToggle(count){
 	}
 	
 }
-var mainContentJs = function(){
+var blogJs = function(){
 	"use strict";
+	
+	var $grid = $('#blogGrid');
 	
 	return {
 		init : function(){
 			
-			loadingMainContent();
+			getBlogContent();
 			
-			mainContentEvent();
+			getEvents();
 			
 		}
 	}
 	
-	
-	  function loadingMainContent(){
-		  var id = null;
-		  $.ajax({
-			  url		: "/manage/blog/loadingMainBlogContent",
-			  asysnc	: false,
-			  success	: function(result){
-				  if(result.ADMIN_YN == 'Y') $('#manageBlogAddBtn').css('display','block');
-				  
-				  var contentMain = '';
-				  var title_count = 0;
-				  console.log(result.list);
-				  if(result.list.length > 0){
-					  title_count = result.list[0].TITLE_COUNT;
-				  }
-				  $('#blogContents_totalSectionCounts').text(title_count);
-				  
-				  
-				  if(result.list){
-					  var list = result.list;
-					  var title = '';
-					  var count = 0;
-					  var subCount = 0;
-					  
-					  for(var i in list){
-						  console.log(title + " : " + list[i].TITLE);
-						  if(title != list[i].TITLE){
-							  title = list[i].TITLE;
-							  contentMain += '<ul class="blogLeftList blogTitle_'+count+'" onclick="blogChileListToggle('+count+')"><h6 id="menuName">'+ list[i].TITLE +'</h6>';
-						  }
-						  contentMain += '<li class="blogLeftList blogSubject_'+count+'" style="display:none;"><a onclick="viewBlogContentPg('+list[i].IDX+')">'+list[i].SUBJECT+'</a></li>'
-						  subCount++;
-						  
-						  if(subCount == (list[i].SUBJECT_COUNT)) {
-							  contentMain += '</ul>';
-							  count++;
-							  subCount = 0;
-						  }
-						  console.log(subCount + " : " + list[i].TITLE_COUNT);
-					  }
-
-				  }
-				  
-				  $('#blogLeftNavi').append(contentMain);
-				  
-			  }
-		  })
+	  function getBlogContent(){
+			$grid.fnList({
+				programId 	: 'blog',
+				programNm 	: '블로그', 
+				url 		: '/manage/blog/',
+				colName		: ['IDX', 'TITLE', 'SUBJECT'],
+				viewContents : true,
+				viewContentsRe : true
+			});
+		  
 	  }
 	  
 	  
-	  
-	  function mainContentEvent(){
+	  function getEvents(){
 		//글쓰기
 		  $(document).on('click', '#manageBlogAddBtn', function(){
 			  mainBlogInsertBtn();
@@ -113,5 +76,5 @@ var mainContentJs = function(){
 }();
 
 $(document).ready(function(){
-	mainContentJs.init();
+	blogJs.init();
 })

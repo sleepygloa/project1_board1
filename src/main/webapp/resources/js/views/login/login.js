@@ -1,28 +1,49 @@
-(function loginJs(){
+var loginJs = function() {
+	"use strict";
 	
 	var loginData = {};
 	
-	//로그인하기
-	$('#loginSubmit').click(function(){
-		loginData = {
-				id : $('#loginIdInput').val(),
-				pw : $('#loginPwInput').val()
-		};
-		
-		loginValidation();
-		
-		$.ajax({
-			url		 : "/login/loginUser",
-			data	 : loginData,
-			dataType : 'JSON',
-			success  : function(result){
-				alert(result.MSG);
-				if(result.YN == 'SUCCESS'){
-					window.location.href='/';
+	return {
+		init : function(){
+			
+			getEvents();
+			
+		}
+	}
+	
+	function getEvents(){
+		//로그인하기
+		$('#loginSubmit').click(function(){
+			loginData = {
+					id : $('#loginIdInput').val(),
+					pw : $('#loginPwInput').val()
+			};
+			
+			loginValidation();
+			
+			$.ajax({
+				url		 : "/login/loginUser",
+				data	 : loginData,
+				dataType : 'JSON',
+				success  : function(result){
+					alert(result.MSG);
+					if(result.YN == 'SUCCESS'){
+						window.location.href='/';
+					}
 				}
-			}
+			})
+		});
+		
+		
+		$('#loginRegist').click(function(){
+			  $.ajax({
+				  url		: "/login/loadingLoginInsertPg",
+				  success	: function(result){
+					  $('#body').html(result);
+				  }
+			  })
 		})
-	})
+	}
 	
 	function loginValidation(){
 		
@@ -35,13 +56,9 @@
 		}
 	}
 	
-	$('#loginRegist').click(function(){
-		  $.ajax({
-			  url		: "/login/loadingLoginInsertPg",
-			  success	: function(result){
-				  $('#body').html(result);
-			  }
-		  })
-	})
 	
-})();
+}();
+
+$(document).ready(function(){
+	loginJs.init();
+})

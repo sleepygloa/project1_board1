@@ -36,11 +36,10 @@ public class BlogController {
 		return mv;
 	}
 
-	@RequestMapping("/loadingMainBlogContent")
+	@RequestMapping("/getBlog")
 	public ModelAndView loadingMainBlogContent(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		System.out.println("sus");
 		try {
 			list = blogService.loadingMainBlogContent();
 		}catch(Exception e) {
@@ -55,7 +54,6 @@ public class BlogController {
 				mv.addObject("ADMIN_YN", "Y");
 			}
 		}
-		System.out.println("sus");
 		return mv;
 	}
 

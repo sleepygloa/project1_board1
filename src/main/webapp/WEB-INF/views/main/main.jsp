@@ -1,42 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%-- <!DOCTYPE html>
-<jsp:include page="header.jsp" flush="false" />
-	<body class="container">
-		<input type="hidden" id="pageUrl" value="" />
-		<input type="hidden" id="pageData" value="" />
-		<input type="hidden" id="pageJsp" value="" />
-		
-		<div id="header" class="container row">
-			<a id="logo">SEONHO blog</a>
-			<a id="login" href="#">login</a>
-			<a id="logout" href="#" style="display:none">logout</a>
-		</div>
-		<div id="body" class="row" >
-		</div>
-
-	</body>
-	<footer id="footer" class="container">
-		<div class="form-control">
-			<a href="https://github.com/sleepygloa" target="_blank">
-				<i class="fa fa-github"></i>
-			</a>
-			<a href="https://blog.naver.com/sleepygloa" target="_blank">
-				<img width="20px" height="20px" src="/resources/img/naverblog.png"/>
-			</a>
-		</div>
-
-		<div class="form-control">
-			<p class="copyright">© 2018&nbsp;&nbsp;KIM SEONHO</p>
-			<p class="theme-by">Hosted on
-				<a href="https://github.com/sleepygloa">GitHub Pages&nbsp;
-					<i class="fa fa-github"></i>
-				</a>
-			</p>
-		</div>
-		
-	</footer>
-</html>
- --%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,8 +10,8 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar navbar-default col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="bg-white text-center navbar-brand-wrapper">
-        <a class="navbar-brand brand-logo" href="index.html"><img src="/resources/images/logo_star_black.png" /></a>
-        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="/resources/images/logo_star_mini.jpg" alt=""></a>
+        <a class="navbar-brand brand-logo" href="/"><img src="/resources/images/logo_star_black.png" /></a>
+        <a class="navbar-brand brand-logo-mini" href="/"><img src="/resources/images/logo_star_mini.jpg" alt=""></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <button class="navbar-toggler navbar-toggler d-none d-lg-block navbar-dark align-self-center mr-3" type="button" data-toggle="minimize">
@@ -60,7 +22,8 @@
         </form>
         <ul class="navbar-nav ml-lg-auto d-flex align-items-center flex-row">
           <li class="nav-item">
-            <a class="nav-link profile-pic" href="#"><img class="rounded-circle" src="/resources/images/face.jpg" alt=""></a>
+            <a id="headerLoginCircle" class=" profile-pic" href="#" style="display:none;"><img id="headerLoginCircleImg" class="rounded-circle" src="/resources/images/face.jpg" alt=""></a>
+            <a id="headerLogoutCircle" class=" profile-pic" href="#" style="color:white;">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="fa fa-th"></i></a>
@@ -73,7 +36,7 @@
     </nav>
 
     <!-- partial -->
-    <div class="container-fluid">
+    <div id="container-fluid" class="container-fluid">
       <div class="row row-offcanvas row-offcanvas-right">
         <!-- partial:partials/_sidebar.html -->
         <nav class="bg-white sidebar sidebar-offcanvas" id="sidebar">

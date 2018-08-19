@@ -20,4 +20,4 @@
 	</div>
 </section>
 
-<script src="/js/views/login/login.js"></script>
+<script src="/resources/js/views/login/login.js"></script>

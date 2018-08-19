@@ -23,6 +23,7 @@ function resize(obj) {
 	}
 
 var focusIdx = -1;
+var updateIdx = '';
 var MainUpdateBlogContentJs = function(){
 	"use strict";
 	var contentLength = 0;
@@ -41,12 +42,13 @@ var MainUpdateBlogContentJs = function(){
 	function loadingViewBlogContent(){
 		$.ajax({
 			url	 : '/manage/blog/viewBlogContent',
-			data : mainData,
+			data : blogData,
 			type : "POST",
 			success : function(result){
+				console.log(result);
 				if(result.map){
 					var list = result.map;
-					idx = list[0].IDX;
+					updateIdx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
 					$('#updateBlogContentSubject').val(list[0].SUBJECT);
 					$('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
@@ -235,7 +237,7 @@ var MainUpdateBlogContentJs = function(){
 					}
 				}
 				dataList = {
-						idx 			: idx,
+						idx 			: updateIdx,
 						i   			: i-count,
 						type 			: typeVal,
 						content 		: textareaVal,
@@ -249,9 +251,9 @@ var MainUpdateBlogContentJs = function(){
 		
 		var data = {}
 
-		if(idx != ''){
+		if(updateIdx != ''){
 			data = {
-					idx		: idx,
+					idx		: updateIdx,
 					title 	: $('#insertBlogTitleDropdown option:selected').text(),
 					subject : $('#updateBlogContentSubject').val(),
 					dataDt  : dataDt

@@ -97,58 +97,7 @@ var getRef = '';
 
 	//댓글불러오기
 	function getMainViewReContent(){
-		$.ajax({
-			url  	: "/manage/blog/getMainViewReContent",
-			data 	: {
-				idx : blogIdx
-			},
-			type	: "POST",
-			async:false,
-			success : function(result){
-				var result = result.list;
-				var body = $("table > tbody");
-				body.empty();
-				
-				var reContent = '';
-				if(result == undefined || result.length == 0){
-					reContent = "<tr>" + 
-								"<td colspan='2'>댓글이 없습니다. 작성해주세요.</td>"
-							+	"</td>";
-				}else{
-					$.each(result, function(key, value){
-						reContent += 
-							"<tr>" +
-								"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
-								"<td >";
-						if(s_userId == value.IN_USER_ID){
-							reContent +="<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> ";	
-						}
-						reContent += (value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
-								"</td>" +
-							"</tr>"+
-							"<tr id='viewBlogReContentPlace_"+value.REF+"_"+value.RE_STEP+"'>"+
-								"<td colspan='2' style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</td>" +
-							"</tr>"
-					});
-				}
-				reContent += 
-					"<tr>" +
-						"<td class='col-xs-6' style='text-align:left;'>작성자 " +
-							"<input id='viewBlogReWriter' type='text' value='"+(s_userId == null? '' : s_userId)+"' disabled /> " +
-						"</td>" +
-						"<td class='col-xs-2'>"+
-							"<a class='btn btn-default' id='viewBlogReSaveBtn'>댓글쓰기</a>" +
-						"</td>" +
-					"</tr>"+
-					"<tr>"+
-						"<td colspan='2' class='col-xs-8' style='text-align:left;'>" +
-							"<textarea id='viewBlogReContent' class='col-xs-12' style='height:50px;'></textarea>" +
-						"</td>" +
-					"</tr>"
-				body.append(reContent);
-				
-			}
-		})
+
 	}
 	
 var MainViewBlogContentJs = function(){
@@ -159,8 +108,6 @@ var MainViewBlogContentJs = function(){
 			
 			loadingViewBlogContent();
 			
-			getMainViewReContent();
-			
 			viewBlogContentEvent();
 			
 		}
@@ -169,7 +116,7 @@ var MainViewBlogContentJs = function(){
 	function loadingViewBlogContent(){
 		$.ajax({
 			url	 : '/manage/blog/viewBlogContent',
-			data : mainData,
+			data : blogData,
 			type : "POST",
 			async:false,
 			success : function(result){
@@ -237,7 +184,7 @@ var MainViewBlogContentJs = function(){
 					page : "/manage/blog/updateBlogContent",
 					update : "Y"
 			}
-			loadingPgSetting(data);
+			fnLoadingPage(data);
 		});
 		
 		$('#viewBlogContentDeleteBtn').click(function(){
@@ -261,7 +208,7 @@ var MainViewBlogContentJs = function(){
 					}
 				});
 				
-				loadingPgSetting(data);
+				fnLoadingPage(data);
 			}
 		});
 		

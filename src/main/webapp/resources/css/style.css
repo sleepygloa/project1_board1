@@ -13280,7 +13280,7 @@ input:focus {
   width: 40px; }
 
 .input-group .form-control {
-  min-height: 40px;
+  min-height: 20px;
   height: 100%; }
 
 .input-group .input-group-addon {
@@ -13819,7 +13819,7 @@ html {
 input {
   font-family: "Poppins", sans-serif;
   font-size: 13px;
-  min-height: 40px;
+  min-height: 20px;
   border-radius: 6px;
   padding: 9px 15px; }
 

@@ -1,4 +1,4 @@
-package com.login.ctrl;
+package com.main.ctrl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.common.common.CommandMap;
 import com.core.parameters.Params;
-import com.login.svce.LoginService;
+import com.main.svce.LoginService;
 
 
 @Controller
@@ -27,6 +27,15 @@ public class LoginController {
 	
 	@Autowired(required = true)
 	private LoginService loginService;
+	
+	//로그인페이지 이동
+	@RequestMapping("/getSession")
+	public ModelAndView getSession(HttpSession session) {
+		ModelAndView mv = new ModelAndView("jsonView");
+		String s_userId = (String)session.getAttribute("s_userId");
+		mv.addObject("s_userId", s_userId);
+		return mv;
+	}
 	
 	//로그인페이지 이동
 	@RequestMapping("/loadingLoginPg")
@@ -65,7 +74,7 @@ public class LoginController {
 			mv.addObject("YN", "SUCCESS");
 			mv.addObject("MSG", "로그인에 성공하였습니다."+inParams.getString("id")+" 님! 반갑습니다.");
 		}
-
+		System.out.println("로그인");
 		//성공
 		return mv;
 	}
@@ -112,7 +121,7 @@ public class LoginController {
 		
 		session.invalidate();
 		mv.addObject("MSG", "로그아웃되었습니다.");
-		
+		System.out.println("로그아웃");
 		return mv;
 	}
 	

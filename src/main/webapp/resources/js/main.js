@@ -1,9 +1,12 @@
+var s_userId = '';
 var coreJs = function(){
 	"use strict";
 
 	return {
 		init : function(){
 
+			getSession();
+			
 			getMenu();
 
 			getEvents();
@@ -11,9 +14,27 @@ var coreJs = function(){
 		}
 	}
 
-
+	function getSession(){
+		$.ajax({
+			url		: '/login/getSession',
+			success : function(data){
+				if(data.s_userId == null){
+					s_userId = undefined;
+					console.log("not login");
+					$('#headerLoginCircle').css('display', 'none');
+					$('#headerLogoutCircle').css('display', 'block');
+				}else{
+					s_userId = data.s_userId;
+					console.log("logined");
+					$('#headerLoginCircle').css('display', 'block');
+					$('#headerLogoutCircle').css('display', 'none');
+				}
+			}
+			
+		});
+	};
+	
 	function getEvents(){
-
 		$(document).on('click', 'a.nav-link', function(){
 			var value = $(this).children('input').val();
 			$.ajax({
@@ -29,6 +50,28 @@ var coreJs = function(){
 			});
 		});
 
+		$('#headerLoginCircle').click(function(){
+			alert('login');
+			$.ajax({
+				url 	: '/login/logout',
+				async	: false,
+				success : function(data){
+					$('#headerLoginCircle').css('display', 'none');
+					$('#headerLogoutCircle').css('display', 'block');
+				}
+			});
+		});
+		
+		$('#headerLogoutCircle').click(function(){
+			$.ajax({
+				url 	: '/login/loadingLoginPg',
+				async	: false,
+				success : function(data){
+					$('#container-fluid').empty();
+					$('#container-fluid').html(data);
+				}
+			});
+		});
 		
 	}
 	
@@ -39,7 +82,10 @@ var coreJs = function(){
 			dataType : "json",
 			success : function(data){
 //				$('#sidebarMenu').empty();
-
+				//session
+				
+				
+				//leftMenu
 				var menuStr = '';
 				var pIdx = 0;
 				var pCnt = 0;

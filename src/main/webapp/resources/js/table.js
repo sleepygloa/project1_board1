@@ -1,13 +1,35 @@
+var url = '';
+var programId = '';
+var uProgramId = '';
+var trCnt = -1;
+var clickCnt = -1; //클릭시 행번호 
+var colRow = null;
+var colName = null;
+var initData = '';
+var viewContents = false;
+var viewContentsRe = false;
+var blogData = '';
+var gridData = {};
+var s_userId = null;
+
+function fnLoadingPage(data){
+	blogData = data;
+//  	mainData = data; //?
+  	$.ajax({
+  		url		: "/manage/blog/viewPg",
+  		data	: data,
+  		type	: "POST",
+  		async	: false,
+  		success	: function(result){
+  			$('#view'+uProgramId).empty();
+  			$('#view'+uProgramId).html(result);
+  		}
+  	})
+}
+
 (function(window, $, undefined){
 	
-	var url = '';
-	var programId = '';
-	var uProgramId = '';
-	var trCnt = -1;
-	var clickCnt = -1; //클릭시 행번호 
-	var colRow = null;
-	var colName = null;
-	var initData = '';
+
 	
     $.fn.fnList = function(data){
     	initData = data;
@@ -17,7 +39,8 @@
     	var title = data.programNm + '관리';
     	var tableTitle = data.programNm + '목록';
     	var grid = '';
-
+    	(data.viewContents != undefined? viewContents = data.viewContents : viewContents = false);
+    	(data.viewContentsRe != undefined? viewContentsRe = data.viewContentsRe : viewContentsRe = false);
     	
     	colName = new Array();
     	colRow = new Array();
@@ -69,24 +92,27 @@
     	
     	grid += '<div class="table-responsive">';
     	
-    	for(var i = btn.length - 1; i >= 0; i--){
-    		var btnName = btn[i];
-    		if(btnName == 'search'){
-    			grid += '<a href="#" id="'+programId+'SearchBtn" class="btn btn-outline-success btn-sm pull-right" >검색</a>';
-    		}else if(btnName == 'add'){
-    			grid += '<a href="#" id="'+programId+'AddBtn" class="btn btn-outline-success btn-sm pull-right" >추가</a>';
-    		}else if(btnName == 'modify'){
-    			grid += '<a href="#" id="'+programId+'ModifyBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
-    		}else if(btnName == 'delete'){
-    			grid += '<a href="#" id="'+programId+'DeleteBtn" class="btn btn-outline-success btn-sm pull-right" >삭제</a>';
-    		}else if(btnName == 'addRow'){
-    			grid += '<a href="#" id="'+programId+'AddRowBtn" class="btn btn-outline-success btn-sm pull-right" >행추가</a>';
-    		}else if(btnName == 'delRow'){
-    			grid += '<a href="#" id="'+programId+'DelRowBtn" class="btn btn-outline-success btn-sm pull-right" >행삭제</a>';
-    		}else if(btnName == 'save'){
-    			grid += '<a href="#" id="'+programId+'SaveBtn" class="btn btn-outline-success btn-sm pull-right" >저장</a>';
-    		}
+    	if(btn != undefined){
+    		for(var i = btn.length - 1; i >= 0; i--){
+        		var btnName = btn[i];
+        		if(btnName == 'search'){
+        			grid += '<a href="#" id="'+programId+'SearchBtn" class="btn btn-outline-success btn-sm pull-right" >검색</a>';
+        		}else if(btnName == 'add'){
+        			grid += '<a href="#" id="'+programId+'AddBtn" class="btn btn-outline-success btn-sm pull-right" >추가</a>';
+        		}else if(btnName == 'modify'){
+        			grid += '<a href="#" id="'+programId+'ModifyBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
+        		}else if(btnName == 'delete'){
+        			grid += '<a href="#" id="'+programId+'DeleteBtn" class="btn btn-outline-success btn-sm pull-right" >삭제</a>';
+        		}else if(btnName == 'addRow'){
+        			grid += '<a href="#" id="'+programId+'AddRowBtn" class="btn btn-outline-success btn-sm pull-right" >행추가</a>';
+        		}else if(btnName == 'delRow'){
+        			grid += '<a href="#" id="'+programId+'DelRowBtn" class="btn btn-outline-success btn-sm pull-right" >행삭제</a>';
+        		}else if(btnName == 'save'){
+        			grid += '<a href="#" id="'+programId+'SaveBtn" class="btn btn-outline-success btn-sm pull-right" >저장</a>';
+        		}
+        	}
     	}
+    	
     	grid += '<table class="table center-aligned-table table-hover">';
     	
     	grid += '<thead>';
@@ -107,7 +133,16 @@
     	
     	for(var i = 0; i < colRow.length; i++){
     		trCnt++;
-    		grid += '<tr class="tr_row_'+i+'" >';
+    		if(viewContents){
+    			if(colRow[i].IDX == undefined){
+    				alert('IDX 가 없습니다.');
+    				return false;
+    			}else{
+    				grid += '<tr class="tr_row_'+i+' viewContents_'+colRow[i].IDX+'" >';
+    			}
+    		}else{
+    			grid += '<tr class="tr_row_'+i+'" >';
+    		}
     		
     		var rowData = colRow[i];
     		var keyName = Object.keys(rowData);
@@ -154,7 +189,57 @@
     	
     }
     
-    var gridData = {};
+    $.fn.getBlogRe = function(){
+    	console.log(gridData);
+		$.ajax({
+			url  	: "/manage/blog/getMainViewReContent",
+			data 	: {
+				idx : gridData.idx
+			},
+			type	: "POST",
+			async:false,
+			success : function(result){
+				var result = result.list;
+				var body = $('#'+programId+"Re");
+				body.empty();
+				
+				var reContent = '<div class="col-lg-12">';
+				if(result == undefined || result.length == 0){
+					reContent = '<div class="col-lg-12">댓글이 없습니다. 작성해주세요.</div>';
+				}else{
+					$.each(result, function(key, value){
+						console.log(value);
+						reContent += 
+							"<tr>" +
+								"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
+								"<td >";
+						if(s_userId == value.IN_USER_ID){
+							reContent +="<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> ";	
+						}
+						reContent += (value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
+								"</td>" +
+							"</tr>"+
+							"<tr id='viewBlogReContentPlace_"+value.REF+"_"+value.RE_STEP+"'>"+
+								"<td colspan='2' style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</td>" +
+							"</tr>"
+					});
+				}
+				reContent += 
+							'<div class="col-lg-12">' 
+							+	'<span>작성자</span>'
+							+	'<input id="viewBlogReWriter" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
+							+	'<a class="btn btn-default" id="viewBlogReSaveBtn">댓글쓰기</a>'
+						+	'</div>'
+						+	'<div>'
+							+	'<textarea id="viewBlogReContent" class="col-xs-12" style="height:50px;"></textarea>'
+						+	'</div>';
+				reContent += '</div>';
+				body.append(reContent);
+				
+			}
+		})
+    }
+    
 
     $.fn.getGridData = function(){
     	return gridData;
@@ -193,11 +278,11 @@
         		}
         		tdRowData[inputKey] = inputData;
         	}
-    	}else if(elI.hasClass('fa-minus') || elI.hasClass('modify')){
+    	}else{
     		console.log('minus');
     		for(var i = 0; i < tdData.length; i++){
         		var el = $(tdData[i]);
-        		console.log(el);
+        		
         		var tdKeyTrans = el.attr('class').split('td_row_')[1].toLowerCase();
         		var tdKeyArr = tdKeyTrans.split("_");
         		var tdKey = '';
@@ -219,6 +304,19 @@
     	}
     	console.log(tdRowData);
     	gridData = tdRowData;
+    	
+    	if(gridData.idx != undefined){
+        	var data = {
+        			idx  : gridData.idx,
+        			page : "/manage/blog/viewBlogContent"
+        	}
+        	fnLoadingPage(data);
+        	
+        	if(viewContentsRe){
+        		$('#'+programId+'Re').getBlogRe();
+        	}
+        	
+    	}
     }
     
 
@@ -288,9 +386,17 @@
     			$('#'+programId+'Grid').fnList(initData);
     		}
     	});
-    	
     });
     
+    
+  //글쓰기버튼 
+    function mainBlogInsertBtn(){
+    	  var data = {
+    			  idx  : '',
+    			  page : '/manage/blog/updateBlogContent'
+    	  }
+    	  loadingPgSetting(data);
+    }
     
 }(window, jQuery));
 
