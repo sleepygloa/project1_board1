@@ -174,13 +174,13 @@ public class BlogController {
 	}
 
 	//블로그글 중 댓글 불러오기
-	@RequestMapping("/getMainViewReContent")
-	public ModelAndView getMainViewReContent(Params inParams) {
-		System.out.println("getMainViewReContent : "+inParams);
+	@RequestMapping("/getReBlog")
+	public ModelAndView getReBlog(Params inParams) {
+		System.out.println("getReBlog : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 
 		try {
-			List<Map<String,Object>> list = blogService.getMainViewReContent(inParams);
+			List<Map<String,Object>> list = blogService.getReBlog(inParams);
 			mv.addObject("list", list);
 		}catch(Exception e) {
 
@@ -189,33 +189,33 @@ public class BlogController {
 		return mv;
 	}
 	//메일 블로그 댓글 쓰기
-	@RequestMapping(value="/insertMainBlogReContent")
-	public ModelAndView insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/saveReBlog")
+	public ModelAndView saveReBlog(Params inParams, HttpServletRequest request) throws Exception{
 		ModelAndView mv = new ModelAndView("jsonView");
-		blogService.insertMainBlogReContent(inParams, request);
+		blogService.saveReBlog(inParams, request);
 		return mv;
 	}
 
 	//블로그 댓글 삭제
-	@RequestMapping(value="/deleteMainBlogReContent")
-	public ModelAndView deleteMainBlogReContent(Params inParams) throws Exception{
+	@RequestMapping(value="/deleteReBlog")
+	public ModelAndView deleteReBlog(Params inParams) throws Exception{
 			ModelAndView mv = new ModelAndView("jsonView");
-			blogService.deleteMainBlogReContent(inParams);
+			blogService.deleteReBlog(inParams);
 
 			//프로시저 대체 항목
 			int re_step = inParams.getInteger("re_step");
 			if(re_step == 0) {
-				blogService.deleteMainBlogReContentRefAll(inParams);
+				blogService.deleteReBlogRefAll(inParams);
 			}
 
 		return mv;
 	}
 
 
-	@RequestMapping(value="/insertViewBlogReReContent")
-	public ModelAndView insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/saveReReBlog")
+	public ModelAndView saveBlogReReContent(Params inParams, HttpServletRequest request) throws Exception{
 			ModelAndView mv = new ModelAndView("jsonView");
-			blogService.insertViewBlogReReContent(inParams, request);
+			blogService.saveReReBlog(inParams, request);
     	return mv;
 	}
 }

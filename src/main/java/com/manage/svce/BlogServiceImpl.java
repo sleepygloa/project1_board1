@@ -146,30 +146,30 @@ public class BlogServiceImpl implements BlogService{
 	}
 	
 	@Override
-	public List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception{
-		return blogDao.getMainViewReContent(inParams);
+	public List<Map<String, Object>> getReBlog(Params inParams) throws Exception{
+		return blogDao.getReBlog(inParams);
 	};
 	
 	@Override
-	public void insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception {
-		blogDao.insertMainBlogReContent(inParams);
-
+	public void saveReBlog(Params inParams, HttpServletRequest request) throws Exception {
+		System.out.println("saveReBlog data : "+ inParams);
+		blogDao.saveReBlog(inParams);
 	}
 	
 	@Override
-	public void deleteMainBlogReContent(Params inParams) throws Exception {
-		blogDao.deleteMainBlogReContent(inParams);
+	public void deleteReBlog(Params inParams) throws Exception {
+		blogDao.deleteReBlog(inParams);
 	}
 	
 	@Override
-	public void deleteMainBlogReContentRefAll(Params inParams) throws Exception {
-		blogDao.deleteMainBlogReContentRefAll(inParams);
+	public void deleteReBlogRefAll(Params inParams) throws Exception {
+		blogDao.deleteReBlogRefAll(inParams);
 	}
 	
 	@Override
-	public void insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception {
-		System.out.println("insertViewBlogReReContent data : "+ inParams);
-		blogDao.insertViewBlogReReContent(inParams);
+	public void saveReReBlog(Params inParams, HttpServletRequest request) throws Exception {
+		System.out.println("saveReReBlog data : "+ inParams);
+		blogDao.saveReReBlog(inParams);
 	}
 	
 }

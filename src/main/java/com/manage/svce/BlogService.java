@@ -24,13 +24,13 @@ public interface BlogService {
 	
 	void deleteBlogContent(Params inParams) throws Exception;
 	
-	List<Map<String, Object>> getMainViewReContent(Params inParams) throws Exception;
+	List<Map<String, Object>> getReBlog(Params inParams) throws Exception;
 	
-	void insertMainBlogReContent(Params inParams, HttpServletRequest request) throws Exception;
+	void saveReBlog(Params inParams, HttpServletRequest request) throws Exception;
 
-	void deleteMainBlogReContent(Params inParams) throws Exception;
+	void deleteReBlog(Params inParams) throws Exception;
 
-	void deleteMainBlogReContentRefAll(Params inParams) throws Exception;
+	void deleteReBlogRefAll(Params inParams) throws Exception;
 	
-	void insertViewBlogReReContent(Params inParams, HttpServletRequest request) throws Exception;
+	void saveReReBlog(Params inParams, HttpServletRequest request) throws Exception;
 }

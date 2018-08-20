@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.re-container{
+	margin-top:20px;
+	background:#ffffff;
+	border:solid 1px gray;
+	padding:10px;
+}
+.re-contents{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+.re-contents-input{
+	margin-top:20px;
+}

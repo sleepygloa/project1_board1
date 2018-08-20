@@ -39,24 +39,24 @@ public class BlogDao extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> getMainViewReContent(Map<String, Object> map) throws Exception{
-		return (List<Map<String, Object>>)selectList("blogService.getMainViewReContent", map);
+	public List<Map<String, Object>> getReBlog(Map<String, Object> map) throws Exception{
+		return (List<Map<String, Object>>)selectList("blogService.getReBlog", map);
 	}
 	
-	public void insertMainBlogReContent(Params inParams) throws Exception{
-		insert("blogService.insertMainBlogReContent", inParams);
+	public void saveReBlog(Params inParams) throws Exception{
+		insert("blogService.saveReBlog", inParams);
 	}
 
-	public void deleteMainBlogReContent(Params inParams) throws Exception{
-		update("blogService.deleteMainBlogReContent", inParams);
+	public void deleteReBlog(Params inParams) throws Exception{
+		update("blogService.deleteReBlog", inParams);
 	}
 	
-	public void deleteMainBlogReContentRefAll(Params inParams) throws Exception{
-		update("blogService.deleteMainBlogReContentRefAll", inParams);
+	public void deleteReBlogRefAll(Params inParams) throws Exception{
+		update("blogService.deleteReBlogRefAll", inParams);
 	}
 	
-	public void insertViewBlogReReContent(Params inParams) throws Exception{
-		insert("blogService.insertViewBlogReReContent", inParams);
+	public void saveReReBlog(Params inParams) throws Exception{
+		insert("blogService.saveReReBlog", inParams);
 	}
 	
 	public void insertMainBlogFile(Map<String, Object> map) throws Exception{

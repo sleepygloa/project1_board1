@@ -82,7 +82,7 @@
 			IDX	= #{idx};
 	</delete>
 
-	<select id="getMainViewReContent" parameterType="hashmap" resultType="hashmap">
+	<select id="getReBlog" parameterType="hashmap" resultType="hashmap">
 		SELECT
 				REF
 			, 	RE_LEVEL
@@ -98,7 +98,7 @@
 	   ORDER BY REF ASC, RE_STEP ASC
 	</select>
 
-	<insert id="insertMainBlogReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
+	<insert id="saveReBlog" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
 	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
 			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M WHERE DEL_YN = 'N'
 		</selectKey>
@@ -120,7 +120,7 @@
 			)
 	</insert>
 
-	<update id="deleteMainBlogReContent" parameterType="hashmap">
+	<update id="deleteReBlog" parameterType="hashmap">
 			UPDATE TB_BLOG_RE_M
 			SET
 				DEL_YN = 'Y'
@@ -130,7 +130,7 @@
 			AND RE_STEP = #{re_step}
 	</update>
 
-	<update id="deleteMainBlogReContentRefAll" parameterType="hashmap">
+	<update id="deleteReBlogRefAll" parameterType="hashmap">
 			UPDATE TB_BLOG_RE_M
 			SET
 				DEL_YN = 'Y'
@@ -139,7 +139,7 @@
 			AND REF		= #{ref}
 	</update>
 
-	<insert id="insertViewBlogReReContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
+	<insert id="saveReReBlog" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
  	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
 			SELECT MAX(RE_STEP)+1 FROM TB_BLOG_RE_M WHERE REF = #{ref} AND DEL_YN = 'N'
 		</selectKey>
@@ -159,7 +159,7 @@
 			,	#{content}
 			,	#{ref}
 			,	'2'
-			,	#{RE_STEP}
+			,	#{reStep}
 			,	now()
 			,	#{writer}
 			)

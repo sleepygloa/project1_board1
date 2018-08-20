@@ -18,7 +18,7 @@
 		<button id="viewBlogContentUpdateBtn" type="button" class="btn btn-sm btn-info" style="display:none">수정하기</button>
 		<button id="viewBlogContentCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</button>
 	</div>
-	<div id="blogRe" >
+	<div id="blogRe" class="re-container" >
 	</div>
 </div>
 

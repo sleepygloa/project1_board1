@@ -192,7 +192,7 @@ function fnLoadingPage(data){
     $.fn.getBlogRe = function(){
     	console.log(gridData);
 		$.ajax({
-			url  	: "/manage/blog/getMainViewReContent",
+			url  	: "/manage/blog/getReBlog",
 			data 	: {
 				idx : gridData.idx
 			},
@@ -210,29 +210,40 @@ function fnLoadingPage(data){
 					$.each(result, function(key, value){
 						console.log(value);
 						reContent += 
-							"<tr>" +
-								"<td style='text-align:left;'>"+(value.RE_STEP > 0 ? " ㄴ " : "") + value.IN_USER_ID+" "+value.IN_DT+" </td>" +
-								"<td >";
-						if(s_userId == value.IN_USER_ID){
-							reContent +="<a href='#this' class='btn btn-default' id='viewBlogReDelBtn' onclick='viewBlogReDelBtn("+value.REF+", "+value.RE_STEP+")'>댓글삭제</a> ";	
-						}
-						reContent += (value.RE_STEP == 0 ? "<a href='#this' class='btn btn-default' id='viewBlogReAddBtn' onclick='viewBlogReAddBtn("+value.REF+", "+value.RE_STEP+")'>답변달기</a>" : "") +
-								"</td>" +
-							"</tr>"+
-							"<tr id='viewBlogReContentPlace_"+value.REF+"_"+value.RE_STEP+"'>"+
-								"<td colspan='2' style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</td>" +
-							"</tr>"
+								'<div class="col-lg-12 re-contents">'
+								+	'<div class="col-lg-12">'
+								+	'<span style="text-align:left;">'+(value.RE_STEP > 0 ? ' ㄴ ' : '') + value.IN_USER_ID+' '+value.IN_DT+' </span>';
+							if(s_userId == value.IN_USER_ID){
+								reContent +=	'<span><a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
+											+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
+											+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
+											+	'</a> ';	
+							}
+							reContent += (value.RE_STEP == 0 ? '<a href="#this"  id="'+programId+'ReAddBtn" )">답변달기'
+									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
+									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
+									+	'</a>' : '') 
+								+	'</span>' 
+								+	'</div>'
+								+	'<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" class="col-lg-12">'
+									+	"<div style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</div>"
+								+	'</div>'
+							+	'</div>';
+
 					});
 				}
 				reContent += 
-							'<div class="col-lg-12">' 
-							+	'<span>작성자</span>'
-							+	'<input id="viewBlogReWriter" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
-							+	'<a class="btn btn-default" id="viewBlogReSaveBtn">댓글쓰기</a>'
-						+	'</div>'
-						+	'<div>'
-							+	'<textarea id="viewBlogReContent" class="col-xs-12" style="height:50px;"></textarea>'
+							'<div class="col-lg-12 re-contents-input">' 
+							+	'<div class="col-lg-12">'
+								+	'<span class="col-lg-2">작성자</span>'
+								+	'<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
+								+	'<a class="btn btn-default" id="'+programId+'ReSaveBtn">댓글쓰기</a>'
+							+	'</div>'
+							+	'<div>'
+								+	'<textarea id="'+programId+'ReContent" class="col-lg-12" style="height:50px;"></textarea>'
+							+	'</div>'
 						+	'</div>';
+
 				reContent += '</div>';
 				body.append(reContent);
 				
@@ -323,11 +334,87 @@ function fnLoadingPage(data){
     $(document).on('click','a[id$=Btn]', function(e){
     	var thisId = $(this).attr('id');
 
-    	var programId = '';
     	var flag = '';
     	var newUrl = '';
+    	var sendData = '';
     	
-    	if(thisId.indexOf('Search') != -1){
+    	if(thisId.indexOf('ReReSaveBtn') != -1){
+    		console.log('ReReSaveBtn');
+    		flag = 'insert';
+    		newUrl = 'saveReRe' + uProgramId;
+    		if($('#'+programId+'ReReWriter').val() == ''){
+    			alert('로그인을 해주세요.');
+    			return false;
+    		}else if($('#'+programId+'ReReContent').val() == ''){
+    			alert('내용을 입력해주세요');
+    			return false;
+    		}
+    		
+    		var saveInput = $(this).children('input');
+    		
+    		sendData = {
+    				idx		:	blogData.idx,
+    				writer	:	$('#'+programId+'ReReWriter').val(),
+    				content	:	$('#'+programId+'ReReContent').val(),
+    				ref		:   saveInput[0].value,
+    				reStep  :   saveInput[1].value
+    		}
+    		console.log(sendData);
+    	}else if(thisId.indexOf('ReSaveBtn') != -1){
+    		console.log('ReSaveBtn');
+    		flag = 'insert';
+    		newUrl = 'saveRe' + uProgramId;
+    		if($('#'+programId+'ReWriter').val() == ''){
+    			alert('로그인을 해주세요.');
+    			return false;
+    		}else if($('#'+programId+'ReContent').val() == ''){
+    			alert('내용을 입력해주세요');
+    			return false;
+    		}
+    		
+    		sendData = {
+    				idx		:	blogData.idx,
+    				writer	:	$('#'+programId+'ReWriter').val(),
+    				content	:	$('#'+programId+'ReContent').val()
+    		}
+    	}else if(thisId.indexOf('ReAddBtn') != -1){
+    		console.log('ReAddBtn');
+    		var addInput = $(this).children('input');
+    		var getRef = addInput[0].value;
+    		var gerReStep = addInput[1].value;
+    		var refId = '#'+programId+'ReContentPlace_'+getRef+'_'+gerReStep;
+    		console.log(refId);
+//			$('#'+programId+'Re').getBlogRe();
+    		
+			var reReStr =	'<div class="col-lg-12">' 
+							+	'<span class="col-lg-2">작성자</span>'
+							+	'<input id="'+programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
+							+	'<a class="btn btn-default" id="'+programId+'ReReSaveBtn">댓글쓰기'
+							+	'<input class="ref" type="hidden" value="'+getRef+'" />'
+							+	'<input class="reStep" type="hidden" value="'+gerReStep+'" />'
+							+	'</a>'
+						+	'</div>'
+						+	'<div>'
+							+	'<textarea id="'+programId+'ReReContent" class="col-lg-12" style="height:50px;"></textarea>'
+						+	'</div>';
+    		$(refId).after(reReStr);
+    		return false;
+    	}else if(thisId.indexOf('ReDelBtn') != -1){
+    		console.log('ReDelBtn');
+    		flag = 'delete';
+    		newUrl = 'deleteRe' + uProgramId;
+    		
+    		var delInput = $(this).children('input');
+    		
+    		if(!confirm('댓글을 삭제하시겠습니까?')){
+    			return false;
+    		}
+    		sendData = {
+    				idx		:	blogData.idx,
+    				ref		:	delInput[0].value,
+    				re_step	:	delInput[1].value
+    		}
+    	}else if(thisId.indexOf('Search') != -1){
     		console.log('Search');
     		flag = 'search';
     		newUrl = 'get' + uProgramId;
@@ -358,7 +445,7 @@ function fnLoadingPage(data){
 			return false;
     	}else if(thisId.indexOf('Add') != -1){
     		console.log('Add');
-    		flag = 'add';
+    		flag = 'insert';
     		newUrl = 'modify' + uProgramId
     	}else if(thisId.indexOf('Save') != -1){
     		console.log('Save');
@@ -374,18 +461,34 @@ function fnLoadingPage(data){
     		newUrl = 'modify' + uProgramId
     	}
     	
-    	$.ajax({
-    		url		: url + newUrl,
-    		type	: "POST",
-    		data	: JSON.stringify(gridData),
-            dataType: 'json',
-            async	: false,
-			contentType : "application/json, charset=utf-8",
-    		success : function(data){
-    			$('#'+programId+'Grid').remove();
-    			$('#'+programId+'Grid').fnList(initData);
-    		}
-    	});
+    	if(thisId.indexOf('Re') != -1){
+    		$.ajax({
+    			url		: url + newUrl,
+        		type	: "POST",
+        		data	: JSON.stringify(sendData),
+        		dataType : "json",
+                async	: false,
+    			contentType : "application/json, charset=utf-8",
+    			success : function(result){
+    				$('#'+programId+'Re').empty();
+    				$('#'+programId+'Re').getBlogRe();
+    			}
+    		});
+    	}else{
+        	$.ajax({
+        		url		: url + newUrl,
+        		type	: "POST",
+        		data	: JSON.stringify(gridData),
+                dataType: 'json',
+                async	: false,
+    			contentType : "application/json, charset=utf-8",
+        		success : function(data){
+        			$('#'+programId+'Grid').remove();
+        			$('#'+programId+'Grid').fnList(initData);
+        		}
+        	});
+    	}
+
     });
     
     
