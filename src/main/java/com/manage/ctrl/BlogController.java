@@ -97,10 +97,10 @@ public class BlogController {
 	}
 
 	//블로그 글 불러오기
-	@RequestMapping("/viewBlogContent")
+	@RequestMapping("/viewBlog")
 	@ResponseBody
-	public ModelAndView viewBlogContent(Params inParams) {
-		System.out.println("viewBlogContent : "+inParams);
+	public ModelAndView viewBlog(Params inParams) {
+		System.out.println("viewBlog : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
 
 		String idx = inParams.getString("idx");
@@ -108,7 +108,7 @@ public class BlogController {
 			Map<String, Object> map = new HashMap<String, Object>();
 
 			try {
-				map = blogService.viewBlogContent(inParams);
+				map = blogService.viewBlog(inParams);
 				mv.addObject("map", map.get("contents"));
 				if(map.get("fileList") != null) {
 					mv.addObject("list", map.get("fileList"));

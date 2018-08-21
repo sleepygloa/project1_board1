@@ -17,7 +17,7 @@ public interface BlogService {
 	
 	void insertBlogAddContent(Params inParams) throws Exception;
 	
-	Map<String, Object> viewBlogContent(Params inParams) throws Exception;
+	Map<String, Object> viewBlog(Params inParams) throws Exception;
 	
 	void saveBlogContent(Params inParams) throws Exception;
 	void saveBlogFileUpload(Params inParams, MultipartHttpServletRequest req) throws Exception;

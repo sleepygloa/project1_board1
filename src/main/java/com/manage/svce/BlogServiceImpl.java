@@ -42,10 +42,10 @@ public class BlogServiceImpl implements BlogService{
 	}
 	
 	@Override
-	public Map<String, Object> viewBlogContent(Params inParams) throws Exception{
+	public Map<String, Object> viewBlog(Params inParams) throws Exception{
 		Map<String, Object> resultMap = new HashMap<String,Object>();
 //		Map<String, Object> tempMap
-		List<Map<String, Object>> list = blogDao.viewBlogContent(inParams);
+		List<Map<String, Object>> list = blogDao.viewBlog(inParams);
 		
 		if(inParams.getString("update") == null) {
 			for(int i = 0; i < list.size(); i++) {

@@ -86,4 +86,14 @@ public class MainController {
 		
 		return mv;
 	}
+	
+	//블로그 글 페이지
+	@RequestMapping("/viewPg")
+	public ModelAndView viewPg(Params inParams) {
+		System.out.println("viewPg : "+inParams);
+		ModelAndView mv = new ModelAndView("jsonView");
+
+		mv.setViewName(inParams.getString("page"));
+		return mv;
+	}
 }

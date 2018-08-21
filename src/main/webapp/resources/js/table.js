@@ -12,20 +12,6 @@ var blogData = '';
 var gridData = {};
 var s_userId = null;
 
-function fnLoadingPage(data){
-	blogData = data;
-//  	mainData = data; //?
-  	$.ajax({
-  		url		: "/manage/blog/viewPg",
-  		data	: data,
-  		type	: "POST",
-  		async	: false,
-  		success	: function(result){
-  			$('#view'+uProgramId).empty();
-  			$('#view'+uProgramId).html(result);
-  		}
-  	})
-}
 
 (function(window, $, undefined){
 	
@@ -189,6 +175,79 @@ function fnLoadingPage(data){
     	
     }
     
+    $.fn.getLoadingPage = function(data){
+    	blogData = data;
+	  	$.ajax({
+	  		url		: url + '/viewPg',
+	  		data	: data,
+	  		type	: "POST",
+	  		async	: false,
+	  		success	: function(result){
+	  			$('#view'+uProgramId).empty();
+	  			$('#view'+uProgramId).html(result);
+	  			
+	  			$('#'+programId+'BlogContainer').getContents();
+	  		}
+	  	});
+    }
+    
+    $.fn.getContents = function(){
+    	$.ajax({
+			url	 : url + '/view'+ uProgramId,
+			data : blogData,
+			type : "POST",
+			async:false,
+			success : function(result){
+				console.log(result);
+				var list = result.map;
+					blogIdx = list[0].IDX;
+					var idCheck = result.S_CHECK_ID;
+					$('#'+programId+'Title').val(list[0].TITLE);
+					$('#'+programId+'Subject').val(list[0].SUBJECT);
+					
+					for(var i = 0; i < list.length; i++){
+						if(list[i].CONTENT == undefined){
+							
+						}else{
+							if(list[i].TYPE == 'IMG'){
+								var str = '<div id="content_'+i+'" class="col-lg-12" >'
+										+ '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />'
+										+ '</div>';
+							}else if(list[i].TYPE == 'CODE'){
+								var str = '<div id="content_'+i+'" class="col-lg-12" style="background:gray; color:white;"></div>';
+							}else{
+								var str = '<div id="content_'+i+'" class="col-lg-12"></div>';
+							}
+							$('#view'+uProgramId+'Container').append(str);
+							
+							var content = list[i].CONTENT;
+							
+							if(list[i].TYPE != 'IMG'){
+								content = content.replace(/</gi, '&lt')
+												 .replace(/>/gi, '&gt')
+												 .split("\n");
+								var rc = '';
+					           $.each(content, function(j){
+					        	   rc += '<span>'+content[j]+'<br /></span>';
+					            });
+					           $('#content_'+i).append(rc);
+							}
+						}
+					}
+					
+					if(idCheck){
+						$('#'+programId+'ModifyBtn').css('display', 'inline-block');
+						$('#'+programId+'DeleteBtn').css('display', 'inline-block');
+					}
+					
+					var list = result.list;
+					var str = '';
+					//list[i].ORIGINAL_FILE_NAME
+
+				}
+		})
+    }
+    
     $.fn.getBlogRe = function(){
     	console.log(gridData);
 		$.ajax({
@@ -319,9 +378,10 @@ function fnLoadingPage(data){
     	if(gridData.idx != undefined){
         	var data = {
         			idx  : gridData.idx,
-        			page : "/manage/blog/viewBlogContent"
+        			page : "/manage/blog/viewBlog"
         	}
-        	fnLoadingPage(data);
+//        	fnLoadingPage(data);
+        	$('#view'+uProgramId).getLoadingPage(data);
         	
         	if(viewContentsRe){
         		$('#'+programId+'Re').getBlogRe();
@@ -454,11 +514,25 @@ function fnLoadingPage(data){
     	}else if(thisId.indexOf('Modify') != -1){
     		console.log('Modify');
     		flag = 'modify';
-    		newUrl = 'modify' + uProgramId
+    		newUrl = 'viewPg';
+    		
+			var data = {
+    				flag : flag,
+					idx  : blogData.idx,
+					page : url + 'update' + uProgramId,
+					update : "Y"
+			}
+        	$('#view'+uProgramId).getLoadingPage(data);
+			return false;
     	}else if(thisId.indexOf('Delete') != -1){
     		console.log('Delete');
     		flag = 'delete';
     		newUrl = 'modify' + uProgramId
+    	}else if(thisId.indexOf('Cancel') != -1){
+    		console.log('Cancel');
+    		flag = 'cancel';
+    		window.location.href="/";
+    		return false;
     	}
     	
     	if(thisId.indexOf('Re') != -1){
@@ -474,7 +548,7 @@ function fnLoadingPage(data){
     				$('#'+programId+'Re').getBlogRe();
     			}
     		});
-    	}else{
+    	}else if(thisId.indexOf('Row') != -1){
         	$.ajax({
         		url		: url + newUrl,
         		type	: "POST",
@@ -485,6 +559,20 @@ function fnLoadingPage(data){
         		success : function(data){
         			$('#'+programId+'Grid').remove();
         			$('#'+programId+'Grid').fnList(initData);
+        		}
+        	});
+    	}else{
+        	$.ajax({
+        		url		: url + newUrl,
+        		type	: "POST",
+        		data	: JSON.stringify(blogData),
+                dataType: 'json',
+                async	: false,
+    			contentType : "application/json, charset=utf-8",
+        		success : function(data){
+        			
+        			$('#view'+uProgramId).empty();
+        			$('#view'+uProgramId).html(data);
         		}
         	});
     	}

@@ -26,8 +26,8 @@ public class BlogDao extends AbstractDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Map<String, Object>> viewBlogContent(Params inParams) throws Exception{
-		return (List<Map<String, Object>>)selectList("blogService.viewBlogContent", inParams);
+	public List<Map<String, Object>> viewBlog(Params inParams) throws Exception{
+		return (List<Map<String, Object>>)selectList("blogService.viewBlog", inParams);
 	}
 	
 	public void saveBlogContent(Params inParams) throws Exception{

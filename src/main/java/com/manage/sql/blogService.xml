@@ -45,7 +45,7 @@
 		);
 	</insert>
 
-	<select id="viewBlogContent" parameterType="hashmap" resultType="hashmap">
+	<select id="viewBlog" parameterType="hashmap" resultType="hashmap">
 		SELECT
 			M.IDX			AS IDX
 		,	M.SUBJECT		AS SUBJECT
