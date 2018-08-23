@@ -26,7 +26,7 @@ public class BlogController {
 
 	@Autowired
 	private BlogService blogService;
-	
+
 	@RequestMapping("/loadingSession")
 	public ModelAndView loadingSession(HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView("jsonView");
@@ -128,7 +128,7 @@ public class BlogController {
 	}
 
 	//블로그 글 수정하기
-	@RequestMapping("/saveBlogContent")
+	@RequestMapping("/saveBlog")
 	public ModelAndView saveBlogContent(Params inParams) {
 		System.out.println("/SaveBlogContent inParams : "+inParams);
 		ModelAndView mv = new ModelAndView("jsonView");
@@ -143,7 +143,7 @@ public class BlogController {
 	}
 
 	//블로그 글 수정하기
-	@RequestMapping("/deleteBlogContent")
+	@RequestMapping("/deleteBlog")
 	@ResponseBody
 	public ModelAndView deleteBlogContent(Params inParams) {
 		System.out.println("/deleteBlogContent inParams : "+inParams);

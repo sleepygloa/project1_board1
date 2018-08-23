@@ -2,7 +2,7 @@ var url = '';
 var programId = '';
 var uProgramId = '';
 var trCnt = -1;
-var clickCnt = -1; //클릭시 행번호 
+var clickCnt = -1; //클릭시 행번호
 var colRow = null;
 var colName = null;
 var initData = '';
@@ -14,9 +14,9 @@ var s_userId = null;
 
 
 (function(window, $, undefined){
-	
 
-	
+
+
     $.fn.fnList = function(data){
     	initData = data;
     	url = data.url;
@@ -27,22 +27,22 @@ var s_userId = null;
     	var grid = '';
     	(data.viewContents != undefined? viewContents = data.viewContents : viewContents = false);
     	(data.viewContentsRe != undefined? viewContentsRe = data.viewContentsRe : viewContentsRe = false);
-    	
+
     	colName = new Array();
     	colRow = new Array();
-    	
+
     	var btn = data.btn;
-    	
+
     	var $element = '';
     	var navi = '';
     	//dataSetting
 //    	(data.checkBox == true ? checkBox = data.checkBox : checkBox);
-    	
+
     	$.ajax({
     		url : data.url + "get" + uProgramId,
     		async : false,
     		success : function(result){
-    			
+
     			var colList = result.list[0];
     			var k = Object.keys(colList);
     			if(k.length > 0){
@@ -65,19 +65,19 @@ var s_userId = null;
     				}
     			}
     			colRow = result.list;
-    			
+
     		}
     	});
-    	
-    	
+
+
     	grid += '<div class="col-lg-12">';
     	grid += '<div class="card">';
     	grid += '<div class="card-body">';
-    	
+
     	grid += '<h5 class="card-title mb-4">'+tableTitle+'</h5>';
-    	
+
     	grid += '<div class="table-responsive">';
-    	
+
     	if(btn != undefined){
     		for(var i = btn.length - 1; i >= 0; i--){
         		var btnName = btn[i];
@@ -98,9 +98,9 @@ var s_userId = null;
         		}
         	}
     	}
-    	
+
     	grid += '<table class="table center-aligned-table table-hover">';
-    	
+
     	grid += '<thead>';
     	grid += '<tr class="text-primary">';
 		grid += '<th>';
@@ -111,12 +111,12 @@ var s_userId = null;
     		grid += colName[i];
     		grid += '</th>';
     	}
-    	
+
     	grid += '</tr>';
     	grid += '</thead>';
-    	
+
     	grid += '<tbody>';
-    	
+
     	for(var i = 0; i < colRow.length; i++){
     		trCnt++;
     		if(viewContents){
@@ -129,7 +129,7 @@ var s_userId = null;
     		}else{
     			grid += '<tr class="tr_row_'+i+'" >';
     		}
-    		
+
     		var rowData = colRow[i];
     		var keyName = Object.keys(rowData);
 
@@ -158,23 +158,23 @@ var s_userId = null;
     		}
     		grid += '</tr>';
     	}
-    	
+
     	grid += '</tbody>';
-    	
+
     	grid += '</table>';
-    	
-    	
+
+
     	grid += '</div>';
-    	
+
     	grid += '</div>';
     	grid += '</div>';
     	grid += '</div>';
-    	
+
     	$('#'+programId+'Title').val(title);
     	$('#'+programId+'Grid').html(grid);
-    	
+
     }
-    
+
     $.fn.getLoadingPage = function(data){
     	blogData = data;
 	  	$.ajax({
@@ -185,12 +185,12 @@ var s_userId = null;
 	  		success	: function(result){
 	  			$('#view'+uProgramId).empty();
 	  			$('#view'+uProgramId).html(result);
-	  			
+
 	  			$('#'+programId+'BlogContainer').getContents();
 	  		}
 	  	});
     }
-    
+
     $.fn.getContents = function(){
     	$.ajax({
 			url	 : url + '/view'+ uProgramId,
@@ -204,10 +204,10 @@ var s_userId = null;
 					var idCheck = result.S_CHECK_ID;
 					$('#'+programId+'Title').val(list[0].TITLE);
 					$('#'+programId+'Subject').val(list[0].SUBJECT);
-					
+
 					for(var i = 0; i < list.length; i++){
 						if(list[i].CONTENT == undefined){
-							
+
 						}else{
 							if(list[i].TYPE == 'IMG'){
 								var str = '<div id="content_'+i+'" class="col-lg-12" >'
@@ -219,9 +219,9 @@ var s_userId = null;
 								var str = '<div id="content_'+i+'" class="col-lg-12"></div>';
 							}
 							$('#view'+uProgramId+'Container').append(str);
-							
+
 							var content = list[i].CONTENT;
-							
+
 							if(list[i].TYPE != 'IMG'){
 								content = content.replace(/</gi, '&lt')
 												 .replace(/>/gi, '&gt')
@@ -234,12 +234,12 @@ var s_userId = null;
 							}
 						}
 					}
-					
+
 					if(idCheck){
 						$('#'+programId+'ModifyBtn').css('display', 'inline-block');
 						$('#'+programId+'DeleteBtn').css('display', 'inline-block');
 					}
-					
+
 					var list = result.list;
 					var str = '';
 					//list[i].ORIGINAL_FILE_NAME
@@ -247,7 +247,7 @@ var s_userId = null;
 				}
 		})
     }
-    
+
     $.fn.getBlogRe = function(){
     	console.log(gridData);
 		$.ajax({
@@ -261,14 +261,14 @@ var s_userId = null;
 				var result = result.list;
 				var body = $('#'+programId+"Re");
 				body.empty();
-				
+
 				var reContent = '<div class="col-lg-12">';
 				if(result == undefined || result.length == 0){
 					reContent = '<div class="col-lg-12">댓글이 없습니다. 작성해주세요.</div>';
 				}else{
 					$.each(result, function(key, value){
 						console.log(value);
-						reContent += 
+						reContent +=
 								'<div class="col-lg-12 re-contents">'
 								+	'<div class="col-lg-12">'
 								+	'<span style="text-align:left;">'+(value.RE_STEP > 0 ? ' ㄴ ' : '') + value.IN_USER_ID+' '+value.IN_DT+' </span>';
@@ -276,13 +276,13 @@ var s_userId = null;
 								reContent +=	'<span><a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
 											+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
 											+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-											+	'</a> ';	
+											+	'</a> ';
 							}
 							reContent += (value.RE_STEP == 0 ? '<a href="#this"  id="'+programId+'ReAddBtn" )">답변달기'
 									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
 									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-									+	'</a>' : '') 
-								+	'</span>' 
+									+	'</a>' : '')
+								+	'</span>'
 								+	'</div>'
 								+	'<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" class="col-lg-12">'
 									+	"<div style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</div>"
@@ -291,8 +291,8 @@ var s_userId = null;
 
 					});
 				}
-				reContent += 
-							'<div class="col-lg-12 re-contents-input">' 
+				reContent +=
+							'<div class="col-lg-12 re-contents-input">'
 							+	'<div class="col-lg-12">'
 								+	'<span class="col-lg-2">작성자</span>'
 								+	'<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
@@ -305,20 +305,20 @@ var s_userId = null;
 
 				reContent += '</div>';
 				body.append(reContent);
-				
+
 			}
 		})
     }
-    
+
 
     $.fn.getGridData = function(){
     	return gridData;
     }
-    
+
     $(document).on('click blur','tr[class^=tr_row_]', function(e){
     	gridRowGridBlurEvent($(this));
     });
-    
+
     function gridRowGridBlurEvent(thisData){
     	var thisData = thisData;
     	var rowId = thisData.attr('class').split('tr_row_')[1];
@@ -326,16 +326,16 @@ var s_userId = null;
     	var tdRowData = {};
     	clickCnt = rowId;
     	var faFlag = null;
-    	
+
     	var elI = $(tdData[0]).children('i');
-    	
+
     	if(elI.hasClass('fa-plus')){
     		for(var i = 0; i < tdData.length; i++){
         		var el = $(tdData[i]);
     			console.log('plus');
     			var inputData = el.children('input')[0].value;
         		var inputKeyTrans = el.attr('class').split('td_row_')[1].toLowerCase();
-        		
+
         		var inputKeyArr = inputKeyTrans.split("_");
         		var inputKey = '';
 
@@ -352,7 +352,7 @@ var s_userId = null;
     		console.log('minus');
     		for(var i = 0; i < tdData.length; i++){
         		var el = $(tdData[i]);
-        		
+
         		var tdKeyTrans = el.attr('class').split('td_row_')[1].toLowerCase();
         		var tdKeyArr = tdKeyTrans.split("_");
         		var tdKey = '';
@@ -374,7 +374,7 @@ var s_userId = null;
     	}
     	console.log(tdRowData);
     	gridData = tdRowData;
-    	
+
     	if(gridData.idx != undefined){
         	var data = {
         			idx  : gridData.idx,
@@ -382,14 +382,14 @@ var s_userId = null;
         	}
 //        	fnLoadingPage(data);
         	$('#view'+uProgramId).getLoadingPage(data);
-        	
+
         	if(viewContentsRe){
         		$('#'+programId+'Re').getBlogRe();
         	}
-        	
+
     	}
     }
-    
+
 
     $(document).on('click','a[id$=Btn]', function(e){
     	var thisId = $(this).attr('id');
@@ -397,7 +397,7 @@ var s_userId = null;
     	var flag = '';
     	var newUrl = '';
     	var sendData = '';
-    	
+
     	if(thisId.indexOf('ReReSaveBtn') != -1){
     		console.log('ReReSaveBtn');
     		flag = 'insert';
@@ -409,9 +409,9 @@ var s_userId = null;
     			alert('내용을 입력해주세요');
     			return false;
     		}
-    		
+
     		var saveInput = $(this).children('input');
-    		
+
     		sendData = {
     				idx		:	blogData.idx,
     				writer	:	$('#'+programId+'ReReWriter').val(),
@@ -431,7 +431,7 @@ var s_userId = null;
     			alert('내용을 입력해주세요');
     			return false;
     		}
-    		
+
     		sendData = {
     				idx		:	blogData.idx,
     				writer	:	$('#'+programId+'ReWriter').val(),
@@ -445,8 +445,8 @@ var s_userId = null;
     		var refId = '#'+programId+'ReContentPlace_'+getRef+'_'+gerReStep;
     		console.log(refId);
 //			$('#'+programId+'Re').getBlogRe();
-    		
-			var reReStr =	'<div class="col-lg-12">' 
+
+			var reReStr =	'<div class="col-lg-12">'
 							+	'<span class="col-lg-2">작성자</span>'
 							+	'<input id="'+programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
 							+	'<a class="btn btn-default" id="'+programId+'ReReSaveBtn">댓글쓰기'
@@ -463,9 +463,9 @@ var s_userId = null;
     		console.log('ReDelBtn');
     		flag = 'delete';
     		newUrl = 'deleteRe' + uProgramId;
-    		
+
     		var delInput = $(this).children('input');
-    		
+
     		if(!confirm('댓글을 삭제하시겠습니까?')){
     			return false;
     		}
@@ -510,12 +510,12 @@ var s_userId = null;
     	}else if(thisId.indexOf('Save') != -1){
     		console.log('Save');
 			newUrl = 'modify'+ uProgramId;
-    		
+
     	}else if(thisId.indexOf('Modify') != -1){
     		console.log('Modify');
     		flag = 'modify';
     		newUrl = 'viewPg';
-    		
+
 			var data = {
     				flag : flag,
 					idx  : blogData.idx,
@@ -534,7 +534,7 @@ var s_userId = null;
     		window.location.href="/";
     		return false;
     	}
-    	
+
     	if(thisId.indexOf('Re') != -1){
     		$.ajax({
     			url		: url + newUrl,
@@ -570,7 +570,7 @@ var s_userId = null;
                 async	: false,
     			contentType : "application/json, charset=utf-8",
         		success : function(data){
-        			
+
         			$('#view'+uProgramId).empty();
         			$('#view'+uProgramId).html(data);
         		}
@@ -578,17 +578,17 @@ var s_userId = null;
     	}
 
     });
-    
-    
-  //글쓰기버튼 
+
+
+  //글쓰기버튼
     function mainBlogInsertBtn(){
     	  var data = {
     			  idx  : '',
-    			  page : '/manage/blog/updateBlogContent'
+    			  page : url + '/updateBlog'
     	  }
     	  loadingPgSetting(data);
     }
-    
+
 }(window, jQuery));
 
 

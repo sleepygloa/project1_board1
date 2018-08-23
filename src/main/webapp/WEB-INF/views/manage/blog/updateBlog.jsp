@@ -1,17 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div class="col-lg-12">
-	<div class="form-control">
-		<span data-toggle="modal" data-target="#myModal">추가</span>
-		<select class="form-control input-sm" id="insertBlogTitleDropdown"></select>
+	<div class="form-control row">
+		<div class="col-lg-6">
+			<span data-toggle="modal" data-target="#myModal">추가</span>
+			<select class="form-control input-sm" id="updateBlogTitleCombo"></select>
+		</div>
+		<div class="col-lg-6">
+			<span class="spanWhite" id="updateBlogFileUploadBtn">파일업로드</span>
+			<input id="updateBlogFileUpload" type="file" value="" style="display:none"/>
+			<input id="updateBlogFileUploadText" type="text" class="form-control input-sm inputWhite" disabled />
+		</div>
 	</div>
 	<div id="viewBlogSubject" class="form-control">
-		<input id="updateBlogContentSubject" type="text" class="input-sm inputWhite" placeholder="제목" />
-	</div>
-	<div class="form-control" >
-		<span class="spanWhite" id="updateBlogFileUploadBtn">파일업로드</span>
-		<input id="updateBlogFileUpload" type="file" value="" style="display:none"/>
-		<input id="updateBlogFileUploadText" type="text" class="form-control input-sm inputWhite" disabled />
+		<input id="updateBlogSubject" type="text" class="col-lg-12 inputWhite" placeholder="제목" />
 	</div>
 	<div class="form-control">
 		<button class="form-group col-xs-2" id="updateBlogAddText">글상자</button>
@@ -31,7 +33,7 @@
 		<button id="updateBlogContentSaveBtn" type="button" class="btn btn-sm btn-info" >저장하기</button>
 		<button id="updateBlogContentCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</button>
 	</div>
-	
+
 	<div class="form-control">
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">

@@ -8,7 +8,7 @@
 function fnImgController(length){
 	$('.imgContWidth_'+length).css('display', 'block');
 }
- 
+
 function fnRvImgController(length){
 	$('.imgContWidth_'+length).css('display', 'none');
 }
@@ -31,7 +31,7 @@ var MainUpdateBlogContentJs = function(){
 	return {
 		init : function(){
 
-			insertBlogTitleDropdown();
+			updateBlogTitleCombo();
 
 			loadingViewBlogContent();
 
@@ -41,7 +41,7 @@ var MainUpdateBlogContentJs = function(){
 
 	function loadingViewBlogContent(){
 		$.ajax({
-			url	 : '/manage/blog/viewBlogContent',
+			url	 : '/manage/blog/viewBlog',
 			data : blogData,
 			type : "POST",
 			success : function(result){
@@ -50,8 +50,8 @@ var MainUpdateBlogContentJs = function(){
 					var list = result.map;
 					updateIdx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
-					$('#updateBlogContentSubject').val(list[0].SUBJECT);
-					$('select[id=insertBlogTitleDropdown]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
+					$('#updateBlogSubject').val(list[0].SUBJECT);
+					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
 					for(var i = 0; i < list.length; i++){
 						var str = '';
 						if(list[i].TYPE == 'IMG'){
@@ -99,7 +99,7 @@ var MainUpdateBlogContentJs = function(){
 		//메뉴 추가 버튼
 		$('#insertMenuAddBtn').click(function(){
 			var insertValue = $('#insertMenu').val();
-			$('#insertBlogTitleDropdown').prepend('<option value="0" id="insertBlogComboAdd">'+insertValue+'</option>');
+			$('#updateBlogTitleCombo').prepend('<option value="0" id="insertBlogComboAdd">'+insertValue+'</option>');
 		});
 
 		//글상자추가
@@ -131,7 +131,7 @@ var MainUpdateBlogContentJs = function(){
 		        reader.readAsDataURL(input.files[0]);
 		    }
 		}
-		
+
 		//삭제
 		$('#updateBlogRemove').click(function(){
 			$('#row_'+focusIdx).remove();
@@ -186,15 +186,15 @@ var MainUpdateBlogContentJs = function(){
         str += '</div>';
 		$('#sortable').append(str);
 		contentLength++;
-		
+
 	}
-	
+
 	//글쓰기 드롭다운 리스
-	  function insertBlogTitleDropdown(){
+	  function updateBlogTitleCombo(){
 		  $.ajax({
 			  url : "/manage/blog/getBlogTitleDropdown",
 			  success : function(result){
-				  $('#insertBlogTitleDropdown').empty();
+				  $('#updateBlogTitleCombo').empty();
 				  var options = '';
 				  console.log(result.list);
 				  if(result.list){
@@ -208,7 +208,7 @@ var MainUpdateBlogContentJs = function(){
 						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
 					  }
 				  }
-				  $('#insertBlogTitleDropdown').append(options);
+				  $('#updateBlogTitleCombo').append(options);
 			  }
 		  })
 	  }
@@ -216,7 +216,7 @@ var MainUpdateBlogContentJs = function(){
 	function save(){
 		var form = $('mainBlogUpdateForm')[0];
 		var formData = new FormData(form);
-		
+
 		if($('#updateBlogFileUploadText').val() != ''){
 			formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
 		}
@@ -229,7 +229,7 @@ var MainUpdateBlogContentJs = function(){
 				var textareaVal = $('#text_'+i).val();
 				var typeVal = $('#type_'+i).val();
 				var imgWidthScale = $('#text_'+i).attr('width');
-				
+
 				if(typeVal == 'IMG'){
 					textareaVal = $('#text_'+i).attr('src');
 					if(imgWidthScale != ''){
@@ -248,25 +248,25 @@ var MainUpdateBlogContentJs = function(){
 				count++;
 			}
 		}
-		
+
 		var data = {}
 
 		if(updateIdx != ''){
 			data = {
 					idx		: updateIdx,
-					title 	: $('#insertBlogTitleDropdown option:selected').text(),
-					subject : $('#updateBlogContentSubject').val(),
+					title 	: $('#updateBlogTitleCombo option:selected').text(),
+					subject : $('#updateBlogSubject').val(),
 					dataDt  : dataDt
 			}
 		}else{
 			data = {
-					title : $('#insertBlogTitleDropdown option:selected').text(),
-					subject : $('#updateBlogContentSubject').val(),
+					title : $('#updateBlogTitleCombo option:selected').text(),
+					subject : $('#updateBlogSubject').val(),
 					dataDt  : dataDt
 			}
 		}
 		$.ajax({
-			url 	: "/manage/blog/saveBlogContent",
+			url 	: "/manage/blog/saveBlog",
 			type	: 'POST',
 //			data    : formData,
 			data	: JSON.stringify(data),
@@ -286,12 +286,12 @@ var MainUpdateBlogContentJs = function(){
 						success	: function(){
 							if(result.SUCCESS){
 								alert(result.SUCCESS);
-								
+
 							}
 						}
 					})
 				}
-				
+
 				window.location.href="/";
 			}
 		})
@@ -317,7 +317,7 @@ var MainUpdateBlogContentJs = function(){
 					str += '<pre>'+textStr+'</pre>'
 				}
 				str += '</div>'
-				
+
 //				var str = $('#row_'+i).html();
 				console.log(str);
 				$('#sortableView').append(str);
@@ -330,7 +330,7 @@ var MainUpdateBlogContentJs = function(){
 	    res = str.replace(/[^0-9]/g,"");
 	    return res;
 	}
-	
+
 }();
 
 $(document).ready(function(){
