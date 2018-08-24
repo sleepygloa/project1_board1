@@ -29,7 +29,8 @@ var blogJs = function(){
 				url 		: '/manage/blog/',
 				colName		: ['IDX', 'TITLE', 'SUBJECT'],
 				viewContents : true,
-				viewContentsRe : true
+				viewContentsRe : true,
+				btn			: ['add']
 			});
 
 	  }
@@ -37,7 +38,7 @@ var blogJs = function(){
 
 	  function getEvents(){
 		//글쓰기
-		  $(document).on('click', '#manageBlogAddBtn', function(){
+		  $(document).on('click', '#blogAddBtn', function(){
 			  mainBlogInsertBtn();
 		  })
 	  }

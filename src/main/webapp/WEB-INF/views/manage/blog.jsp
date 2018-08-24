@@ -2,8 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<span id="blogAddBtn" style="display:none">글쓰기</span>
-	<div id="blogGrid">					
+	<div id="blogGrid">
 	</div>
 	<div id="viewBlog">
 	</div>

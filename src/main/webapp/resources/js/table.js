@@ -378,7 +378,7 @@ var s_userId = null;
     	if(gridData.idx != undefined){
         	var data = {
         			idx  : gridData.idx,
-        			page : "/manage/blog/viewBlog"
+        			page : url + "/view" + uProgramId
         	}
 //        	fnLoadingPage(data);
         	$('#view'+uProgramId).getLoadingPage(data);
@@ -505,8 +505,13 @@ var s_userId = null;
 			return false;
     	}else if(thisId.indexOf('Add') != -1){
     		console.log('Add');
-    		flag = 'insert';
-    		newUrl = 'modify' + uProgramId
+        	var data = {
+        			idx  : '',
+        			page : url + "/update" + uProgramId
+        	}
+//        	fnLoadingPage(data);
+        	$('#view'+uProgramId).getLoadingPage(data);
+        	return false;
     	}else if(thisId.indexOf('Save') != -1){
     		console.log('Save');
 			newUrl = 'modify'+ uProgramId;
