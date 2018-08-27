@@ -507,7 +507,7 @@ var s_userId = null;
     		console.log('Add');
         	var data = {
         			idx  : '',
-        			page : url + "/update" + uProgramId
+        			page : url + "update" + uProgramId
         	}
 //        	fnLoadingPage(data);
         	$('#view'+uProgramId).getLoadingPage(data);

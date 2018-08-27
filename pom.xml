@@ -116,7 +116,7 @@
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-dbcp</artifactId>
 			<scope>provided</scope>
-			<version>7.0.86</version>
+			<version>8.5.33</version>
 		</dependency>
 		                
         <dependency>

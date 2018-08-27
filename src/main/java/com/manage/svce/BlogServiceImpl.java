@@ -43,37 +43,41 @@ public class BlogServiceImpl implements BlogService{
 	
 	@Override
 	public Map<String, Object> viewBlog(Params inParams) throws Exception{
+		System.out.println("viewBlog" + inParams);
 		Map<String, Object> resultMap = new HashMap<String,Object>();
 //		Map<String, Object> tempMap
 		List<Map<String, Object>> list = blogDao.viewBlog(inParams);
 		
-		if(inParams.getString("update") == null) {
-			for(int i = 0; i < list.size(); i++) {
-				if(list.get(i).get("TYPE") == null){
+		if(list.size() != 0) {
+			if(inParams.getString("update") == null) {
+				for(int i = 0; i < list.size(); i++) {
+					if(list.get(i).get("TYPE") == null){
+						
+					}else if(!(list.get(i)).get("TYPE").equals("img")) {
 					
-				}else if(!(list.get(i)).get("TYPE").equals("img")) {
-				
-//					String content = (String)((list.get(i)).get("CONTENT"));
-//					content = content.replaceAll("<", "&lt");
-//					content = content.replaceAll(">", "&gt");
-//					System.out.println(content);
-//					(list.get(i)).put("CONTENT", content);
+//						String content = (String)((list.get(i)).get("CONTENT"));
+//						content = content.replaceAll("<", "&lt");
+//						content = content.replaceAll(">", "&gt");
+//						System.out.println(content);
+//						(list.get(i)).put("CONTENT", content);
+					}
 				}
 			}
-		}
-		resultMap.put("contents", list);
-		
-		//아이디체크
-		if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
-			String s_userId = inParams.getString("s_userId");
-			String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
-			if(s_userId.equals(inUserId)) {
-				System.out.println("ID_CHECK_OK");
-				resultMap.put("S_CHECK_ID", true);
+			resultMap.put("contents", list);
+			
+			//아이디체크
+			if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
+				String s_userId = inParams.getString("s_userId");
+				String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
+				if(s_userId.equals(inUserId)) {
+					System.out.println("ID_CHECK_OK");
+					resultMap.put("S_CHECK_ID", true);
+				}
+			}else {
+				resultMap.put("S_CHECK_ID", false);
 			}
-		}else {
-			resultMap.put("S_CHECK_ID", false);
 		}
+
 		
 		List<Map<String,Object>> fileList = blogDao.selectFileList(inParams);
 		if(fileList != null) {
