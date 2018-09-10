@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fitService">
+
+	<select id="getFit" resultType="hashmap">
+		SELECT 
+			*
+		FROM
+			TB_FIT_M;
+	</select>
+
+	<select id="getFitList" resultType="hashmap">
+		SELECT
+			*
+		FROM
+			TB_FIT_D;
+	</select>
+
+</mapper>
