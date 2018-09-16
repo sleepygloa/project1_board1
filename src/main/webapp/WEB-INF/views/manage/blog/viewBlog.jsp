@@ -2,14 +2,14 @@
 
 <div class="col-lg-12">
 	<div id="viewBlogSubject" class="form-control">
-		<input id="blogSubject" type="text" class="col-lg-12 inputWhite"  disabled />
+		<input id="blogSubject" type="text" class="col-lg-12 inputWhite viewInput"  disabled />
 	</div>
 	<div class="form-control">
-		<span class="spanWhite" id="updateBlogFileUploadBtn">파일업로드</span>
+		<span class="spanWhite col-lg-1" id="updateBlogFileUploadBtn">파일업로드</span>
 		<input id="updateBlogFileUpload" type="file" value="" style="display:none"/>
-		<input id="updateBlogFileUploadText" type="text" class="col-lg-12 inputWhite" disabled />
+		<input id="updateBlogFileUploadText" type="text" class="col-lg-10 inputWhite viewInput" disabled />
 	</div>
-	<div id="viewBlogContainer" class="form-control" >
+	<div id="viewBlogContainer" class="form-control viewContentContainer" >
 	</div>
 	<div class="form-control">
 		<!-- 버튼 -->

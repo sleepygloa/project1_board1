@@ -24,3 +24,22 @@
 	border-radius:0px;
 	font-size:24px;
 }
+
+
+.viewContainer{
+	padding-top:15px;
+}
+.viewInput{
+	font-size:3em;
+	border:0px;
+}
+
+.span[class^="col-"], .input[class^="col-"]{
+	display:flex;
+	float:left;
+	position:relative;
+}
+
+.viewContentContainer{
+	padding-top:30px;
+}

@@ -97,12 +97,12 @@ var coreJs = function(){
 						if(menuData.COUNT != 1){
 							pIdx = menuData.MENU_PARENT_SEQ;
 							menuStr += '<li class="nav-item">'
-								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
+								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'" style="padding:0px 0px 0px 13px;">'
 								+ '<img src="images/icons/9.png" alt="">'
 								+ '<span class="menu-title">'+menuData.MENU_NM+'<i class="fa fa-sort-down"></i></span>'
 								+ '</a>'
 								+ '<div class="collapse" id="'+menuData.PRO_CD+'">'
-								+ '<ul class="nav flex-column sub-menu">';
+								+ '<ul class="nav flex-column sub-menu" style="padding:0px 0px 0px 15px;">';
 							pCnt++;
 						}else{
 							menuStr += '<li class="nav-item">'
@@ -113,8 +113,8 @@ var coreJs = function(){
 								+ '</a></li>'
 						}
 					}else{
-						menuStr += '<li class="nav-item">'
-							+'<a class="nav-link" href="#" >'
+						menuStr += '<li class="nav-item" style="margin:2.5px 0px;">'
+							+'<a class="nav-link" href="#" style="padding:0px 0px 0px 13px;">'
 							+'<input type="hidden" value="'+menuData.PRO_CD+'" />'
 							+'<img src="'+menuData.MENU_ICO+'" alt="">'
 							+'<span class="menu-title">'+menuData.MENU_NM+'</span>'

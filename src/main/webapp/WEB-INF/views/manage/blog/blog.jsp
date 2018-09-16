@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<div id="blogGrid">
+	<div id="blogGrid" >
 	</div>
-	<div id="viewBlog">
+	<div id="viewBlog" class="viewContainer">
 	</div>
 
 	<script src="/resources/js/manage/blog/blog.js"></script>
