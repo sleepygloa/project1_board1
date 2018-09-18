@@ -13,13 +13,15 @@ var loginJs = function() {
 	
 	function getEvents(){
 		//로그인하기
-		$('#loginSubmit').click(function(){
+		$('#login').click(function(){
 			loginData = {
-					id : $('#loginIdInput').val(),
-					pw : $('#loginPwInput').val()
+					id : $('#loginId').val(),
+					pw : $('#loginPw').val()
 			};
 			
-			loginValidation();
+			if(!loginValidation()){
+				return false;
+			};
 			
 			$.ajax({
 				url		 : "/login/loginUser",
@@ -35,11 +37,12 @@ var loginJs = function() {
 		});
 		
 		
-		$('#loginRegist').click(function(){
+		$('#loginNew').click(function(){
 			  $.ajax({
 				  url		: "/login/loadingLoginInsertPg",
-				  success	: function(result){
-					  $('#body').html(result);
+				  success	: function(data){
+						$('#content_wrapper').empty();
+						$('#content_wrapper').html(data);
 				  }
 			  })
 		})

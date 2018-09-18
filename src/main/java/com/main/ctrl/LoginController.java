@@ -92,7 +92,7 @@ public class LoginController {
 	//회원가입 페이지 이동
 	@RequestMapping("/loadingLoginInsertPg")
 	public String loadingLoginInsertPg() {
-		return "login/loginInsert";
+		return "login/loginNew";
 	}
 	
 	//회원가입처리

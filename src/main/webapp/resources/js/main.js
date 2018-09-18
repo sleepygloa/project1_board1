@@ -67,8 +67,8 @@ var coreJs = function(){
 				url 	: '/login/loadingLoginPg',
 				async	: false,
 				success : function(data){
-					$('#container-fluid').empty();
-					$('#container-fluid').html(data);
+					$('#content_wrapper').empty();
+					$('#content_wrapper').html(data);
 				}
 			});
 		});

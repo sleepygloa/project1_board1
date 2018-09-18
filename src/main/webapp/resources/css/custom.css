@@ -1,5 +1,23 @@
 @charset "UTF-8";
 
+.m-b-20{ margin-bottom : 20px;}
+
+.loginContainer{
+	width:40%;
+	margin:0 auto;
+	padding-top:100px;
+	text-align:center;
+}
+
+.loginContents{
+	margin-bottom:20px;
+}
+
+.loginContentsArea{
+	width:60%;
+	margin:0 auto;
+}
+
 .re-container{
 	margin-top:20px;
 	background:#ffffff;

@@ -13,9 +13,9 @@
 	</div>
 	<div class="form-control">
 		<!-- 버튼 -->
-		<a id="blogDeleteBtn" type="button" class="btn btn-sm btn-info" style="display:none">삭제하기</a>
-		<a id="blogModifyBtn" type="button" class="btn btn-sm btn-info" style="display:none">수정하기</a>
-		<a id="blogCancelBtn" type="button" class="btn btn-sm btn-info" >메인으로</a>
+		<a href="#" id="blogDeleteBtn" class="btn btn-outline-success btn-sm" style="display:none;">삭제</a>
+		<a href="#" id="blogModifyBtn" class="btn btn-outline-success btn-sm" style="display:none;">수정</a>
+		<a href="#" id="blogCancelBtn" class="btn btn-outline-success btn-sm" >메인</a>
 	</div>
 	<div id="blogRe" class="re-container" >
 	</div>
