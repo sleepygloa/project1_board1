@@ -45,6 +45,7 @@
 
 
 .viewContainer{
+	height:100%;
 	padding-top:15px;
 }
 .viewInput{
@@ -60,4 +61,21 @@
 
 .viewContentContainer{
 	padding-top:30px;
+}
+
+
+
+.tableScrollX{
+	display : block;
+	overflow-x : scroll;
+	border-collapse : collapse;
+}
+
+.tbodyScrollY{
+	display:block;
+	overflow : auto;
+}
+
+table, thead, tbody, th, tr, td{
+	border:1px solid black;
 }

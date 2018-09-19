@@ -60,19 +60,19 @@ public class LoginController {
 		
 		if(((Long)listMap.get("COUNT")).intValue() == 0) {
 
-			mv.addObject("YN", "NON_ID");
-			mv.addObject("MSG", "없는 아이디입니다.");
+			mv.addObject("MSGCD", "201");
+			mv.addObject("MSGNM", "없는 아이디입니다.");
 			return mv;
 		}else if(!((String)listMap.get("PW")).equals((String)inParams.getString("pw"))) {
 
-			mv.addObject("YN", "DIFF_PW");
-			mv.addObject("MSG", "비밀번호가 틀렸습니다.");
+			mv.addObject("MSGCD", "202");
+			mv.addObject("MSGNM", "비밀번호가 틀렸습니다.");
 			return mv;
 		}else {
 			session.setAttribute("s_userId", inParams.getString("id"));
 
-			mv.addObject("YN", "SUCCESS");
-			mv.addObject("MSG", "로그인에 성공하였습니다."+inParams.getString("id")+" 님! 반갑습니다.");
+			mv.addObject("MSGCD", "100");
+			mv.addObject("MSGNM", "로그인에 성공하였습니다."+inParams.getString("id")+" 님! 반갑습니다.");
 		}
 		System.out.println("로그인");
 		//성공

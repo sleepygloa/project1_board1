@@ -63,24 +63,6 @@ var LoginNewJs = function(){
 		})
 	}
 	
-	function clickLoginInsertBtn(){
-		
-		loginData = {
-				id 		: $('#loginNewId').val().trim(),
-				pw 		: $('#loginNewPw').val().trim(),
-				name 	: $('#loginNewName').val().trim(),
-		};
-		
-		loginValidation();
-		
-		$.ajax({
-			url	: "/login/loginUser",
-			dataType : 'JSON',
-			success : function(result){
-				alert(result.name + '님! 반갑습니다');
-			}
-		})
-	}
 	
 	function validation(data){
 		

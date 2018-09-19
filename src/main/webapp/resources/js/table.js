@@ -16,14 +16,14 @@ var s_userId = null;
 (function(window, $, undefined){
 
 
-
     $.fn.fnList = function(data){
     	initData = data;
     	url = data.url;
-    	programId = data.programId;
-    	uProgramId = programId.charAt(0).toUpperCase() + programId.slice(1);
-    	var title = data.programNm + '관리';
-    	var tableTitle = data.programNm + '목록';
+    	programId = data.programId; //프로그램 아이
+    	uProgramId = programId.charAt(0).toUpperCase() + programId.slice(1); //프로그램 아이디 대문자 
+    	
+    	var title = data.programNm + '관리'; //페이지 상단의 페이지 제목 
+    	var tableTitle = data.programNm + '목록'; //그리드 이름 
     	var grid = '';
     	(data.viewContents != undefined? viewContents = data.viewContents : viewContents = false);
     	(data.viewContentsRe != undefined? viewContentsRe = data.viewContentsRe : viewContentsRe = false);
@@ -43,15 +43,22 @@ var s_userId = null;
     		async : false,
     		success : function(result){
 
+    			/**
+    			 * 키를 가져와 컬럼 이름을 구성
+    			 * */
     			var colList = result.list[0];
     			var k = Object.keys(colList);
     			if(k.length > 0){
     				var tColName = [];
+    				//그리드 옵션 중 컬럼 명이 없을
+    				//조회된 모든 컬럼 불러옴.
     				if(data.colName == undefined){
         				for(var i = 0; i < k.length; i++){
         					tColName.push(k[i]);
         				}
         				colName = tColName;
+        			//그리드 옵션 중에 컬럼명 지정 
+        			//지정한 컬럼만 불러옴.
     				}else{
     					for(var j = 0; j < data.colName.length; j++){
             				for(var i = 0; i < k.length; i++){
@@ -65,114 +72,111 @@ var s_userId = null;
     				}
     			}
     			colRow = result.list;
-
     		}
     	});
 
-
-    	grid += '<div class="col-lg-12">';
-    	grid += '<div class="card">';
-    	grid += '<div class="card-body">';
-
-    	grid += '<h5 class="card-title mb-4">'+tableTitle+'</h5>';
-
-    	grid += '<div class="table-responsive">';
+    	/**
+    	 * 그리드 상단 그룹 버튼
+    	 * */
+    	var gridDivContainer = $('<div class="col-lg-12" />');
+    	var gridDivContainer2 = $('<div class="card" />');
+    	var gridDivContainer3 = $('<div class="card-body" />');
+    	var gridTitle = $('<h5 class="card-title mb-4">'+tableTitle+'</h5>');
+    	var gridRes = $('<div class="table-responsive" /> ');
+    	
+    	var gridBtnGrpStr = '';
 
     	if(btn != undefined){
     		for(var i = btn.length - 1; i >= 0; i--){
         		var btnName = btn[i];
         		if(btnName == 'search'){
-        			grid += '<a href="#" id="'+programId+'SearchBtn" class="btn btn-outline-success btn-sm pull-right" >검색</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'SearchBtn" class="btn btn-outline-success btn-sm pull-right" >검색</a>';
         		}else if(btnName == 'add'){
-        			grid += '<a href="#" id="'+programId+'AddBtn" class="btn btn-outline-success btn-sm pull-right" >추가</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'AddBtn" class="btn btn-outline-success btn-sm pull-right" >추가</a>';
         		}else if(btnName == 'modify'){
-        			grid += '<a href="#" id="'+programId+'ModifyBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'ModifyBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
         		}else if(btnName == 'delete'){
-        			grid += '<a href="#" id="'+programId+'DeleteBtn" class="btn btn-outline-success btn-sm pull-right" >삭제</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'DeleteBtn" class="btn btn-outline-success btn-sm pull-right" >삭제</a>';
         		}else if(btnName == 'addRow'){
-        			grid += '<a href="#" id="'+programId+'AddRowBtn" class="btn btn-outline-success btn-sm pull-right" >행추가</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'AddRowBtn" class="btn btn-outline-success btn-sm pull-right" >행추가</a>';
         		}else if(btnName == 'delRow'){
-        			grid += '<a href="#" id="'+programId+'DelRowBtn" class="btn btn-outline-success btn-sm pull-right" >행삭제</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'DelRowBtn" class="btn btn-outline-success btn-sm pull-right" >행삭제</a>';
         		}else if(btnName == 'save'){
-        			grid += '<a href="#" id="'+programId+'SaveBtn" class="btn btn-outline-success btn-sm pull-right" >저장</a>';
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'SaveBtn" class="btn btn-outline-success btn-sm pull-right" >저장</a>';
         		}
         	}
     	}
 
-    	grid += '<table class="table center-aligned-table table-hover">';
-
-    	grid += '<thead>';
-    	grid += '<tr class="text-primary">';
-		grid += '<th>';
-		grid += 'FLAG';
-		grid += '</th>';
+    	var gridBtnGrp = $(gridBtnGrpStr);
+    	
+    	
+    	/**
+    	 * 그리드 테이블 
+    	 * */
+    	var table = $('<table class="table center-aligned-table table-hover tableScrollX" />');
+    	
+    	
+    	var thead = $('<thead />');
+    	var thtr = $('<tr />');
+    		thtr.addClass('text-primary');
+    	
+    	var ththData = '';
+    	//FLAG
+		ththData += '<th>'+'FLAG'+'</th>';
+		//FLAG End
     	for(var i = 0; i < colName.length; i++){
-    		grid += '<th>';
-    		grid += colName[i];
-    		grid += '</th>';
+    		ththData += '<th>'+colName[i]+'</th>';
     	}
-
-    	grid += '</tr>';
-    	grid += '</thead>';
-
-    	grid += '<tbody>';
-
+    	var thth = $(ththData);
+    		
+    	thead.append(thth);
+    	
+		/**
+		 * Grid Option 
+		 * Row 에 대한 IDX 값 세팅 
+		 * tr 시작
+		 * 
+		 * ViewContents == true; --> 글보기
+		 * ViewContents == false; --> 글보기 없음
+		 * */
+    	var tbody = $('<tbody />');
+    	
     	for(var i = 0; i < colRow.length; i++){
     		trCnt++;
-    		if(viewContents){
-    			if(colRow[i].IDX == undefined){
-    				alert('IDX 가 없습니다.');
-    				return false;
-    			}else{
-    				grid += '<tr class="tr_row_'+i+' viewContents_'+colRow[i].IDX+'" >';
-    			}
-    		}else{
-    			grid += '<tr class="tr_row_'+i+'" >';
-    		}
-
-    		var rowData = colRow[i];
-    		var keyName = Object.keys(rowData);
-
-    		if(data.colName == undefined){
-        		$.each(rowData, function(i, v){
-        			grid += '<td class="td_row_'+i+'">';
-        			grid += v;
-        			grid += '</td>';
-        		})
-    		}else{
-    			grid += '<td class="td_row_flag">';
-    			grid += '<i class="fa" ></i>';
-    			grid += '<input class="td_row_flag_input" type="hidden" value="" />';
-    			grid += '</td>';
-    			for(var j = 0; j < data.colName.length; j++){
-            		$.each(rowData, function(i, v){
-            			if(data.colName[j] == i){
-                			grid += '<td class="td_row_'+i+'">';
-                			grid += v;
-                			grid += '</td>';
-            			}
-
-            		})
-    			}
-
-    		}
-    		grid += '</tr>';
+	    	var tbtr = $('<tr class="tr_row_"'+i+'" />');
+	    	if(viewContents){
+	    		tbtr.addClass('viewContents_'+colRow[i].IDX);
+	    	}
+			
+			var tbthData = '';
+				tbthData += '<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></th>';
+			
+			var rowData = colRow[i];
+			var keyName = Object.keys(rowData);
+				
+			for(var j = 0; j < data.colName.length; j++){
+	    		$.each(rowData, function(i, v){
+	    			if(data.colName[j] == i){
+	    				tbthData += '<td class="td_row_'+i+'">'+v+'</td>';
+	    			}
+	    		});
+			}
+			var tbth = $(tbthData);
+			tbtr.append(tbth);
+			tbody.append(tbtr);
     	}
+		table.append(thead);
+		table.append(tbody);
+		//table End
 
-    	grid += '</tbody>';
-
-    	grid += '</table>';
-
-
-    	grid += '</div>';
-
-    	grid += '</div>';
-    	grid += '</div>';
-    	grid += '</div>';
-
+		gridRes.append(gridBtnGrp).append(table);
+    	gridDivContainer3.append(gridTitle).append(gridRes);
+    	gridDivContainer2.append(gridDivContainer3);
+    	gridDivContainer.append(gridDivContainer2);
+    	
+    	
     	$('#'+programId+'Title').val(title);
-    	$('#'+programId+'Grid').html(grid);
-
+    	$('#'+programId+'Grid').html(gridDivContainer);
     }
 
     $.fn.getLoadingPage = function(data){
@@ -191,6 +195,9 @@ var s_userId = null;
 	  	});
     }
 
+    /**
+     * 공통된 프로그램 id 이용하여 블로그 형태의 글을 불러오는 소스 
+     * */
     $.fn.getContents = function(){
     	$.ajax({
 			url	 : url + '/view'+ uProgramId,
@@ -248,23 +255,30 @@ var s_userId = null;
 		})
     }
 
+    /**
+     * 블로그 글의 댓글 리스트를 불러오는 소스 
+     * */
     $.fn.getBlogRe = function(){
-    	console.log(gridData);
 		$.ajax({
-			url  	: "/manage/blog/getReBlog",
+			url  	: url + "/getRe" + uProgramId,
 			data 	: {
 				idx : gridData.idx
 			},
 			type	: "POST",
-			async:false,
+			async	: false,
 			success : function(result){
+				
 				var result = result.list;
 				var body = $('#'+programId+"Re");
 				body.empty();
 
 				var reContent = '<div class="col-lg-12">';
+				
+				//댓글 0
 				if(result == undefined || result.length == 0){
 					reContent = '<div class="col-lg-12">댓글이 없습니다. 작성해주세요.</div>';
+					
+				//댓글 존
 				}else{
 					$.each(result, function(key, value){
 						console.log(value);
@@ -310,7 +324,7 @@ var s_userId = null;
 		})
     }
 
-
+    //현재 선택된 행 데이터 리턴 
     $.fn.getGridData = function(){
     	return gridData;
     }
@@ -390,7 +404,7 @@ var s_userId = null;
     	}
     }
 
-
+    //그리드와 관련된 버튼을 클릭 했을때 이벤트 
     $(document).on('click','a[id$=Btn]', function(e){
     	var thisId = $(this).attr('id');
 

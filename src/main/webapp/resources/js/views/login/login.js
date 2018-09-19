@@ -1,7 +1,8 @@
 var loginJs = function() {
 	"use strict";
 	
-	var loginData = {};
+	var proCd = '';
+	var proNm = 'login';
 	
 	return {
 		init : function(){
@@ -12,28 +13,18 @@ var loginJs = function() {
 	}
 	
 	function getEvents(){
+		
+		$('#loginId').focus();
+		
+		$('#loginPw').keydown(function(e){
+			if (e.keyCode == 13){
+				login();
+			}
+		});
+		
 		//로그인하기
 		$('#login').click(function(){
-			loginData = {
-					id : $('#loginId').val(),
-					pw : $('#loginPw').val()
-			};
-			
-			if(!loginValidation()){
-				return false;
-			};
-			
-			$.ajax({
-				url		 : "/login/loginUser",
-				data	 : loginData,
-				dataType : 'JSON',
-				success  : function(result){
-					alert(result.MSG);
-					if(result.YN == 'SUCCESS'){
-						window.location.href='/';
-					}
-				}
-			})
+			login();
 		});
 		
 		
@@ -48,17 +39,52 @@ var loginJs = function() {
 		})
 	}
 	
-	function loginValidation(){
+	function validation(data){
 		
-		if(loginData.id == ''){
+		if(data.id == ''){
 			alert('아이디를 입력해주세요');
 			return false;
-		}else if(loginData.pw == ''){
+		}
+		if(data.pw == ''){
 			alert('비밀번호를 입력해주세요');
 			return false;
 		}
+		return true;
 	}
 	
+	function login(){
+		var data = {
+				id : $('#loginId').val(),
+				pw : $('#loginPw').val()
+		};
+
+		if(!validation(data)){
+			return false;
+		};
+		
+		$.ajax({
+			url		 : "/login/loginUser",
+			data	 : data,
+			dataType : 'JSON',
+			success  : function(result){
+				if(result.MSGCD == '100'){
+					alert(result.MSGNM);
+					window.location.href='/';
+				}else{
+					
+					if(result.MSGCD == '201'){
+						alert(result.MSGNM);
+						$('#loginId').focus();
+						return false;
+					}else if(result.MSGCD == '202'){
+						alert(result.MSGNM);
+						$('#loginPw').focus();
+						return false;
+					}
+				}
+			}
+		})
+	}
 	
 }();
 

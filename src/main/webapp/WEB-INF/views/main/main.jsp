@@ -51,7 +51,7 @@
         </nav>
 
         <!-- partial -->
-        <div id="content_wrapper" class="content-wrapper">
+        <div id="content_wrapper" class="content-wrapper" style="overflow-y:scroll">
           <h3 class="page-heading mb-4">Dashboard</h3>
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 mb-4">
