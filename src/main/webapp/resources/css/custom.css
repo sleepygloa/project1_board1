@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+div[class^="col-"]{
+	padding-left:0px;
+	padding-right:0px;
+}
+
 .m-b-20{ margin-bottom : 20px;}
 
 .loginContainer{
@@ -31,6 +36,21 @@
 .re-contents-input{
 	margin-top:20px;
 }
+.re-cp{
+	float : left;
+}
+.re-cp-img{
+	width:55px;
+	height:45px;
+}
+.re-cp-nm{
+    font-weight: 600;
+    white-space: nowrap;
+}
+.re-cp-cont{
+    word-wrap: break-word;
+}
+
 
 .form-control{
 	border:0px solid white;

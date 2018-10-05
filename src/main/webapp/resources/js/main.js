@@ -2,6 +2,11 @@ var s_userId = '';
 var coreJs = function(){
 	"use strict";
 
+	var deviceHeight = $(window).height();
+	var deviceWidth = $(window).width();
+	$('.content-wrapper').css('height', deviceHeight - 52);
+	$('.content-wrapper').css('width', deviceWidth);
+	
 	return {
 		init : function(){
 
@@ -35,19 +40,30 @@ var coreJs = function(){
 	};
 	
 	function getEvents(){
+		
+		
+		
 		$(document).on('click', 'a.nav-link', function(){
-			var value = $(this).children('input').val();
-			$.ajax({
-				url  : "/main/toProgram",
-				data : {
-					proCd : value
-				},
-				type : "POST",
-				success : function(data){
-					$('#content_wrapper').empty();
-					$('#content_wrapper').html(data);
-				}
-			});
+			
+			var length = $(this).children().length;
+			
+			if(length == 3){
+				var value = $(this).children('input').val();
+				
+				$('#sidebar').parent().removeClass('active');
+				$.ajax({
+					url  : "/main/toProgram",
+					data : {
+						proCd : value
+					},
+					type : "POST",
+					success : function(data){
+						$('#content_wrapper').empty();
+						$('#content_wrapper').html(data);
+					}
+				});
+			}
+			
 		});
 
 		$('#headerLoginCircle').click(function(){

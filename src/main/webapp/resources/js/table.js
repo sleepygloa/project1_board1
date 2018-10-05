@@ -13,7 +13,10 @@ var gridData = {};
 var s_userId = null;
 
 
+
 (function(window, $, undefined){
+	
+		
 
 
     $.fn.fnList = function(data){
@@ -30,6 +33,10 @@ var s_userId = null;
 
     	colName = new Array();
     	colRow = new Array();
+    	
+    	
+    	colOption = data.colOption;
+    	console.log(colOption);
 
     	var btn = data.btn;
 
@@ -221,7 +228,7 @@ var s_userId = null;
 							if(list[i].TYPE == 'IMG'){
 								conts = $('<img />');
 								conts.attr('src', list[i].CONTENT);
-								conts.attr('width', list[i].IMGWIDTHSCALE);
+								conts.attr('width', list[i].IMGWIDTHSCALE + '%');
 							}else if(list[i].TYPE == 'CODE'){
 								contEl.css('background-color', 'gray');
 								contEl.css('color', 'white');
@@ -231,18 +238,7 @@ var s_userId = null;
 							contEl.append(conts);
 							$('#view'+uProgramId+'Container').append(contEl);
 
-//////////////////////////////
 
-							if(list[i].TYPE == 'IMG'){
-								var str = '<div id="content_'+i+'" class="col-lg-12" >'
-										+ '<img src="'+list[i].CONTENT+'" width="'+list[i].IMGWIDTHSCALE+'%" />'
-										+ '</div>';
-							}else if(list[i].TYPE == 'CODE'){
-								var str = '<div id="content_'+i+'" class="col-lg-12" style="background:gray; color:white;"></div>';
-							}else{
-								var str = '<div id="content_'+i+'" class="col-lg-12"></div>';
-							}
-							$('#view'+uProgramId+'Container').append(str);
 
 							var content = list[i].CONTENT;
 
@@ -282,57 +278,94 @@ var s_userId = null;
 				idx : gridData.idx
 			},
 			type	: "POST",
-			async	: false,
+//			async	: false,
 			success : function(result){
-
+				
 				var result = result.list;
 				var body = $('#'+programId+"Re");
 				body.empty();
 
+				/**
+				 * 댓글 영역
+				 * 댓글이  0 = 글쓰기 폼만 보여짐
+				 * 댓글이 존재 = 댓글과 글쓰기폼이 보여짐 
+				 * 
+				 * 댓글 개수, 정렬준(인기순, 최신순, 날짜 오름차순)
+				 * 유저 이미지(페이스북 이미지)
+				 * */
+				
 				var reContent = '<div class="col-lg-12">';
-
-				//댓글 0
-				if(result == undefined || result.length == 0){
-					reContent = '<div class="col-lg-12">댓글이 없습니다. 작성해주세요.</div>';
-
-				//댓글 존
-				}else{
-					$.each(result, function(key, value){
-						console.log(value);
-						reContent +=
-								'<div class="col-lg-12 re-contents">'
-								+	'<div class="col-lg-12">'
-								+	'<span style="text-align:left;">'+(value.RE_STEP > 0 ? ' ㄴ ' : '') + value.IN_USER_ID+' '+value.IN_DT+' </span>';
-							if(s_userId == value.IN_USER_ID){
-								reContent +=	'<span><a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
-											+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
-											+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-											+	'</a> ';
-							}
-							reContent += (value.RE_STEP == 0 ? '<a href="#this"  id="'+programId+'ReAddBtn" )">답변달기'
+				var reContentNew =
+					'<div class="col-lg-12 re-contents-input" style="display:inline-block">'
+					
+						+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
+						+ '<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />'
+						+ '<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReContent" style="height:100%;width:100%" ></textarea></div>'
+						+ '<div style="float:right;min-width:220px;width:90%;height:50px;">'
+							+ '<div><label><input type="checkbox" />Facebook에도 게시</label><a style="float:right;">게시하려면 로그인을 하세요</a></div>'
+						+ '</div>'
+					+ '</div>';
+				
+				
+				reContent += reContentNew;
+								
+				//RE_STEP 댓글 단계 
+				//IN_USER_ID 사용자이름
+				//IN_DT 입력시간
+				//
+					
+				$.each(result, function(key, value){
+					var reContentView =
+						'<div class="col-lg-12 re-contents" style="display:inline-block">'
+							+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
+						
+							+ '<div class="" style="float:right;min-width:220px;width:90%" >'
+								+ '<span>' + value.IN_USER_ID + '</span>'
+								+ '<div>'+value.CONTENT+'</div>'
+							+ '</div>'
+							+ '<div style="float:right;min-width:220px;width:90%;">'
+//								+ '<div><label><input type="checkbox" />Facebook에도 게시</label><a style="float:right;">게시하려면 로그인을 하세요</a></div>'
+								
+								if(s_userId == value.IN_USER_ID){
+									+ '<span>'
+									+	'<a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
 									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
 									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-									+	'</a>' : '')
-								+	'</span>'
-								+	'</div>'
-								+	'<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" class="col-lg-12">'
-									+	"<div style='text-align:left;'>"+(value.RE_STEP > 0 ? "&nbsp;&nbsp;&nbsp;&nbsp;" : "") + value.CONTENT+"</div>"
-								+	'</div>'
-							+	'</div>';
-
-					});
-				}
-				reContent +=
-							'<div class="col-lg-12 re-contents-input">'
-							+	'<div class="col-lg-12">'
-								+	'<span class="col-lg-2">작성자</span>'
-								+	'<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
-								+	'<a class="btn btn-default" id="'+programId+'ReSaveBtn">댓글쓰기</a>'
-							+	'</div>'
-							+	'<div>'
-								+	'<textarea id="'+programId+'ReContent" class="col-lg-12" style="height:50px;"></textarea>'
-							+	'</div>'
-						+	'</div>';
+									+	'</a> '
+									+ '</span>';
+								}
+								if(value.RE_STEP == 0){
+									+ '<span>'
+									+	'<a href="#this"  id="'+programId+'ReAddBtn" )">답변달기'
+									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
+									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
+									+	'</a>'
+									+ '</span>';
+								}
+						reContentView += 
+							'</div>'
+						+ '</div>';
+						reContent += reContentView;
+				});
+				
+				
+//				
+//				
+//				var reCPDivInput = ('<div class="col-lg-12 re-contents-input" />');
+//				
+//				var reCPDivImg = $('<div class="re-cp" />');
+//				
+//				var reCPDivCont = $('<div class="re-cp" />');
+//				
+//				var reCPDivImgA = $('<a><img src="#" class="re-cp-img" /></a> ');
+//				reCPDivImg.append(reCPDivImgA);
+//				
+//				var reCPDivNm = $('<span class="re-cp-nm" />');
+//				reCPDivNm.append(s_userId);
+//				
+//				var reCPDivContent = $('<div class="col-lg-12 re-cp-cont" />');
+				
+				
 
 				reContent += '</div>';
 				body.append(reContent);

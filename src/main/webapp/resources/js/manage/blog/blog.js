@@ -28,6 +28,11 @@ var blogJs = function(){
 				programNm 	: '블로그',
 				url 		: '/manage/blog/',
 				colName		: ['IDX', 'TITLE', 'SUBJECT'],
+				colOption	: [
+					{id:'IDX', name:'순번', width:"100px", hidden:true},
+					{id:'TITLE', name:'분류',width:"100px", hidden:true},
+					{id:'SUBJECT', name:'제목',width:"500px"}
+				],
 				viewContents : true,
 				viewContentsRe : true,
 				btn			: ['add']
@@ -37,6 +42,8 @@ var blogJs = function(){
 
 
 	  function getEvents(){
+		  
+		  
 		//글쓰기
 		  $(document).on('click', '#blogAddBtn', function(){
 			  mainBlogInsertBtn();

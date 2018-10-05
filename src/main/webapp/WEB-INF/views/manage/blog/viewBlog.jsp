@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<div class="col-lg-12">
+<div class="col-lg-12" style="margin-bottom:100px;">
 	<div id="viewBlogSubject" class="form-control">
 		<input id="blogSubject" type="text" class="col-lg-12 inputWhite viewInput"  disabled />
 	</div>
