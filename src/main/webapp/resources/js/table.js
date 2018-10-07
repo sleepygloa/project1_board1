@@ -294,40 +294,61 @@ var s_userId = null;
 				 * 유저 이미지(페이스북 이미지)
 				 * */
 				
-				var reContent = '<div class="col-lg-12">';
-				var reContentNew =
-					'<div class="col-lg-12 re-contents-input" style="display:inline-block">'
-					
-						+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
-						+ '<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />'
-						+ '<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReContent" style="height:100%;width:100%" ></textarea></div>'
-						+ '<div style="float:right;min-width:220px;width:90%;height:50px;">'
-							+ '<div><label><input type="checkbox" />Facebook에도 게시</label><a style="float:right;">게시하려면 로그인을 하세요</a></div>'
-						+ '</div>'
-					+ '</div>';
+				var reContent = $('<div class="col-lg-12" />');
 				
+				var reContentNew = $('<div class="col-lg-12 re-contents-input"/>');
 				
-				reContent += reContentNew;
-								
+				var reContentNewImg = $('<div class="" style="float:left;" />');
+				var reContentNewImgA = $('<a><img class="re-cp-img" src="#"  /></a>');
+				reContentNewImg.append(reContentNewImgA);
+				
+				var reContentNewInput = $('<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />');
+				var reContentNewTxt = $('<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReContent" style="height:100%;width:100%" ></textarea></div>');
+				var reContentNewAddOn = $('<div style="float:right;min-width:220px;width:90%;height:50px;" />');
+				var reContentNewAddOnDiv = $('<div />').append('<label><input type="checkbox" />Facebook에도 게시</label>');
+			
+				var reContentNewAddOnDivA = (s_userId != undefined ?
+						 '<a class="btn btn-default" id="'+programId+'ReSaveBtn" style="float:right";>댓글쓰기</a>' 
+						:
+						 '<a style="float:right;">게시하려면 로그인을 하세요</a>');
+				reContentNewAddOnDiv.append(reContentNewAddOnDivA);
+				reContentNewAddOn.append(reContentNewAddOnDiv);
+				
+				reContentNew.append(reContentNewImg)
+							.append(reContentNewInput)
+							.append(reContentNewTxt)
+							.append(reContentNewAddOn);
+				
+				reContent.append(reContentNew);			
+				
 				//RE_STEP 댓글 단계 
 				//IN_USER_ID 사용자이름
 				//IN_DT 입력시간
-				//
 					
 				$.each(result, function(key, value){
-					var reContentView =
-						'<div class="col-lg-12 re-contents" style="display:inline-block">'
-							+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
-						
-							+ '<div class="" style="float:right;min-width:220px;width:90%" >'
-								+ '<span>' + value.IN_USER_ID + '</span>'
-								+ '<div>'+value.CONTENT+'</div>'
-							+ '</div>'
-							+ '<div style="float:right;min-width:220px;width:90%;">'
-//								+ '<div><label><input type="checkbox" />Facebook에도 게시</label><a style="float:right;">게시하려면 로그인을 하세요</a></div>'
-								
+					
+					var reContentView = $('<div class="col-lg-12 re-contents " />');
+					if(value.RE_LEVEL > 1){
+						reContentView.addClass('reContentDiv');
+					}
+					
+					var reContentImg = $('<div style="float:left;" />');
+					var reContentImgA = $('<a><img class="re-cp-img src="#" /></a>');
+					reContentImg.append(reContentImgA);
+					
+					var reContentTxt = $('<div />');
+					
+					reContentTxt.addClass('reContentDiv');
+					reContentTxt.append('<span>'+value.IN_USER_ID+'</span>');
+					reContentTxt.append('<div>'+value.CONTENT+'</div>');
+					
+					var reContentAddOn = $('<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" style="float:right;min-width:220px;width:90%;" />');
+					
+					var reContentDeleteBtn = '';
+					var reContentAddBtn = '';
+					
 								if(s_userId == value.IN_USER_ID){
-									+ '<span>'
+									reContentDeleteBtn = '<span>'
 									+	'<a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
 									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
 									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
@@ -335,39 +356,34 @@ var s_userId = null;
 									+ '</span>';
 								}
 								if(value.RE_STEP == 0){
-									+ '<span>'
+									reContentAddBtn = '<span>'
 									+	'<a href="#this"  id="'+programId+'ReAddBtn" )">답변달기'
 									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
 									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
 									+	'</a>'
 									+ '</span>';
 								}
-						reContentView += 
-							'</div>'
-						+ '</div>';
-						reContent += reContentView;
+						
+					var btnArray = reContentDeleteBtn + (reContentDeleteBtn != '' && reContentAddBtn != '' ? '<span> · </span>' : '') 
+								+ reContentAddBtn + (reContentAddBtn != '' ? '<span> · </span>' : '')
+								+ value.IN_DT;
+								
+						//첫댓글이고, 마지막댓글이 아닐
+						if(value.RE_LEVEL == 1 && value.RE_LEVEL != value.COUNT){
+							reContentAddOn.append(btnArray);
+						//첫댓글이 아니고, 마지막 댓글일
+						}else if(value.RE_LEVEL == value.COUNT){
+							reContentAddOn.append(btnArray);
+						//첫댓글이 아니고, 마지막 댓글도 아닐
+						}else{
+							reContentAddOn.append(btnArray);
+						}
+						
+					
+						reContentView.append(reContentImg).append(reContentTxt).append(reContentAddOn);
+						reContent.append(reContentView);
 				});
 				
-				
-//				
-//				
-//				var reCPDivInput = ('<div class="col-lg-12 re-contents-input" />');
-//				
-//				var reCPDivImg = $('<div class="re-cp" />');
-//				
-//				var reCPDivCont = $('<div class="re-cp" />');
-//				
-//				var reCPDivImgA = $('<a><img src="#" class="re-cp-img" /></a> ');
-//				reCPDivImg.append(reCPDivImgA);
-//				
-//				var reCPDivNm = $('<span class="re-cp-nm" />');
-//				reCPDivNm.append(s_userId);
-//				
-//				var reCPDivContent = $('<div class="col-lg-12 re-cp-cont" />');
-				
-				
-
-				reContent += '</div>';
 				body.append(reContent);
 
 			}
@@ -436,7 +452,6 @@ var s_userId = null;
         		}
         	}
     	}
-    	console.log(tdRowData);
     	gridData = tdRowData;
 
     	if(gridData.idx != undefined){
@@ -462,6 +477,7 @@ var s_userId = null;
     	var newUrl = '';
     	var sendData = '';
 
+    	//댓댓글 저장
     	if(thisId.indexOf('ReReSaveBtn') != -1){
     		console.log('ReReSaveBtn');
     		flag = 'insert';
@@ -484,6 +500,7 @@ var s_userId = null;
     				reStep  :   saveInput[1].value
     		}
     		console.log(sendData);
+    	//댓글 저장
     	}else if(thisId.indexOf('ReSaveBtn') != -1){
     		console.log('ReSaveBtn');
     		flag = 'insert';
@@ -501,6 +518,7 @@ var s_userId = null;
     				writer	:	$('#'+programId+'ReWriter').val(),
     				content	:	$('#'+programId+'ReContent').val()
     		}
+    	//댓글추가
     	}else if(thisId.indexOf('ReAddBtn') != -1){
     		console.log('ReAddBtn');
     		var addInput = $(this).children('input');
@@ -510,19 +528,25 @@ var s_userId = null;
     		console.log(refId);
 //			$('#'+programId+'Re').getBlogRe();
 
-			var reReStr =	'<div class="col-lg-12">'
-							+	'<span class="col-lg-2">작성자</span>'
-							+	'<input id="'+programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;" disabled />'
-							+	'<a class="btn btn-default" id="'+programId+'ReReSaveBtn">댓글쓰기'
-							+	'<input class="ref" type="hidden" value="'+getRef+'" />'
-							+	'<input class="reStep" type="hidden" value="'+gerReStep+'" />'
-							+	'</a>'
-						+	'</div>'
-						+	'<div>'
-							+	'<textarea id="'+programId+'ReReContent" class="col-lg-12" style="height:50px;"></textarea>'
-						+	'</div>';
-    		$(refId).after(reReStr);
+			var reContentNew =
+				'<div class="col-lg-12 re-contents-input" style="display:inline-block">'
+				
+					+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
+					+ '<input id="'+programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />'
+					+ '<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReReContent" style="height:100%;width:100%" ></textarea></div>'
+					+ '<div style="float:right;min-width:220px;width:90%;height:50px;">'
+					
+					
+						+ '<a class="btn btn-default" id="'+programId+'ReReSaveBtn">댓글쓰기'
+						+ '<input class="ref" type="hidden" value="'+getRef+'" />'
+						+ '<input class="reStep" type="hidden" value="'+gerReStep+'" />'
+						+ '</a>'
+					+ '</div>'
+				+ '</div>';
+			
+    		$(refId).append(reContentNew);
     		return false;
+    	//댓글삭
     	}else if(thisId.indexOf('ReDelBtn') != -1){
     		console.log('ReDelBtn');
     		flag = 'delete';
@@ -538,10 +562,12 @@ var s_userId = null;
     				ref		:	delInput[0].value,
     				re_step	:	delInput[1].value
     		}
+    	//검
     	}else if(thisId.indexOf('Search') != -1){
     		console.log('Search');
     		flag = 'search';
     		newUrl = 'get' + uProgramId;
+    	//그리드행추가
     	}else if(thisId.indexOf('AddRow') != -1){
     		trCnt++;
     		var str = '<tr class="tr_row_'+trCnt+'" >';
@@ -557,6 +583,7 @@ var s_userId = null;
     			str += '</tr>';
 			$('tbody').append(str);
     		return false;
+    	//그리드행삭제
     	}else if(thisId.indexOf('DelRow') != -1){
     		var delI = $('.tr_row_'+clickCnt).find('i')[0];
     		var delInput = $('.tr_row_'+clickCnt).find('input.td_row_flag_input')[0];
@@ -567,6 +594,7 @@ var s_userId = null;
     		}
     		gridRowGridBlurEvent($('.tr_row_'+clickCnt));
 			return false;
+		//글추가
     	}else if(thisId.indexOf('Add') != -1){
     		console.log('Add');
         	var data = {
@@ -576,10 +604,12 @@ var s_userId = null;
 //        	fnLoadingPage(data);
         	$('#view'+uProgramId).getLoadingPage(data);
         	return false;
+        //글저장
     	}else if(thisId.indexOf('Save') != -1){
     		console.log('Save');
 			newUrl = 'modify'+ uProgramId;
 
+		//글수정
     	}else if(thisId.indexOf('Modify') != -1){
     		console.log('Modify');
     		flag = 'modify';
@@ -593,10 +623,12 @@ var s_userId = null;
 			}
         	$('#view'+uProgramId).getLoadingPage(data);
 			return false;
+		//글삭제
     	}else if(thisId.indexOf('Delete') != -1){
     		console.log('Delete');
     		flag = 'delete';
     		newUrl = 'modify' + uProgramId
+    	//글취소
     	}else if(thisId.indexOf('Cancel') != -1){
     		console.log('Cancel');
     		flag = 'cancel';

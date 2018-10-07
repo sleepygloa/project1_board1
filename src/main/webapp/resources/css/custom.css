@@ -32,9 +32,11 @@ div[class^="col-"]{
 .re-contents{
 	padding-top:5px;
 	padding-bottom:5px;
+	display:inline-block;
 }
 .re-contents-input{
 	margin-top:20px;
+	display:inline-block;
 }
 .re-cp{
 	float : left;
@@ -98,4 +100,8 @@ div[class^="col-"]{
 
 table, thead, tbody, th, tr, td{
 	border:1px solid black;
+}
+
+.reContentDiv{
+	float:right;min-width:220px;width:90%;
 }

@@ -84,18 +84,26 @@
 
 	<select id="getReBlog" parameterType="hashmap" resultType="hashmap">
 		SELECT
-				REF
-			, 	RE_LEVEL
-			, 	RE_STEP
-			,	IDX
-			, 	CONTENT
-			, 	IN_USER_ID
-			, 	DATE_FORMAT(IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
+				M.REF
+			, 	M.RE_LEVEL
+			, 	M.RE_STEP
+			,	CNT.COUNT
+			,	M.IDX AS IDX
+			, 	M.CONTENT AS CONTENT
+			, 	M.IN_USER_ID AS IN_USER_ID
+			, 	DATE_FORMAT(M.IN_DT, '%Y-%m-%d %H:%i:%s') AS IN_DT
 		FROM
-				TB_BLOG_RE_M
-	    WHERE   DEL_YN = 'N'
-	    AND		IDX = #{idx}
-	   ORDER BY REF ASC, RE_STEP ASC
+				TB_BLOG_RE_M M
+				LEFT OUTER JOIN (SELECT
+					REF
+				, 	MAX(RE_LEVEL) AS COUNT
+			FROM	TB_BLOG_RE_M
+			WHERE	DEL_YN = 'N'
+	    	GROUP BY REF) AS CNT
+	    	ON   	M.REF	= CNT.REF
+	    	WHERE   DEL_YN = 'N'
+	    	AND		IDX = #{idx}
+	   ORDER BY M.REF ASC, M.RE_STEP ASC;
 	</select>
 
 	<insert id="saveReBlog" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">

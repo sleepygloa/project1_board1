@@ -72,8 +72,9 @@ var coreJs = function(){
 				url 	: '/login/logout',
 				async	: false,
 				success : function(data){
-					$('#headerLoginCircle').css('display', 'none');
-					$('#headerLogoutCircle').css('display', 'block');
+//					$('#headerLoginCircle').css('display', 'none');
+//					$('#headerLogoutCircle').css('display', 'block');
+					window.location.href='/';
 				}
 			});
 		});
