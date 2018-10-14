@@ -36,7 +36,6 @@ var s_userId = null;
     	
     	
     	colOption = data.colOption;
-    	console.log(colOption);
 
     	var btn = data.btn;
 
@@ -45,6 +44,10 @@ var s_userId = null;
     	//dataSetting
 //    	(data.checkBox == true ? checkBox = data.checkBox : checkBox);
 
+    	var editable = false;
+    	if(data.editable) editable = data.editable;
+    	var editableFlag = false;
+    	
     	$.ajax({
     		url : data.url + "get" + uProgramId,
     		async : false,
@@ -132,8 +135,22 @@ var s_userId = null;
 		ththData += '<th>'+'FLAG'+'</th>';
 		//FLAG End
     	for(var i = 0; i < colName.length; i++){
-    		ththData += '<th>'+colName[i]+'</th>';
+			var tdTitle = '';
+			var tdWidth = '100px';
+			var tdHidden = false;
+			var tdHiddenCss = 'show';
+    		
+			if(colOption[i].id == colName[i]){
+				(colOption[i].title != '' ? tdTitle = colOption[i].title : tdTitle = colOption[i].id);
+				(colOption[i].width != '' ? tdWidth = colOption[i].width : tdWidth = '');
+				(colOption[i].hidden != '' ? tdHidden = colOption[i].hidden : tdHidden = false);
+				if(tdHidden) tdHiddenCss = 'none';
+			}
+    		
+    		
+    		ththData += '<th style="width:'+tdWidth+'; display:'+tdHiddenCss+'">'+colName[i]+'</th>';
     	}
+    	
     	var thth = $(ththData);
 
     	thead.append(thth);
@@ -150,24 +167,48 @@ var s_userId = null;
 
     	for(var i = 0; i < colRow.length; i++){
     		trCnt++;
-	    	var tbtr = $('<tr class="tr_row_"'+i+'" />');
+	    	var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
+
+	    	
 	    	if(viewContents){
 	    		tbtr.addClass('viewContents_'+colRow[i].IDX);
 	    	}
 
 			var tbthData = '';
 				tbthData += '<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></th>';
-
+				
+				
 			var rowData = colRow[i];
 			var keyName = Object.keys(rowData);
 
+		
 			for(var j = 0; j < data.colName.length; j++){
-	    		$.each(rowData, function(i, v){
-	    			if(data.colName[j] == i){
-	    				tbthData += '<td class="td_row_'+i+'">'+v+'</td>';
+	    		$.each(rowData, function(k, v){
+	    			var tdTitle = '';
+	    			var tdWidth = '100px';
+	    			var tdHidden = false;
+	    			var tdHiddenCss = 'show';
+	    			
+	    			
+	    			if(colOption[j].id == k){
+	    				(colOption[j].title != '' ? tdTitle = colOption[j].title : tdTitle = colOption[j].id);
+	    				(colOption[j].width != '' ? tdWidth = colOption[j].width : tdWidth = '');
+	    				(colOption[j].hidden != '' ? tdHidden = colOption[j].hidden : tdHidden = false);
+	    				if(tdHidden) tdHiddenCss = 'none';
+	    			}
+	    			
+	    			
+	    			if(data.colName[j] == k){
+	    				tbthData += '<td class="td_row_'+k+'" style="width:'+tdWidth+';display:'+tdHiddenCss+'">'
+	    						+ '<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>'
+	    						+ '<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />'
+	    						+ '</td>';
+	    				return false;
 	    			}
 	    		});
 			}
+		
+			
 			var tbth = $(tbthData);
 			tbtr.append(tbth);
 			tbody.append(tbtr);
@@ -183,6 +224,28 @@ var s_userId = null;
 
     	$('#'+programId+'Title').val(title);
     	$('#'+programId+'Grid').html(gridDivContainer);
+    	
+    	
+    	
+    	if(editable){
+    		var rowId = -1;
+    		$('tr[id^="tr_row_"]').dblclick(function(){
+    			rowId = $(this).attr('id').split('tr_row_')[1];
+    			
+        		if(!editableFlag){
+            		$('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
+            		$('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
+            		editableFlag = true;
+        		}else{
+            		$('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
+            		$('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
+            		
+            		rowId = -1;
+            		editableFlag = false;
+        		}
+    		});
+    		
+    	}
     }
 
     $.fn.getLoadingPage = function(data){
@@ -211,7 +274,6 @@ var s_userId = null;
 			type : "POST",
 			async:false,
 			success : function(result){
-				console.log(result);
 				var list = result.map;
 					blogIdx = list[0].IDX;
 					var idCheck = result.S_CHECK_ID;
@@ -429,7 +491,6 @@ var s_userId = null;
         		tdRowData[inputKey] = inputData;
         	}
     	}else{
-    		console.log('minus');
     		for(var i = 0; i < tdData.length; i++){
         		var el = $(tdData[i]);
 

@@ -26,12 +26,13 @@ var blogJs = function(){
 			$grid.fnList({
 				programId 	: 'blog',
 				programNm 	: '블로그',
+				editable	: true,
 				url 		: '/manage/blog/',
 				colName		: ['IDX', 'TITLE', 'SUBJECT'],
 				colOption	: [
-					{id:'IDX', name:'순번', width:"100px", hidden:true},
-					{id:'TITLE', name:'분류',width:"100px", hidden:true},
-					{id:'SUBJECT', name:'제목',width:"500px"}
+					{id:'IDX', title:'순번', width:"50px", hidden:true},
+					{id:'TITLE', title:'분류',width:"150px"},
+					{id:'SUBJECT', title:'제목',width:"500px"}
 				],
 				viewContents : true,
 				viewContentsRe : true,

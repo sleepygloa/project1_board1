@@ -4,6 +4,10 @@ div[class^="col-"]{
 	padding-left:0px;
 	padding-right:0px;
 }
+input{
+	padding:0px 5px;
+	border-radius:0px;
+}
 
 .m-b-20{ margin-bottom : 20px;}
 
