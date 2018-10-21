@@ -103,8 +103,8 @@ var s_userId = null;
         			gridBtnGrpStr += '<a href="#" id="'+programId+'SearchBtn" class="btn btn-outline-success btn-sm pull-right" >검색</a>';
         		}else if(btnName == 'add'){
         			gridBtnGrpStr += '<a href="#" id="'+programId+'AddBtn" class="btn btn-outline-success btn-sm pull-right" >추가</a>';
-        		}else if(btnName == 'modify'){
-        			gridBtnGrpStr += '<a href="#" id="'+programId+'ModifyBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
+        		}else if(btnName == 'update'){
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'UpdateBtn" class="btn btn-outline-success btn-sm pull-right" >수정</a>';
         		}else if(btnName == 'delete'){
         			gridBtnGrpStr += '<a href="#" id="'+programId+'DeleteBtn" class="btn btn-outline-success btn-sm pull-right" >삭제</a>';
         		}else if(btnName == 'addRow'){
@@ -113,6 +113,8 @@ var s_userId = null;
         			gridBtnGrpStr += '<a href="#" id="'+programId+'DelRowBtn" class="btn btn-outline-success btn-sm pull-right" >행삭제</a>';
         		}else if(btnName == 'save'){
         			gridBtnGrpStr += '<a href="#" id="'+programId+'SaveBtn" class="btn btn-outline-success btn-sm pull-right" >저장</a>';
+        		}else if(btnName == 'saveRow'){
+        			gridBtnGrpStr += '<a href="#" id="'+programId+'SaveRowBtn" class="btn btn-outline-success btn-sm pull-right" >행저장</a>';
         		}
         	}
     	}
@@ -140,16 +142,19 @@ var s_userId = null;
 			var tdHidden = false;
 			var tdHiddenCss = 'show';
     		
-			if(colOption[i].id == colName[i]){
-				(colOption[i].title != '' ? tdTitle = colOption[i].title : tdTitle = colOption[i].id);
-				(colOption[i].width != '' ? tdWidth = colOption[i].width : tdWidth = '');
-				(colOption[i].hidden != '' ? tdHidden = colOption[i].hidden : tdHidden = false);
-				if(tdHidden) tdHiddenCss = 'none';
+			if(colOption != undefined){
+				if(colOption[i].id == colName[i]){
+					(colOption[i].title != '' ? tdTitle = colOption[i].title : tdTitle = colOption[i].id);
+					(colOption[i].width != '' ? tdWidth = colOption[i].width : tdWidth = '');
+					(colOption[i].hidden != '' ? tdHidden = colOption[i].hidden : tdHidden = false);
+					if(tdHidden) tdHiddenCss = 'none';
+				}
 			}
     		
     		
     		ththData += '<th style="width:'+tdWidth+'; display:'+tdHiddenCss+'">'+colName[i]+'</th>';
     	}
+
     	
     	var thth = $(ththData);
 
@@ -181,31 +186,30 @@ var s_userId = null;
 			var rowData = colRow[i];
 			var keyName = Object.keys(rowData);
 
-		
 			for(var j = 0; j < data.colName.length; j++){
-	    		$.each(rowData, function(k, v){
-	    			var tdTitle = '';
-	    			var tdWidth = '100px';
-	    			var tdHidden = false;
-	    			var tdHiddenCss = 'show';
-	    			
-	    			
-	    			if(colOption[j].id == k){
-	    				(colOption[j].title != '' ? tdTitle = colOption[j].title : tdTitle = colOption[j].id);
-	    				(colOption[j].width != '' ? tdWidth = colOption[j].width : tdWidth = '');
-	    				(colOption[j].hidden != '' ? tdHidden = colOption[j].hidden : tdHidden = false);
-	    				if(tdHidden) tdHiddenCss = 'none';
-	    			}
-	    			
-	    			
-	    			if(data.colName[j] == k){
-	    				tbthData += '<td class="td_row_'+k+'" style="width:'+tdWidth+';display:'+tdHiddenCss+'">'
-	    						+ '<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>'
-	    						+ '<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />'
-	    						+ '</td>';
-	    				return false;
-	    			}
-	    		});
+				$.each(rowData, function(k, v){
+					var tdTitle = '';
+					var tdWidth = '100px';
+					var tdHidden = false;
+					var tdHiddenCss = 'show';
+					
+					if(colOption != undefined){
+						if(colOption[j].id == k){
+							(colOption[j].title != '' ? tdTitle = colOption[j].title : tdTitle = colOption[j].id);
+							(colOption[j].width != '' ? tdWidth = colOption[j].width : tdWidth = '');
+							(colOption[j].hidden != '' ? tdHidden = colOption[j].hidden : tdHidden = false);
+							if(tdHidden) tdHiddenCss = 'none';
+						}
+					}
+					
+					if(data.colName[j] == k){
+						tbthData += '<td class="td_row_'+k+'" style="width:'+tdWidth+';display:'+tdHiddenCss+'">'
+						+ '<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>'
+						+ '<input type="text" class="td_row_i_'+i+'" value="'+v+'" style="display:none;width:100%" />'
+						+ '</td>';
+						return false;
+					}
+				});
 			}
 		
 			
@@ -231,6 +235,7 @@ var s_userId = null;
     		var rowId = -1;
     		$('tr[id^="tr_row_"]').dblclick(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
+    			clickCnt = rowId;
     			
         		if(!editableFlag){
             		$('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
@@ -245,6 +250,12 @@ var s_userId = null;
         		}
     		});
     		
+    	}else{
+    		
+    		$('tr[id^="tr_row_"]').click(function(){
+    			rowId = $(this).attr('id').split('tr_row_')[1];
+    			gridRowGridBlurEvent($(this));
+    		});
     	}
     }
 
@@ -457,11 +468,8 @@ var s_userId = null;
     	return gridData;
     }
 
-    $(document).on('click blur','tr[class^=tr_row_]', function(e){
-    	gridRowGridBlurEvent($(this));
-    });
-
-    function gridRowGridBlurEvent(thisData){
+    //행 선택 시 데이터 세팅
+    function gridDataSetting(thisData){
     	var thisData = thisData;
     	var rowId = thisData.attr('class').split('tr_row_')[1];
     	var tdData = thisData.children('td');
@@ -514,6 +522,10 @@ var s_userId = null;
         	}
     	}
     	gridData = tdRowData;
+    }
+    
+    function gridRowGridBlurEvent(thisData){
+    	gridDataSetting(thisData);
 
     	if(gridData.idx != undefined){
         	var data = {
@@ -528,6 +540,7 @@ var s_userId = null;
         	}
 
     	}
+
     }
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
@@ -655,6 +668,45 @@ var s_userId = null;
     		}
     		gridRowGridBlurEvent($('.tr_row_'+clickCnt));
 			return false;
+    	//그리드 행 저장
+    	}else if(thisId.indexOf('SaveRow') != -1){
+    		var saveId = $('.tr_row_'+clickCnt);
+    		var saveTds = saveId.find('td');
+    		
+    		var saveData = {};
+    		
+    		saveData["idx"] = clickCnt;
+    		saveData["flag"] = 'update';
+    		
+    		for(var j = 0; j < saveTds.length; j++){
+    			var rowNm = $(saveTds[j]).attr('class').split('td_row_')[1];
+    			if(rowNm == 'flag') continue;
+    			
+    			var rowNmSplit = rowNm.split('_');
+    			var str = '';
+    			for(var k = 0; k < rowNmSplit.length; k++){
+    				if(k == 0){
+    					str += rowNmSplit[k].toLowerCase();
+    				}else{
+    					var rowNmSplitChar = rowNmSplit[k].toLowerCase();
+    					str += rowNmSplitChar.charAt(0).toUpperCase() + rowNmSplitChar.slice(1);
+    				}
+    			}
+    			
+    			var saveSpan = $(saveTds[j]).find('span').text();
+    			var saveInput = $(saveTds[j]).find('input').val();
+    			
+    			gridDataSetting(saveId);
+    			if(saveSpan == saveInput) {
+    				saveData[str] = saveSpan;
+    			}else{
+        			saveData[str] = saveInput;
+    			};
+    		}
+    		
+    		gridData = saveData;
+    		
+    		newUrl = 'update'+ uProgramId;
 		//글추가
     	}else if(thisId.indexOf('Add') != -1){
     		console.log('Add');
@@ -667,12 +719,10 @@ var s_userId = null;
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){
-    		console.log('Save');
-			newUrl = 'modify'+ uProgramId;
+			newUrl = 'update'+ uProgramId;
 
 		//글수정
-    	}else if(thisId.indexOf('Modify') != -1){
-    		console.log('Modify');
+    	}else if(thisId.indexOf('Update') != -1){
     		flag = 'modify';
     		newUrl = 'viewPg';
 
@@ -696,6 +746,7 @@ var s_userId = null;
     		window.location.href="/";
     		return false;
     	}
+    	console.log(gridData);
 
     	if(thisId.indexOf('Re') != -1){
     		$.ajax({
@@ -719,6 +770,7 @@ var s_userId = null;
                 async	: false,
     			contentType : "application/json, charset=utf-8",
         		success : function(data){
+        			console.log(initData);
         			$('#'+programId+'Grid').remove();
         			$('#'+programId+'Grid').fnList(initData);
         		}

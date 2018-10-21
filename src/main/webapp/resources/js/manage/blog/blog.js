@@ -26,7 +26,7 @@ var blogJs = function(){
 			$grid.fnList({
 				programId 	: 'blog',
 				programNm 	: '블로그',
-				editable	: true,
+//				editable	: true,
 				url 		: '/manage/blog/',
 				colName		: ['IDX', 'TITLE', 'SUBJECT'],
 				colOption	: [
@@ -36,7 +36,7 @@ var blogJs = function(){
 				],
 				viewContents : true,
 				viewContentsRe : true,
-				btn			: ['add']
+				btn			: ['add', 'update', 'save']
 			});
 
 	  }

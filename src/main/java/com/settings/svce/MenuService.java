@@ -9,6 +9,6 @@ public interface MenuService {
 
 	List<Map<String, Object>> getSidebarMenu() throws Exception;
 	
-	void modifyMenu(Params inParams) throws Exception;
+	void updateMenu(Params inParams) throws Exception;
 	
 }

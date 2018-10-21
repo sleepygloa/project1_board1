@@ -11,6 +11,7 @@
 			,	MENU.MENU_NM
 			,	MENU.MENU_ICO
 			,	MENU.MENU_ORDER
+			,	MENU.USE_YN
 			,	(SELECT COUNT(MENU_PARENT_SEQ) FROM TB_NAMBI_MENU CNT
 				WHERE MENU.MENU_PARENT_SEQ = CNT.MENU_PARENT_SEQ ) COUNT
 		FROM	
@@ -32,8 +33,8 @@
 				, USE_YN
 		)
 		VALUES
-		(	  
-				 #{menuSeq}
+		(	  	
+				#{menuSeq}
 				, #{menuParentSeq}
 				, #{menuNm}
 				, #{proCd}
@@ -45,13 +46,13 @@
 
 	<update id="updateMenu" >
 		UPDATE TB_NAMBI_MENU 
-		   SET MENU_NM = #{menuNm}
-		     , PRO_CD = #{proCd}
-		     , MENU_ORDER = #{menuOrder}
-		     , MENU_ICO = #{menuIco}
-		     , USE_YN = #{useYn}
-		     , UP_USER_ID = #{s_userId}
-		     , UP_DT = CURRENT_TIMESTAMP
+		   SET MENU_NM 		= #{menuNm}
+		     , PRO_CD 		= #{proCd}
+		     , MENU_ORDER 	= #{menuOrder}
+		     , MENU_ICO 	= #{menuIco}
+		     , USE_YN 		= #{useYn}
+		     , UP_USER_ID 	= #{s_userId}
+		     , UP_DT 		= CURRENT_TIMESTAMP
 		 WHERE MENU_SEQ 	= #{menuSeq};
 	</update>
 

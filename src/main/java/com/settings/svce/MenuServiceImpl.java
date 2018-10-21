@@ -22,7 +22,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 	
 	@Override
-	public void modifyMenu(Params inParams) throws Exception{
+	public void updateMenu(Params inParams) throws Exception{
 		System.out.println("modifyProgram :" + inParams);
 		
 		
@@ -30,10 +30,13 @@ public class MenuServiceImpl implements MenuService {
 		flag = inParams.getString("flag");
 		
 		if(flag.equals("insert")) {
+			System.out.println("1");
 			menuDao.insertMenu(inParams);
-		}else if(flag.equals("modify")) {
+		}else if(flag.equals("update")) {
+			System.out.println("2");
 			menuDao.updateMenu(inParams);
 		}else if(flag.equals("delete")) {
+			System.out.println("3");
 			menuDao.deleteMenu(inParams);
 		}
 	};

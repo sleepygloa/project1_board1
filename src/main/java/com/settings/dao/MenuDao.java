@@ -24,6 +24,7 @@ public class MenuDao extends AbstractDAO{
 	}
 
 	public void updateMenu(Params inParams) throws Exception{
+		System.out.println("updateMenu : "+ inParams);
 		update("MenuService.updateMenu", inParams);
 	}
 	

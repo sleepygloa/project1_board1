@@ -34,10 +34,10 @@ public class MenuController {
 	}
 
 	//추가, 수정, 삭제
-	@RequestMapping("/modifyMenu")
-	public ModelAndView modifyMenu(Params inParams) throws Exception{
+	@RequestMapping("/updateMenu")
+	public ModelAndView updateMenu(Params inParams) throws Exception{
 		ModelAndView mv = new ModelAndView("jsonView");
-		menuService.modifyMenu(inParams);
+		menuService.updateMenu(inParams);
 		return mv;
 	}
 	
