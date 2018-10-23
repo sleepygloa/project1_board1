@@ -51,6 +51,8 @@ var MainUpdateBlogContentJs = function(){
 					updateIdx = list[0].IDX;
 //					$('#updateBlogContentTitle').text(map.TITLE);
 					$('#updateBlogSubject').val(list[0].SUBJECT);
+					
+					
 					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
 					for(var i = 0; i < list.length; i++){
 						var str = '';

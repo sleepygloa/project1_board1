@@ -267,10 +267,8 @@ var s_userId = null;
 	  		type	: "POST",
 	  		async	: false,
 	  		success	: function(result){
-	  			$('#view'+uProgramId).empty();
-	  			$('#view'+uProgramId).html(result);
-
-	  			$('#'+programId+'BlogContainer').getContents();
+	  			$('#'+programId+'View').empty();
+	  			$('#'+programId+'View').html(result);
 	  		}
 	  	});
     }
@@ -290,6 +288,8 @@ var s_userId = null;
 					var idCheck = result.S_CHECK_ID;
 					$('#'+programId+'Title').val(list[0].TITLE);
 					$('#'+programId+'Subject').val(list[0].SUBJECT);
+					
+					
 
 					for(var i = 0; i < list.length; i++){
 						if(list[i].CONTENT == undefined){
@@ -309,7 +309,7 @@ var s_userId = null;
 							}
 
 							contEl.append(conts);
-							$('#view'+uProgramId+'Container').append(contEl);
+							$('#'+programId+'ViewContainer').append(contEl);
 
 
 
@@ -528,18 +528,71 @@ var s_userId = null;
     	gridDataSetting(thisData);
 
     	if(gridData.idx != undefined){
-        	var data = {
-        			idx  : gridData.idx,
-        			page : url + "/view" + uProgramId
+        	blogData = {
+        		idx : gridData.idx
         	}
-//        	fnLoadingPage(data);
-        	$('#view'+uProgramId).getLoadingPage(data);
-
-        	if(viewContentsRe){
-        		$('#'+programId+'Re').getBlogRe();
-        	}
-
+    		getView();
     	}
+
+    }
+    
+    function getView(){
+    	console.log(blogData);
+    	console.log(blogData.update);
+		if(viewContents){
+			$('#'+programId+'View').empty();
+			var divContainer = $('<div class="col-lg-12" style="margin-bottom:100px;" />');
+			
+			//제목
+			var divSubject = $('<div id="'+programId+'ContainerSubject" class="form-control" />');
+				var inputSubject = $('<input id="'+programId+'Subject" type="text" class="col-lg-12 inputWhite viewInput" /> ');
+				//수정.
+				if(!blogData.update){
+					inputSubject.attr('disabled', 'disabled');
+				}
+			divSubject.append(inputSubject);
+			
+			//부제 컨텐츠
+			var divSubContent = $('<div class="form-control" />');
+				var fs = $('<span id="'+programId+'FileUploadBtn">파일업로드</span>');
+				var fsI = $('<input id="'+programId+'FileUpload" type="file" value="" style="display:none;"/>');
+				var fsIT = $('<input id="'+programId+'FileUploadText type="text" inputWhite viewInput />');
+				//수정.
+				if(!blogData.update){
+					fsIT.attr('disabled', 'disabled');
+				}else{
+					fs.click(function(){
+						fsI.trigger('click');
+					});
+				}
+				
+				var divTitleCombo = $('<div />');
+					var subTitleCombo = $('<select id="'+programId+'UpdateTitleCombo" class="form-control" />');
+				divTitleCombo.append(subTitleCombo);
+				
+			divSubContent.append(fs).append(fsI).append(fsIT);
+			
+			var divViewContainer = $('<div id="'+programId+'ViewContainer" class="form-control viewContentContainer" />');
+			
+			divContainer.append(divSubject);
+			divContainer.append(divSubContent);
+			divContainer.append(divViewContainer);
+			
+			if(viewContentsRe){
+				var disRe = $('<div id="'+programId+'Re" class="re-container" />');
+				divContainer.append(disRe);
+			}
+			
+			$('#'+programId+'View').html(divContainer);
+			
+
+		$('#'+programId+'ViewContainer').getContents();
+		}
+	
+//    	$('#'+programId+'View').getLoadingPage(sendData);
+		if(viewContentsRe){
+			$('#'+programId+'Re').getBlogRe();
+		}
 
     }
 
@@ -715,7 +768,7 @@ var s_userId = null;
         			page : url + "update" + uProgramId
         	}
 //        	fnLoadingPage(data);
-        	$('#view'+uProgramId).getLoadingPage(data);
+        	$('#'+programId+'View').getLoadingPage(data);
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){
@@ -723,16 +776,12 @@ var s_userId = null;
 
 		//글수정
     	}else if(thisId.indexOf('Update') != -1){
-    		flag = 'modify';
-    		newUrl = 'viewPg';
-
-			var data = {
-    				flag : flag,
+			blogData = {
+    				flag : 'modify',
 					idx  : blogData.idx,
-					page : url + 'update' + uProgramId,
 					update : "Y"
 			}
-        	$('#view'+uProgramId).getLoadingPage(data);
+			getView();
 			return false;
 		//글삭제
     	}else if(thisId.indexOf('Delete') != -1){

@@ -2,15 +2,15 @@
 
 <div class="col-lg-12">
 	<div class="form-control col-lg-12" style="height:50px;">
-		<div class="col-lg-6 pull-left" >
+<!-- 		<div class="col-lg-6 pull-left" >
 			<a href="#" class="btn btn-outline-success btn-sm pull-right" data-toggle="modal" data-target="#myModal">추가</a>
 			<select class="form-control col-lg-11 input-sm" id="updateBlogTitleCombo"></select>
-		</div>
-		<div class="col-lg-6 pull-left">
+		</div> -->
+<!-- 		<div class="col-lg-6 pull-left">
 			<a href="#" id="updateBlogFileUploadBtn" class="btn btn-outline-success btn-sm pull-left">파일업로드</a>
 			<input id="updateBlogFileUpload" type="file" value="" style="display:none"/>
 			<input id="updateBlogFileUploadText" type="text" class="form-control col-lg-10 input-sm inputWhite" disabled style="background:white;" />
-		</div>
+		</div> -->
 	</div>
 	<div id="viewBlogSubject" class="form-control col-lg-12">
 		<input id="updateBlogSubject" type="text" class="col-lg-12 inputWhite blog-subject" placeholder="제목" />

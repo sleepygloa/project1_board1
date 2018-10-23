@@ -4,7 +4,7 @@
 
 	<div id="blogGrid" >
 	</div>
-	<div id="viewBlog" class="viewContainer">
+	<div id="blogView" class="viewContainer">
 	</div>
 
 	<script src="/resources/js/manage/blog/blog.js"></script>
