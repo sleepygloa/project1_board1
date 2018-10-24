@@ -1,3 +1,4 @@
+
 function blogChileListToggle(count){
 	var listCss = $('.blogSubject_'+count);
 	if(listCss.is(":visible")){
@@ -43,8 +44,8 @@ var blogJs = function(){
 
 
 	  function getEvents(){
-		  
-		  
+
+
 		//글쓰기
 		  $(document).on('click', '#blogAddBtn', function(){
 			  mainBlogInsertBtn();

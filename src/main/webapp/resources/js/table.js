@@ -12,12 +12,29 @@ var blogData = '';
 var gridData = {};
 var s_userId = null;
 
-
+var contentLength = 0;
+var focusIdx = -1;
 
 (function(window, $, undefined){
-	
-		
 
+    $.fn.getLoadingPage = function(data){
+    	blogData = data;
+	  	$.ajax({
+	  		url		: url + '/viewPg',
+	  		data	: data,
+	  		type	: "POST",
+	  		async	: false,
+	  		success	: function(result){
+	  			$('#'+programId+'View').empty();
+	  			$('#'+programId+'View').html(result);
+	  		}
+	  	});
+    }
+
+    //현재 선택된 행 데이터 리턴
+    $.fn.getGridData = function(){
+    	return gridData;
+    }
 
     $.fn.fnList = function(data){
     	initData = data;
@@ -33,8 +50,8 @@ var s_userId = null;
 
     	colName = new Array();
     	colRow = new Array();
-    	
-    	
+
+
     	colOption = data.colOption;
 
     	var btn = data.btn;
@@ -47,7 +64,7 @@ var s_userId = null;
     	var editable = false;
     	if(data.editable) editable = data.editable;
     	var editableFlag = false;
-    	
+
     	$.ajax({
     		url : data.url + "get" + uProgramId,
     		async : false,
@@ -141,7 +158,7 @@ var s_userId = null;
 			var tdWidth = '100px';
 			var tdHidden = false;
 			var tdHiddenCss = 'show';
-    		
+
 			if(colOption != undefined){
 				if(colOption[i].id == colName[i]){
 					(colOption[i].title != '' ? tdTitle = colOption[i].title : tdTitle = colOption[i].id);
@@ -150,12 +167,12 @@ var s_userId = null;
 					if(tdHidden) tdHiddenCss = 'none';
 				}
 			}
-    		
-    		
+
+
     		ththData += '<th style="width:'+tdWidth+'; display:'+tdHiddenCss+'">'+colName[i]+'</th>';
     	}
 
-    	
+
     	var thth = $(ththData);
 
     	thead.append(thth);
@@ -174,15 +191,15 @@ var s_userId = null;
     		trCnt++;
 	    	var tbtr = $('<tr id="tr_row_'+i+'" class="tr_row_'+i+'" />');
 
-	    	
+
 	    	if(viewContents){
 	    		tbtr.addClass('viewContents_'+colRow[i].IDX);
 	    	}
 
 			var tbthData = '';
 				tbthData += '<td class="td_row_flag" ><i class="fa" ></i><input class="td_row_flag_input" type="hidden" value="" /></th>';
-				
-				
+
+
 			var rowData = colRow[i];
 			var keyName = Object.keys(rowData);
 
@@ -192,7 +209,7 @@ var s_userId = null;
 					var tdWidth = '100px';
 					var tdHidden = false;
 					var tdHiddenCss = 'show';
-					
+
 					if(colOption != undefined){
 						if(colOption[j].id == k){
 							(colOption[j].title != '' ? tdTitle = colOption[j].title : tdTitle = colOption[j].id);
@@ -201,7 +218,7 @@ var s_userId = null;
 							if(tdHidden) tdHiddenCss = 'none';
 						}
 					}
-					
+
 					if(data.colName[j] == k){
 						tbthData += '<td class="td_row_'+k+'" style="width:'+tdWidth+';display:'+tdHiddenCss+'">'
 						+ '<span class="td_row_s_'+i+'" style="display:show">'+v+'</span>'
@@ -211,8 +228,8 @@ var s_userId = null;
 					}
 				});
 			}
-		
-			
+
+
 			var tbth = $(tbthData);
 			tbtr.append(tbth);
 			tbody.append(tbtr);
@@ -228,15 +245,15 @@ var s_userId = null;
 
     	$('#'+programId+'Title').val(title);
     	$('#'+programId+'Grid').html(gridDivContainer);
-    	
-    	
-    	
+
+
+
     	if(editable){
     		var rowId = -1;
     		$('tr[id^="tr_row_"]').dblclick(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
     			clickCnt = rowId;
-    			
+
         		if(!editableFlag){
             		$('input[class^="td_row_i_'+rowId+'"').css('display', 'block');
             		$('span[class^="td_row_s_'+rowId+'"').css('display', 'none');
@@ -244,33 +261,19 @@ var s_userId = null;
         		}else{
             		$('input[class^="td_row_i_'+rowId+'"').css('display', 'none');
             		$('span[class^="td_row_s_'+rowId+'"').css('display', 'block');
-            		
+
             		rowId = -1;
             		editableFlag = false;
         		}
     		});
-    		
+
     	}else{
-    		
+
     		$('tr[id^="tr_row_"]').click(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
     			gridRowGridBlurEvent($(this));
     		});
     	}
-    }
-
-    $.fn.getLoadingPage = function(data){
-    	blogData = data;
-	  	$.ajax({
-	  		url		: url + '/viewPg',
-	  		data	: data,
-	  		type	: "POST",
-	  		async	: false,
-	  		success	: function(result){
-	  			$('#'+programId+'View').empty();
-	  			$('#'+programId+'View').html(result);
-	  		}
-	  	});
     }
 
     /**
@@ -288,25 +291,42 @@ var s_userId = null;
 					var idCheck = result.S_CHECK_ID;
 					$('#'+programId+'Title').val(list[0].TITLE);
 					$('#'+programId+'Subject').val(list[0].SUBJECT);
-					
-					
+
+//					$('select[id='+programId+'TitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
 
 					for(var i = 0; i < list.length; i++){
 						if(list[i].CONTENT == undefined){
-
+							$('#'+programId+'ViewContainer').val('');
 						}else{
 
 							var contEl = $('<div id="content_'+i+'" class="col-lg-12" />');
 							var conts;
 							if(list[i].TYPE == 'IMG'){
-								conts = $('<img />');
-								conts.attr('src', list[i].CONTENT);
-								conts.attr('width', list[i].IMGWIDTHSCALE + '%');
+								if(!blogData.update){
+									conts = $('<img />');
+									conts.attr('src', list[i].CONTENT);
+									conts.attr('width', list[i].IMGWIDTHSCALE + '%');
+								}else{
+//								updateImgArea();
+//								$('#text_'+i).attr('src', list[i].CONTENT);
+//								$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
+								}
 							}else if(list[i].TYPE == 'CODE'){
-								contEl.css('background-color', 'gray');
-								contEl.css('color', 'white');
+								if(!blogData.update){
+									contEl.css('background-color', 'gray');
+									contEl.css('color', 'white');
+								}else{
+//								updateCodeArea();
+//								$('#text_'+i).text(list[i].CONTENT);
+								}
 							}else{
+								if(!blogData.update){
+								}else{
+//								updateTextArea();
+//								$('#text_'+i).text(list[i].CONTENT);
+								}
 							}
+
 
 							contEl.append(conts);
 							$('#'+programId+'ViewContainer').append(contEl);
@@ -327,6 +347,7 @@ var s_userId = null;
 							}
 						}
 					}
+					contentLength = list.length;
 
 					if(idCheck){
 						$('#'+programId+'ModifyBtn').css('display', 'inline-block');
@@ -353,7 +374,7 @@ var s_userId = null;
 			type	: "POST",
 //			async	: false,
 			success : function(result){
-				
+
 				var result = result.list;
 				var body = $('#'+programId+"Re");
 				body.empty();
@@ -361,65 +382,65 @@ var s_userId = null;
 				/**
 				 * 댓글 영역
 				 * 댓글이  0 = 글쓰기 폼만 보여짐
-				 * 댓글이 존재 = 댓글과 글쓰기폼이 보여짐 
-				 * 
+				 * 댓글이 존재 = 댓글과 글쓰기폼이 보여짐
+				 *
 				 * 댓글 개수, 정렬준(인기순, 최신순, 날짜 오름차순)
 				 * 유저 이미지(페이스북 이미지)
 				 * */
-				
+
 				var reContent = $('<div class="col-lg-12" />');
-				
+
 				var reContentNew = $('<div class="col-lg-12 re-contents-input"/>');
-				
+
 				var reContentNewImg = $('<div class="" style="float:left;" />');
 				var reContentNewImgA = $('<a><img class="re-cp-img" src="#"  /></a>');
 				reContentNewImg.append(reContentNewImgA);
-				
+
 				var reContentNewInput = $('<input id="'+programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />');
 				var reContentNewTxt = $('<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReContent" style="height:100%;width:100%" ></textarea></div>');
 				var reContentNewAddOn = $('<div style="float:right;min-width:220px;width:90%;height:50px;" />');
 				var reContentNewAddOnDiv = $('<div />').append('<label><input type="checkbox" />Facebook에도 게시</label>');
-			
+
 				var reContentNewAddOnDivA = (s_userId != undefined ?
-						 '<a class="btn btn-default" id="'+programId+'ReSaveBtn" style="float:right";>댓글쓰기</a>' 
+						 '<a class="btn btn-default" id="'+programId+'ReSaveBtn" style="float:right";>댓글쓰기</a>'
 						:
 						 '<a style="float:right;">게시하려면 로그인을 하세요</a>');
 				reContentNewAddOnDiv.append(reContentNewAddOnDivA);
 				reContentNewAddOn.append(reContentNewAddOnDiv);
-				
+
 				reContentNew.append(reContentNewImg)
 							.append(reContentNewInput)
 							.append(reContentNewTxt)
 							.append(reContentNewAddOn);
-				
-				reContent.append(reContentNew);			
-				
-				//RE_STEP 댓글 단계 
+
+				reContent.append(reContentNew);
+
+				//RE_STEP 댓글 단계
 				//IN_USER_ID 사용자이름
 				//IN_DT 입력시간
-					
+
 				$.each(result, function(key, value){
-					
+
 					var reContentView = $('<div class="col-lg-12 re-contents " />');
 					if(value.RE_LEVEL > 1){
 						reContentView.addClass('reContentDiv');
 					}
-					
+
 					var reContentImg = $('<div style="float:left;" />');
 					var reContentImgA = $('<a><img class="re-cp-img src="#" /></a>');
 					reContentImg.append(reContentImgA);
-					
+
 					var reContentTxt = $('<div />');
-					
+
 					reContentTxt.addClass('reContentDiv');
 					reContentTxt.append('<span>'+value.IN_USER_ID+'</span>');
 					reContentTxt.append('<div>'+value.CONTENT+'</div>');
-					
+
 					var reContentAddOn = $('<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" style="float:right;min-width:220px;width:90%;" />');
-					
+
 					var reContentDeleteBtn = '';
 					var reContentAddBtn = '';
-					
+
 								if(s_userId == value.IN_USER_ID){
 									reContentDeleteBtn = '<span>'
 									+	'<a href="#this" id="'+programId+'ReDelBtn" >댓글삭제'
@@ -436,11 +457,11 @@ var s_userId = null;
 									+	'</a>'
 									+ '</span>';
 								}
-						
-					var btnArray = reContentDeleteBtn + (reContentDeleteBtn != '' && reContentAddBtn != '' ? '<span> · </span>' : '') 
+
+					var btnArray = reContentDeleteBtn + (reContentDeleteBtn != '' && reContentAddBtn != '' ? '<span> · </span>' : '')
 								+ reContentAddBtn + (reContentAddBtn != '' ? '<span> · </span>' : '')
 								+ value.IN_DT;
-								
+
 						//첫댓글이고, 마지막댓글이 아닐
 						if(value.RE_LEVEL == 1 && value.RE_LEVEL != value.COUNT){
 							reContentAddOn.append(btnArray);
@@ -451,21 +472,16 @@ var s_userId = null;
 						}else{
 							reContentAddOn.append(btnArray);
 						}
-						
-					
+
+
 						reContentView.append(reContentImg).append(reContentTxt).append(reContentAddOn);
 						reContent.append(reContentView);
 				});
-				
+
 				body.append(reContent);
 
 			}
 		})
-    }
-
-    //현재 선택된 행 데이터 리턴
-    $.fn.getGridData = function(){
-    	return gridData;
     }
 
     //행 선택 시 데이터 세팅
@@ -523,7 +539,7 @@ var s_userId = null;
     	}
     	gridData = tdRowData;
     }
-    
+
     function gridRowGridBlurEvent(thisData){
     	gridDataSetting(thisData);
 
@@ -535,14 +551,14 @@ var s_userId = null;
     	}
 
     }
-    
+
     function getView(){
     	console.log(blogData);
     	console.log(blogData.update);
 		if(viewContents){
 			$('#'+programId+'View').empty();
 			var divContainer = $('<div class="col-lg-12" style="margin-bottom:100px;" />');
-			
+
 			//제목
 			var divSubject = $('<div id="'+programId+'ContainerSubject" class="form-control" />');
 				var inputSubject = $('<input id="'+programId+'Subject" type="text" class="col-lg-12 inputWhite viewInput" /> ');
@@ -551,7 +567,7 @@ var s_userId = null;
 					inputSubject.attr('disabled', 'disabled');
 				}
 			divSubject.append(inputSubject);
-			
+
 			//부제 컨텐츠
 			var divSubContent = $('<div class="form-control" />');
 				var fs = $('<span id="'+programId+'FileUploadBtn">파일업로드</span>');
@@ -561,40 +577,147 @@ var s_userId = null;
 				if(!blogData.update){
 					fsIT.attr('disabled', 'disabled');
 				}else{
-					fs.click(function(){
+					fs
+					.click(function(){
 						fsI.trigger('click');
+					})
+					.change(function(){
+						var fileValue = $('#'+programId+'FileUpload').val().split("\\");
+						var fileName = fileValue[fileValue.length-1]; // 파일명
+
+						$('#'+programId+'FileUploadText').val(fileName);
 					});
 				}
-				
+
 				var divTitleCombo = $('<div />');
-					var subTitleCombo = $('<select id="'+programId+'UpdateTitleCombo" class="form-control" />');
+					var subTitleCombo = $('<select id="'+programId+'TitleCombo" class="form-control" />');
 				divTitleCombo.append(subTitleCombo);
-				
+				viewTitleCombo();
+
+
+				//글 상자버튼그룹
+				var divBtnBox = $('<div class="form-control" />');
+					var bbText = $('<a id="'+programId+'TextBoxBtn" class="btn btn-sm"/>');
+					bbText.addClass('btn-outline-success');
+					bbText.text('글상자');
+					bbText.click(function(){
+						updateTextArea();
+					});
+
+					var bbCode = $('<a id="'+programId+'CodeBoxBtn" class="btn btn-sm"/>');
+					bbCode.addClass('btn-outline-success');
+					bbCode.text('코드');
+					bbCode.click(function(){
+						updateCodeArea();
+					});
+
+
+					var bbImgIn = $('<input id="'+programId+'ImgBoxBtn_input" type="file" style="display:none;" />');
+					bbImgIn.change(function(){
+					    if ($(this).files && $(this).files[0]) {
+					        var reader = new FileReader();
+					        reader.onload = function (e) {
+					            $('#text_'+(contentLength-1)).attr('src', e.target.result);
+					        }
+					        reader.readAsDataURL($(this).files[0]);
+					    }
+					});
+					var bbImg = $('<a id="'+programId+'ImgBoxBtn" class="btn btn-sm"/>');
+					bbImg.addClass('btn-outline-success');
+					bbImg.text('이미지');
+					bbImg.click(function(){
+						updateImgArea();
+						$('#'+programId+'ImgBoxBtn_input').trigger('click');
+					});
+
+					var bbDel = $('<a id="'+programId+'DelBoxBtn" class="btn btn-sm"/>');
+					bbDel.addClass('btn-outline-success');
+					bbDel.text('삭제');
+					bbDel.click(function(){
+						$('#row_'+focusIdx).remove();
+					});
+
+					var bbTyping = $('<a id="'+programId+'typingBoxBtn" class="btn btn-sm"/>');
+					bbTyping.addClass('btn-outline-success');
+					bbTyping.text('글보기');
+
+					var bbView = $('<a id="'+programId+'ViewBoxBtn" class="btn btn-sm"/>');
+					bbView.addClass('btn-outline-success');
+					bbView.text('뷰');
+
+
+					divBtnBox.append(bbText)
+							.append(bbCode)
+							.append(bbImgIn)
+							.append(bbImg)
+							.append(bbDel)
+//							.append(bbTyping)
+//							.append(bbView)
+
+
+//				<a href="#" id="updateBlogAddText" class="btn btn-outline-success btn-sm">글상자</a>
+//				<a href="#" id="updateBlogAddCode" class="btn btn-outline-success btn-sm">코드</a>
+//				<a href="#" id="updateBlogAddImg" class="btn btn-outline-success btn-sm">이미지</a>
+//				<a href="#" id="updateBlogRemove" class="btn btn-outline-success btn-sm">컨텐츠삭제</a>
+//				<input type="file" id="blogUpdateImgInput" style="display:none"/>
+//				<a href="#" id="typping" class="btn btn-outline-success btn-sm">글</a>
+//				<a href="#" id="typingView" class="btn btn-outline-success btn-sm">뷰</a>
+
+
 			divSubContent.append(fs).append(fsI).append(fsIT);
-			
+
 			var divViewContainer = $('<div id="'+programId+'ViewContainer" class="form-control viewContentContainer" />');
-			
+
 			divContainer.append(divSubject);
 			divContainer.append(divSubContent);
+
 			divContainer.append(divViewContainer);
-			
+
 			if(viewContentsRe){
 				var disRe = $('<div id="'+programId+'Re" class="re-container" />');
 				divContainer.append(disRe);
 			}
-			
+
 			$('#'+programId+'View').html(divContainer);
-			
+
 
 		$('#'+programId+'ViewContainer').getContents();
 		}
-	
+
 //    	$('#'+programId+'View').getLoadingPage(sendData);
 		if(viewContentsRe){
 			$('#'+programId+'Re').getBlogRe();
 		}
 
     }
+
+
+	//글쓰기 드롭다운 리스
+	function viewTitleCombo(){
+		$.ajax({
+			url : url + "/get"+uProgramId+"TitleDropdown",
+			data 	: {
+				idx : gridData.idx
+			},
+			success : function(result){
+				  $('#'+programId+'TitleCombo').empty();
+				  var options = '';
+				  console.log(result.list);
+				  if(result.list){
+					  var list = result.list;
+					  var count = list.length * 10;
+					  var listValue = 0;
+					  for(var i in list){
+						  if(listValue != count){
+							  listValue += 10;
+						  }
+						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
+					  }
+				  }
+				  $('#'+programId+'TitleCombo').append(options);
+			}
+		})
+	}
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
     $(document).on('click','a[id$=Btn]', function(e){
@@ -657,20 +780,20 @@ var s_userId = null;
 
 			var reContentNew =
 				'<div class="col-lg-12 re-contents-input" style="display:inline-block">'
-				
+
 					+ '<div class="" style="float:left;"><a><img class="re-cp-img" src="#"  /></a></div>'
 					+ '<input id="'+programId+'ReReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />'
 					+ '<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+programId+'ReReContent" style="height:100%;width:100%" ></textarea></div>'
 					+ '<div style="float:right;min-width:220px;width:90%;height:50px;">'
-					
-					
+
+
 						+ '<a class="btn btn-default" id="'+programId+'ReReSaveBtn">댓글쓰기'
 						+ '<input class="ref" type="hidden" value="'+getRef+'" />'
 						+ '<input class="reStep" type="hidden" value="'+gerReStep+'" />'
 						+ '</a>'
 					+ '</div>'
 				+ '</div>';
-			
+
     		$(refId).append(reContentNew);
     		return false;
     	//댓글삭
@@ -725,16 +848,16 @@ var s_userId = null;
     	}else if(thisId.indexOf('SaveRow') != -1){
     		var saveId = $('.tr_row_'+clickCnt);
     		var saveTds = saveId.find('td');
-    		
+
     		var saveData = {};
-    		
+
     		saveData["idx"] = clickCnt;
     		saveData["flag"] = 'update';
-    		
+
     		for(var j = 0; j < saveTds.length; j++){
     			var rowNm = $(saveTds[j]).attr('class').split('td_row_')[1];
     			if(rowNm == 'flag') continue;
-    			
+
     			var rowNmSplit = rowNm.split('_');
     			var str = '';
     			for(var k = 0; k < rowNmSplit.length; k++){
@@ -745,10 +868,10 @@ var s_userId = null;
     					str += rowNmSplitChar.charAt(0).toUpperCase() + rowNmSplitChar.slice(1);
     				}
     			}
-    			
+
     			var saveSpan = $(saveTds[j]).find('span').text();
     			var saveInput = $(saveTds[j]).find('input').val();
-    			
+
     			gridDataSetting(saveId);
     			if(saveSpan == saveInput) {
     				saveData[str] = saveSpan;
@@ -756,9 +879,9 @@ var s_userId = null;
         			saveData[str] = saveInput;
     			};
     		}
-    		
+
     		gridData = saveData;
-    		
+
     		newUrl = 'update'+ uProgramId;
 		//글추가
     	}else if(thisId.indexOf('Add') != -1){
@@ -850,6 +973,97 @@ var s_userId = null;
     			  page : url + '/updateBlog'
     	  }
     	  loadingPgSetting(data);
+    }
+
+    function updateTextArea(){
+    	var str = $('<div id="row_'+contentLength+'"/>');
+    	str.click(function(){
+    		fnSaveIdx(contentLength);
+    	});
+    		var strIdx = $('<input type="hidden" id="idx_'+contentLength+'"/>');
+    		var strType = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT"/>');
+    		var strTextArea = $('<textarea id="text_'+contentLength+'" class="form-control col-xs-12" style="min-height:150px;"/>');
+    		strTextArea.change(function(){
+    			//resize(this);
+    		});
+    		str.append(strIdx)
+    			.append(strType)
+				.append(strTextArea);
+
+
+//	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
+//	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+//	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+//        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" onchange="resize('+this+')" ></textarea>'
+//        str += '</div>';
+		$('#sortable').append(str);
+	    contentLength++;
+    }
+
+    function updateCodeArea(){
+    	var str = $('<div id="row_'+contentLength+'"/>');
+    	str.click(function(){
+    		fnSaveIdx(contentLength);
+    	});
+    		var strIdx = $('<input type="hidden" id="idx_'+contentLength+'"/>');
+    		var strType = $('<input type="hidden" id="type_'+contentLength+'" value="CODE"/>');
+    		var strTextArea = $('<textarea id="text_'+contentLength+'" class="form-control col-xs-12" style="min-height:150px;"/>');
+    		strTextArea.
+    		strTextArea.change(function(){
+    			//resize(this);
+    		});
+    		str.append(strIdx)
+    			.append(strType)
+				.append(strTextArea);
+
+
+
+        var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
+        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+        str += '<input type="hidden" id="type_'+contentLength+'" value="CODE" />'
+        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:gray; color:white;"></textarea>'
+        str += '</div>';
+		$('#sortable').append(str);
+	    contentLength++;
+    }
+
+    function updateImgArea(){
+        var str = '<div id="row_'+contentLength+'" onmouseover="fnImgController('+contentLength+');" onmouseleave="fnRvImgController('+contentLength+')" onclick="fnSaveIdx('+contentLength+');">';
+        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+        str += '<input type="hidden" id="type_'+contentLength+'" value="IMG" />'
+        str += '<img id="text_'+contentLength+'" src="#" alt="your image" width="" />'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onclick="fnImgWidthChg({length : '+contentLength+', width : 10})" style="display:none">10%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 25})" style="display:none">25%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 50})" style="display:none">50%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 75})" style="display:none">75%</button>'
+        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 100})" style="display:none">100%</button>'
+        str += '</div>';
+		$('#sortable').append(str);
+	    contentLength++;
+    }
+
+    function fnSaveIdx(i){
+    	focusIdx = i;
+    }
+
+    function resize(obj) {
+  	  obj.style.height = "1px";
+  	  obj.style.height = (12+obj.scrollHeight)+"px";
+  	}
+
+    function fnImgWidthChg(data){
+    	var per = data.width+'%';
+    	$('#text_'+data.length).attr('width', per);
+    	console.log(data.length);
+    	console.log(data.width);
+    }
+
+    function fnImgController(length){
+    	$('.imgContWidth_'+length).css('display', 'block');
+    }
+
+    function fnRvImgController(length){
+    	$('.imgContWidth_'+length).css('display', 'none');
     }
 
 }(window, jQuery));
