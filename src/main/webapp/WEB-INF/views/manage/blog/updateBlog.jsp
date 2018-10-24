@@ -12,7 +12,7 @@
 			<input id="updateBlogFileUploadText" type="text" class="form-control col-lg-10 input-sm inputWhite" disabled style="background:white;" />
 		</div> -->
 	</div>
-	<div id="viewBlogSubject" class="form-control col-lg-12">
+<!-- 	<div id="viewBlogSubject" class="form-control col-lg-12">
 		<input id="updateBlogSubject" type="text" class="col-lg-12 inputWhite blog-subject" placeholder="제목" />
 	</div>
 	<div class="form-control col-lg-12">
@@ -27,7 +27,7 @@
 	<div id="sortable" class="form-control col-lg-12" >
 	</div>
 	<div id="sortableView" style="display:none;">
-	</div>
+	</div> -->
 	<div class="form-control col-lg-12">
 		<!-- 버튼 -->
 		<button id="updateBlogContentSaveBtn" type="button" class="btn btn-sm btn-info" >저장하기</button>

@@ -18,8 +18,6 @@ var blogJs = function(){
 
 			getBlogContent();
 
-			getEvents();
-
 		}
 	}
 
@@ -40,16 +38,6 @@ var blogJs = function(){
 				btn			: ['add', 'update', 'save']
 			});
 
-	  }
-
-
-	  function getEvents(){
-
-
-		//글쓰기
-		  $(document).on('click', '#blogAddBtn', function(){
-			  mainBlogInsertBtn();
-		  })
 	  }
 
 }();

@@ -280,70 +280,37 @@ var focusIdx = -1;
      * 공통된 프로그램 id 이용하여 블로그 형태의 글을 불러오는 소스
      * */
     $.fn.getContents = function(){
+    	contentLength = 0;
     	$.ajax({
 			url	 : url + '/view'+ uProgramId,
 			data : blogData,
 			type : "POST",
 			async:false,
 			success : function(result){
+				$(this).empty();
 				var list = result.map;
 					blogIdx = list[0].IDX;
 					var idCheck = result.S_CHECK_ID;
 					$('#'+programId+'Title').val(list[0].TITLE);
 					$('#'+programId+'Subject').val(list[0].SUBJECT);
-
-//					$('select[id='+programId+'TitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
+					
+//					$('select[id='+programId+'TitleCombo]').find("option").filter(function(index){
+//						console.log(list[0].TITLE);
+//						console.log($(this).text());
+//						return list[0].TITLE == $(this).text();
+//					}).prop("selected", "selected");
 
 					for(var i = 0; i < list.length; i++){
-						if(list[i].CONTENT == undefined){
+						var sendContents = list[i];
+						if(sendContents == undefined){
 							$('#'+programId+'ViewContainer').val('');
 						}else{
-
-							var contEl = $('<div id="content_'+i+'" class="col-lg-12" />');
-							var conts;
 							if(list[i].TYPE == 'IMG'){
-								if(!blogData.update){
-									conts = $('<img />');
-									conts.attr('src', list[i].CONTENT);
-									conts.attr('width', list[i].IMGWIDTHSCALE + '%');
-								}else{
-//								updateImgArea();
-//								$('#text_'+i).attr('src', list[i].CONTENT);
-//								$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
-								}
+								updateImgArea(sendContents);
 							}else if(list[i].TYPE == 'CODE'){
-								if(!blogData.update){
-									contEl.css('background-color', 'gray');
-									contEl.css('color', 'white');
-								}else{
-//								updateCodeArea();
-//								$('#text_'+i).text(list[i].CONTENT);
-								}
+								updateTextArea(sendContents);
 							}else{
-								if(!blogData.update){
-								}else{
-//								updateTextArea();
-//								$('#text_'+i).text(list[i].CONTENT);
-								}
-							}
-
-
-							contEl.append(conts);
-							$('#'+programId+'ViewContainer').append(contEl);
-
-
-
-							var content = list[i].CONTENT;
-
-							if(list[i].TYPE != 'IMG'){
-								content = content.replace(/</gi, '&lt')
-												 .replace(/>/gi, '&gt')
-												 .split("\n");
-								var rc = '';
-					           $.each(content, function(j){
-					        	   rc += '<span>'+content[j]+'<br /></span>';
-					            });
-					           $('#content_'+i).append(rc);
+								updateTextArea(sendContents);
 							}
 						}
 					}
@@ -553,10 +520,10 @@ var focusIdx = -1;
     }
 
     function getView(){
-    	console.log(blogData);
-    	console.log(blogData.update);
 		if(viewContents){
+			//내용 초기화
 			$('#'+programId+'View').empty();
+			//내용 생성
 			var divContainer = $('<div class="col-lg-12" style="margin-bottom:100px;" />');
 
 			//제목
@@ -570,18 +537,17 @@ var focusIdx = -1;
 
 			//부제 컨텐츠
 			var divSubContent = $('<div class="form-control" />');
-				var fs = $('<span id="'+programId+'FileUploadBtn">파일업로드</span>');
+				var fs = $('<span id="'+programId+'FileUploadBtn" class="btn btn-outline-success btn-sm">파일업로드</span>');
 				var fsI = $('<input id="'+programId+'FileUpload" type="file" value="" style="display:none;"/>');
-				var fsIT = $('<input id="'+programId+'FileUploadText type="text" inputWhite viewInput />');
+				var fsIT = $('<input id="'+programId+'FileUploadText" type="text" class="inputWhite viewInput" readonly/>');
 				//수정.
 				if(!blogData.update){
 					fsIT.attr('disabled', 'disabled');
 				}else{
-					fs
-					.click(function(){
+					fs.click(function(){
 						fsI.trigger('click');
-					})
-					.change(function(){
+					});
+					fsI.change(function(){
 						var fileValue = $('#'+programId+'FileUpload').val().split("\\");
 						var fileName = fileValue[fileValue.length-1]; // 파일명
 
@@ -601,25 +567,25 @@ var focusIdx = -1;
 					bbText.addClass('btn-outline-success');
 					bbText.text('글상자');
 					bbText.click(function(){
-						updateTextArea();
+						updateTextArea({TYPE:'TEXT'});
 					});
 
 					var bbCode = $('<a id="'+programId+'CodeBoxBtn" class="btn btn-sm"/>');
 					bbCode.addClass('btn-outline-success');
 					bbCode.text('코드');
 					bbCode.click(function(){
-						updateCodeArea();
+						updateTextArea({TYPE:'CODE'});
 					});
-
 
 					var bbImgIn = $('<input id="'+programId+'ImgBoxBtn_input" type="file" style="display:none;" />');
 					bbImgIn.change(function(){
-					    if ($(this).files && $(this).files[0]) {
+					    if (this.files && this.files[0]) {
+							console.log($(this));
 					        var reader = new FileReader();
 					        reader.onload = function (e) {
-					            $('#text_'+(contentLength-1)).attr('src', e.target.result);
+					            $('#content_'+(contentLength-1)).attr('src', e.target.result);
 					        }
-					        reader.readAsDataURL($(this).files[0]);
+					        reader.readAsDataURL(this.files[0]);
 					    }
 					});
 					var bbImg = $('<a id="'+programId+'ImgBoxBtn" class="btn btn-sm"/>');
@@ -634,6 +600,7 @@ var focusIdx = -1;
 					bbDel.addClass('btn-outline-success');
 					bbDel.text('삭제');
 					bbDel.click(function(){
+						console.log(focusIdx);
 						$('#row_'+focusIdx).remove();
 					});
 
@@ -654,17 +621,13 @@ var focusIdx = -1;
 //							.append(bbTyping)
 //							.append(bbView)
 
-
-//				<a href="#" id="updateBlogAddText" class="btn btn-outline-success btn-sm">글상자</a>
-//				<a href="#" id="updateBlogAddCode" class="btn btn-outline-success btn-sm">코드</a>
-//				<a href="#" id="updateBlogAddImg" class="btn btn-outline-success btn-sm">이미지</a>
-//				<a href="#" id="updateBlogRemove" class="btn btn-outline-success btn-sm">컨텐츠삭제</a>
-//				<input type="file" id="blogUpdateImgInput" style="display:none"/>
-//				<a href="#" id="typping" class="btn btn-outline-success btn-sm">글</a>
-//				<a href="#" id="typingView" class="btn btn-outline-success btn-sm">뷰</a>
-
-
-			divSubContent.append(fs).append(fsI).append(fsIT);
+			divSubContent.append(fs)
+						.append(fsI)
+						.append(fsIT)
+						.append(divTitleCombo);
+			if(blogData.update){
+				divSubContent.append(divBtnBox);
+			}
 
 			var divViewContainer = $('<div id="'+programId+'ViewContainer" class="form-control viewContentContainer" />');
 
@@ -681,10 +644,9 @@ var focusIdx = -1;
 			$('#'+programId+'View').html(divContainer);
 
 
-		$('#'+programId+'ViewContainer').getContents();
+			$('#'+programId+'ViewContainer').getContents();
 		}
 
-//    	$('#'+programId+'View').getLoadingPage(sendData);
 		if(viewContentsRe){
 			$('#'+programId+'Re').getBlogRe();
 		}
@@ -901,27 +863,28 @@ var focusIdx = -1;
 			var form = $('mainBlogUpdateForm')[0];
 			var formData = new FormData(form);
 
-			if($('#updateBlogFileUploadText').val() != ''){
-				formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
+			if($('#'+programId+'FileUploadText').val() != ''){
+				formData.append('file_0', $('#'+programId+'FileUpload')[0].files[0]);
 			}
-
+			
 			var dataDt = [];
 			var count = 0;
 			for(var i = 0; i < contentLength; i++){
+				console.log('row_'+i);
 				if($('#row_'+i).val() != undefined){
 					var dataList = {};
-					var textareaVal = $('#text_'+i).val();
+					var textareaVal = $('#content_'+i).val();
 					var typeVal = $('#type_'+i).val();
-					var imgWidthScale = $('#text_'+i).attr('width');
+					var imgWidthScale = $('#content_'+i).attr('width');
 
 					if(typeVal == 'IMG'){
-						textareaVal = $('#text_'+i).attr('src');
+						textareaVal = $('#content_'+i).attr('src');
 						if(imgWidthScale != ''){
-							imgWidthScale = fnReplaceOnlyNum(imgWidthScale);
+							imgWidthScale = imgWidthScale.replace(/[^0-9]/g,"");
 						}
 					}
 					dataList = {
-							idx 			: updateIdx,
+							idx 			: blogData.idx,
 							i   			: i-count,
 							type 			: typeVal,
 							content 		: textareaVal,
@@ -935,22 +898,22 @@ var focusIdx = -1;
 
 			var data = {}
 
-			if(updateIdx != ''){
+			if(blogData.idx != ''){
 				data = {
-						idx		: updateIdx,
-						title 	: $('#updateBlogTitleCombo option:selected').text(),
-						subject : $('#updateBlogSubject').val(),
+						idx		: blogData.idx,
+						title 	: $('#'+programId+'TitleCombo option:selected').text(),
+						subject : $('#'+programId+'Subject').val(),
 						dataDt  : dataDt
 				}
 			}else{
 				data = {
-						title : $('#updateBlogTitleCombo option:selected').text(),
-						subject : $('#updateBlogSubject').val(),
+						title : $('#'+programId+'TitleCombo option:selected').text(),
+						subject : $('#'+programId+'Subject').val(),
 						dataDt  : dataDt
 				}
 			}
 			$.ajax({
-				url 	: "/manage/blog/saveBlog",
+				url 	: url + "/save" + uProgramId,
 				type	: 'POST',
 //				data    : formData,
 				data	: JSON.stringify(data),
@@ -959,9 +922,9 @@ var focusIdx = -1;
 				contentType : "application/json, charset=utf-8",
 				async 	: false,
 				success	: function(result){
-					if($('#updateBlogFileUploadText').val() != ''){
+					if($('#'+programId+'FileUploadText').val() != ''){
 						$.ajax({
-							url 	: "/manage/blog/saveBlogFileUpload",
+							url 	: url + "/save"+uProgramId+"FileUpload",
 							type	: 'POST',
 							data    : formData,
 							contentType : false,
@@ -980,14 +943,15 @@ var focusIdx = -1;
 				}
 			})
 
-
+return false;
 
 		//글수정
     	}else if(thisId.indexOf('Update') != -1){
+    		if(blogData.idx == undefined) return false;
 			blogData = {
     				flag : 'modify',
 					idx  : blogData.idx,
-					update : "Y"
+					update : true
 			}
 			getView();
 			return false;
@@ -1003,9 +967,9 @@ var focusIdx = -1;
     		window.location.href="/";
     		return false;
     	}
-    	console.log(gridData);
-
-    	if(thisId.indexOf('Re') != -1){
+    	if(thisId.indexOf('Box') != -1){
+    		
+    	}else if(thisId.indexOf('Re') != -1){
     		$.ajax({
     			url		: url + newUrl,
         		type	: "POST",
@@ -1060,76 +1024,84 @@ var focusIdx = -1;
     	  loadingPgSetting(data);
     }
 
-    function updateTextArea(){
-    	var str = $('<div id="row_'+contentLength+'"/>');
+    function updateTextArea(sendContents){
+    	var c = contentLength;
+    	var str = $('<div id="row_'+c+'"/>');
     	str.click(function(){
-    		fnSaveIdx(contentLength);
+    		focusIdx = c;
     	});
-    		var strIdx = $('<input type="hidden" id="idx_'+contentLength+'"/>');
-    		var strType = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT"/>');
-    		var strTextArea = $('<textarea id="text_'+contentLength+'" class="form-control col-xs-12" style="min-height:150px;"/>');
+    		var strIdx = $('<input type="hidden" id="idx_'+c+'"/>');
+    		var strType = $('<input type="hidden" id="type_'+c+'" value="TEXT"/>');
+    		var strTextArea = $('<textarea id="content_'+c+'" class="form-control col-xs-12" style="min-height:150px;"/>');
+    		if(sendContents != undefined){
+    			strTextArea.text(sendContents.CONTENT);
+	    		if(sendContents.TYPE == 'CODE'){
+	    	   		strTextArea.css({
+	        			'background-color' : 'gray',
+	        			'color'			: 'white'
+	        		});
+	    	   		strType.attr('value', 'CODE');
+	    		}
+    		}
+ 
+    		if(!blogData.update) strTextArea.attr('readonly', true);
     		strTextArea.change(function(){
     			//resize(this);
     		});
     		str.append(strIdx)
     			.append(strType)
 				.append(strTextArea);
-
-
-//	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
-//	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-//	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-//        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" onchange="resize('+this+')" ></textarea>'
-//        str += '</div>';
-		$('#sortable').append(str);
+    		
+		$('#'+programId+'ViewContainer').append(str);
 	    contentLength++;
     }
 
-    function updateCodeArea(){
-    	var str = $('<div id="row_'+contentLength+'"/>');
-    	str.click(function(){
-    		fnSaveIdx(contentLength);
+    function updateImgArea(sendContents){
+    	var c = contentLength;
+    	var iaDiv = $('<div id="row_'+c+'" />');
+    	iaDiv.mouseover(function(){
+    		$('.imgContWidth_'+c).css('display', 'block');
+    	}).mouseleave(function(){
+    		$('.imgContWidth_'+c).css('display', 'none;');
+    	}).click(function(){
+    		focusIdx = c;
     	});
-    		var strIdx = $('<input type="hidden" id="idx_'+contentLength+'"/>');
-    		var strType = $('<input type="hidden" id="type_'+contentLength+'" value="CODE"/>');
-    		var strTextArea = $('<textarea id="text_'+contentLength+'" class="form-control col-xs-12" style="min-height:150px;"/>');
-    		strTextArea.
-    		strTextArea.change(function(){
-    			//resize(this);
-    		});
-    		str.append(strIdx)
-    			.append(strType)
-				.append(strTextArea);
+    	
+    	var iaIdx = $('<input id="idx_'+c+'" type="hidden" value="'+c+'"/>');
+    	var iaType = $('<input id="type_'+c+'" type="hidden" value="IMG"/>');
+    	var iaImg = $('<img id="content_'+c+'"  alt="your image"  />');
+		var iaImgChBtn1 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('10%');
+			iaImgChBtn1.click(function(){ fnImgWidthChg({ contentLength : c, width  : 10 }) });
+		var iaImgChBtn2 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('25%');
+			iaImgChBtn2.click(function(){ fnImgWidthChg({ contentLength : c, width  : 25 }) });
+		var iaImgChBtn3 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('50%');
+			iaImgChBtn3.click(function(){ fnImgWidthChg({ contentLength : c, width  : 50 }) });
+		var iaImgChBtn4 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('75%');
+			iaImgChBtn4.click(function(){ fnImgWidthChg({ contentLength : c, width  : 75 }) });    	
+		var iaImgChBtn5 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('100%');
+			iaImgChBtn5.click(function(){ fnImgWidthChg({ contentLength : c, width  : 100 }) });
 
-
-
-        var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
-        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-        str += '<input type="hidden" id="type_'+contentLength+'" value="CODE" />'
-        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px; background:gray; color:white;"></textarea>'
-        str += '</div>';
-		$('#sortable').append(str);
+		if(sendContents != undefined){
+			iaImg.attr('src', sendContents.CONTENT);
+			iaImg.attr('width', ''+sendContents.IMG_WIDTH_SCALE+'%');
+		}
+    			
+    	iaDiv.append(iaImg);
+    	
+    	if(blogData.update){
+    		iaDiv.append(iaIdx)
+	    		.append(iaType)
+	    		.append(iaImgChBtn1)
+	    		.append(iaImgChBtn2)
+	    		.append(iaImgChBtn3)
+	    		.append(iaImgChBtn4)
+	    		.append(iaImgChBtn5);
+    	}
+		$('#'+programId+'ViewContainer').append(iaDiv);
+    	
 	    contentLength++;
     }
 
-    function updateImgArea(){
-        var str = '<div id="row_'+contentLength+'" onmouseover="fnImgController('+contentLength+');" onmouseleave="fnRvImgController('+contentLength+')" onclick="fnSaveIdx('+contentLength+');">';
-        str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-        str += '<input type="hidden" id="type_'+contentLength+'" value="IMG" />'
-        str += '<img id="text_'+contentLength+'" src="#" alt="your image" width="" />'
-        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onclick="fnImgWidthChg({length : '+contentLength+', width : 10})" style="display:none">10%</button>'
-        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 25})" style="display:none">25%</button>'
-        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 50})" style="display:none">50%</button>'
-        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 75})" style="display:none">75%</button>'
-        str += '<button class="col-xs-1 imgContWidth_'+contentLength+'" onClick="fnImgWidthChg({length : '+contentLength+', width : 100})" style="display:none">100%</button>'
-        str += '</div>';
-		$('#sortable').append(str);
-	    contentLength++;
-    }
-
-    function fnSaveIdx(i){
-    	focusIdx = i;
-    }
 
     function resize(obj) {
   	  obj.style.height = "1px";
@@ -1138,18 +1110,16 @@ var focusIdx = -1;
 
     function fnImgWidthChg(data){
     	var per = data.width+'%';
-    	$('#text_'+data.length).attr('width', per);
-    	console.log(data.length);
-    	console.log(data.width);
+    	$('#content_'+data.contentLength).attr('width', per);
     }
 
-    function fnImgController(length){
-    	$('.imgContWidth_'+length).css('display', 'block');
-    }
-
-    function fnRvImgController(length){
-    	$('.imgContWidth_'+length).css('display', 'none');
-    }
+//    function fnImgController(length){
+//    	$('.imgContWidth_'+length).css('display', 'block');
+//    }
+//
+//    function fnRvImgController(length){
+//    	$('.imgContWidth_'+length).css('display', 'none');
+//    }
 
 }(window, jQuery));
 

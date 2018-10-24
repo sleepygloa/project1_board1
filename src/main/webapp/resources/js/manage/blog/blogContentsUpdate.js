@@ -35,7 +35,7 @@ var MainUpdateBlogContentJs = function(){
 
 //			loadingViewBlogContent();
 
-			updateBlogContentEvent();
+//			updateBlogContentEvent();
 		}
 	}
 
