@@ -897,6 +897,91 @@ var focusIdx = -1;
     	}else if(thisId.indexOf('Save') != -1){
 			newUrl = 'update'+ uProgramId;
 
+
+			var form = $('mainBlogUpdateForm')[0];
+			var formData = new FormData(form);
+
+			if($('#updateBlogFileUploadText').val() != ''){
+				formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
+			}
+
+			var dataDt = [];
+			var count = 0;
+			for(var i = 0; i < contentLength; i++){
+				if($('#row_'+i).val() != undefined){
+					var dataList = {};
+					var textareaVal = $('#text_'+i).val();
+					var typeVal = $('#type_'+i).val();
+					var imgWidthScale = $('#text_'+i).attr('width');
+
+					if(typeVal == 'IMG'){
+						textareaVal = $('#text_'+i).attr('src');
+						if(imgWidthScale != ''){
+							imgWidthScale = fnReplaceOnlyNum(imgWidthScale);
+						}
+					}
+					dataList = {
+							idx 			: updateIdx,
+							i   			: i-count,
+							type 			: typeVal,
+							content 		: textareaVal,
+							imgWidthScale 	: imgWidthScale
+					}
+					dataDt.push(dataList);
+				}else{
+					count++;
+				}
+			}
+
+			var data = {}
+
+			if(updateIdx != ''){
+				data = {
+						idx		: updateIdx,
+						title 	: $('#updateBlogTitleCombo option:selected').text(),
+						subject : $('#updateBlogSubject').val(),
+						dataDt  : dataDt
+				}
+			}else{
+				data = {
+						title : $('#updateBlogTitleCombo option:selected').text(),
+						subject : $('#updateBlogSubject').val(),
+						dataDt  : dataDt
+				}
+			}
+			$.ajax({
+				url 	: "/manage/blog/saveBlog",
+				type	: 'POST',
+//				data    : formData,
+				data	: JSON.stringify(data),
+//				contentType : false,
+//				processData : false,
+				contentType : "application/json, charset=utf-8",
+				async 	: false,
+				success	: function(result){
+					if($('#updateBlogFileUploadText').val() != ''){
+						$.ajax({
+							url 	: "/manage/blog/saveBlogFileUpload",
+							type	: 'POST',
+							data    : formData,
+							contentType : false,
+							processData : false,
+							async 	: false,
+							success	: function(){
+								if(result.SUCCESS){
+									alert(result.SUCCESS);
+
+								}
+							}
+						})
+					}
+
+					window.location.href="/";
+				}
+			})
+
+
+
 		//글수정
     	}else if(thisId.indexOf('Update') != -1){
 			blogData = {
