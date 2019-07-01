@@ -10,52 +10,70 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.core.common.ParagonConstants;
 import com.core.parameters.Params;
 import com.core.parameters.datatable.DataTable;
 import com.core.web.servlet.JacksonView;
 
-public class ParamsReturnValueHandler implements HandlerMethodReturnValueHandler {
+public class ParamsReturnValueHandler  implements HandlerMethodReturnValueHandler {
 
-    private static final JacksonView JACKSON_VIEW = new JacksonView();
+	private static final JacksonView JACKSON_VIEW = new JacksonView();
+	
+	@Override
+	public boolean supportsReturnType(MethodParameter returnType) {
+		if(Params.class.isAssignableFrom(returnType.getParameterType())){
+			return true;
+		}else if(DataTable.class.isAssignableFrom(returnType.getParameterType())){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
-    public ParamsReturnValueHandler() {}
+	@Override
+	@SuppressWarnings("unchecked")
+	public void handleReturnValue(Object returnVal, MethodParameter returnType, ModelAndViewContainer mavContainer,NativeWebRequest webRequest) throws Exception {
+		if(DataTable.class.isAssignableFrom(returnType.getParameterType())){
+			mavContainer.setView(JACKSON_VIEW);
+			List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) returnVal;
+			mavContainer.addAttribute(list);
+			return;
+		}
+		
+		String ajaxType = webRequest.getHeader("AjaxType");
+		Map<String,Object> returnValue = (Map<String, Object>) returnVal;
+		Iterator<String> it = returnValue.keySet().iterator();
+		Object key = null;
+		Object value = null;
+		while (it.hasNext()) {
+			key = it.next();
+			value = returnValue.get(key.toString());
 
-    public boolean supportsReturnType(MethodParameter returnType) {
-       /** Param 과 DataTable 을 구현하고 있을 때 */
-       if (Params.class.isAssignableFrom(returnType.getParameterType())) return true;
-       if (DataTable.class.isAssignableFrom(returnType.getParameterType())) return true;
-       return false;
-    }
+//			if (key.toString().startsWith("dt_")) {
+//				mavContainer.addAttribute((String) key, value);
+//			}
+			mavContainer.addAttribute((String) key, value);
+		}
 
+		if (!("raw".equals(ajaxType))) {
+			mavContainer.setView(JACKSON_VIEW);
+		} else {
+			Params params = (Params) returnValue;
+			mavContainer.setRequestHandled(true);
+			
+			if (params.containsKey(ParagonConstants.STS_CD)) {
+				webRequest.setAttribute(ParagonConstants.STS_CD,params.getStsCd(), 0);
+			}
 
-    public void handleReturnValue(Object returnVal, MethodParameter returnType, ModelAndViewContainer mavContainer, NativeWebRequest webRequest) throws Exception {
-        if (DataTable.class.isAssignableFrom(returnType.getParameterType())) {
-        mavContainer.setView(JACKSON_VIEW);
-        List<HashMap<String, Object>> list = (List)returnVal;
-        mavContainer.addAttribute(list);
-        return;
-    }
+			if (params.containsKey(ParagonConstants.MSG_CD)) {
+				webRequest.setAttribute(ParagonConstants.MSG_CD,params.getMsgCd(), 0);
+				webRequest.setAttribute(ParagonConstants.MSG_CD,params.getMsgTxt(), 0);
+			}
+			if (params.containsKey(ParagonConstants.RTN_URI)) {
+				webRequest.setAttribute(ParagonConstants.RTN_URI,params.getRtnUri(), 0);
+			}
 
-    String ajaxType = webRequest.getHeader("AjaxType");
-    Map<String, Object> returnValue = (Map)returnVal;
-    Iterator<String> it = returnValue.keySet().iterator();
-    Object key = null;
-    Object value = null;
-    while (it.hasNext()) {
-        key = it.next();
-        value = returnValue.get(key.toString());
-        mavContainer.addAttribute((String)key, value);
-    }
+		}
+	}
 
-    if (!"raw".equals(ajaxType)) {
-        mavContainer.setView(JACKSON_VIEW);
-    } else {
-        Params params = (Params)returnValue;
-        mavContainer.setRequestHandled(true);
-
-        if (params.containsKey("stsCd")) {
-            webRequest.setAttribute("stsCd", params.getStsCd(), 0);
-        }
-    }
-  }
 }

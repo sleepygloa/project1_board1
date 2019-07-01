@@ -1,10 +1,14 @@
 package com.core.conversion;
 
+
 import java.io.BufferedReader;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+//import org.codehaus.jackson.type.TypeReference;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -27,124 +32,149 @@ import com.core.parameters.Params;
 import com.core.parameters.ParamsFactory;
 import com.core.parameters.datatable.CommDataTable;
 import com.core.parameters.datatable.DataTable;
+import com.core.utility.common.LocaleManager;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+public class ParamsArgumentResolver implements HandlerMethodArgumentResolver {
+
+	private static final Log LOG = LogFactory.getLog(ParamsArgumentResolver.class);
+
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return Params.class.isAssignableFrom(parameter.getParameterType());
+	}
+
+	@Override
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+
+		HttpServletRequest req = (HttpServletRequest) webRequest.getNativeRequest();
+		String contentType = StringUtils.defaultString(req.getContentType());
+
+		Map<String, String[]> paramMap = webRequest.getParameterMap();
+
+		Iterator<String> it = paramMap.keySet().iterator();
+		Object key = null;
+		String[] value = null;
+		Params commParams = new CommParams();
+		boolean isMultipart = ServletFileUpload.isMultipartContent(req);
+
+		HttpSession session = req.getSession();
+		Locale userLocale = LocaleManager.getUserLocale(session);
+		String s_proCd = StringUtils.defaultString(req.getHeader("proCd")).trim();
+		commParams.setLocale(LocaleManager.getUserLocale(session));
+		commParams.setParam("s_language",userLocale.getLanguage());
+		commParams.setParam("s_proCd",s_proCd);
+		Enumeration<String> attrNames = session.getAttributeNames();
+		@SuppressWarnings("unchecked")
+		Set<String> addedParams = (Set<String>) session.getAttribute("addedParams");
 
 
+		if(addedParams != null && addedParams.size() > 0) {
+			while (attrNames.hasMoreElements()) {
+				String attrName = attrNames.nextElement();
+				if(addedParams.contains(attrName)) {
+					commParams.setParam(attrName, session.getAttribute(attrName));
+				}
+			}
+		}
+
+		LOG.debug("===================================================");
+		LOG.debug("====== NO TOUCH. OUT OF SESSION ERROR. TEST========");
+		LOG.debug("====== "+session);
+		LOG.debug("====== "+session.getAttributeNames());
+		LOG.debug("====== "+session.getId());
+		LOG.debug("===================================================");
+
+		while (it.hasNext()) {
+
+			key = it.next();
+			value =  paramMap.get(key);
+			String param = value[0].replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+			param = param.replaceAll("<script", "<script");
+//			코어적용 [주석제거]
+//			param = param.replaceAll("<script", "<script");
+			param = param.replaceAll("alert\\(", "alert\\(");
+//			param = param.replaceAll("prompt(", "prompt(");
+//			param = param.replaceAll("document.", "document.");
+//			param = param.replaceAll(".cookie", ".cookie");
+			commParams.setParam(key.toString(), param);
+		}
+
+		if (contentType.contains("application/json")) {
+			webRequest.setAttribute("contentType", "application/json", 0);
+			StringBuilder jsonText = new StringBuilder();
+			String line = null;
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				BufferedReader reader = req.getReader();
+				while ((line = reader.readLine()) != null) {
+					jsonText.append(line);
+				}
+
+				String jsonTxt = jsonText.toString();
+				if (!("".equals(jsonTxt))) {
+					jsonTxt = jsonTxt.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+					jsonTxt = jsonTxt.replaceAll("script", "script");
+					jsonTxt = jsonTxt.replaceAll("alert", "alert");
+//					jsonTxt = jsonTxt.replaceAll("prompt(", "prompt(");
+//					jsonTxt = jsonTxt.replaceAll("document.", "document.");
+//					jsonTxt = jsonTxt.replaceAll(".cookie", ".cookie");
+					Map<String, Object> jsonMap = mapper.readValue(jsonTxt, new TypeReference<HashMap<String, Object>>(){});
+					for (Iterator<Entry<String, Object>> i = jsonMap.entrySet().iterator(); i.hasNext();) {
+						Entry<String, Object> e = i.next();
+						String jsonKey = e.getKey();
+						Object jsonValue = e.getValue();
 
 
+						if (jsonKey.startsWith("dt_")) {
+							//WMS
+							if(jsonKey != null){
+								LOG.debug("dataTable make : " + jsonKey);
+								@SuppressWarnings("unchecked")
+								List<Map<String, Object>> list = (List<Map<String, Object>>)jsonValue;
+								DataTable dt = new CommDataTable();
+								LOG.debug("=====");
+								if(addedParams != null && addedParams.size() > 0) {
+									LOG.debug("=====");
+									LOG.debug("Add Session default Paramaters Size: "+addedParams.size() );
+									for (String addParamskey : addedParams) {
+										if(addedParams.contains(addParamskey)) {
+											dt.setParam(addParamskey, commParams.getParam(addParamskey));
+										}
+									}
+									dt.setDataTable(list, addedParams);
+								}
+								commParams.setDataTable(jsonKey, dt);
+							}
+							//WMS END
 
-public class ParamsArgumentResolver
-  implements HandlerMethodArgumentResolver
-{
-  private static final Log LOG = LogFactory.getLog(ParamsArgumentResolver.class);
+						} else {
+							commParams.setParam(jsonKey, jsonValue);
+						}
+					}
 
-  public ParamsArgumentResolver() {}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else if (isMultipart) {
 
-  public boolean supportsParameter(MethodParameter parameter) { return Params.class.isAssignableFrom(parameter.getParameterType()); }
+			MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)req;
+		    Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
 
+		    commParams.setFileable(true);
+		    while(iterator.hasNext()){
+		    	String fileKey = iterator.next();
+		    	List<MultipartFile> listM = multipartHttpServletRequest.getFiles(fileKey);
+		        if(listM.isEmpty() == false){
+		        	commParams.setParam(fileKey, listM);
+		        }
+		    }
 
-  public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory)
-    throws Exception
-  {
-    //NativeWebReqeust 는 기본 Request를 오버라이딩함.
-    HttpServletRequest req = (HttpServletRequest)webRequest.getNativeRequest();
-    String contentType = StringUtils.defaultString(req.getContentType());
+		}
 
-    Map<String, String[]> paramMap = webRequest.getParameterMap();
+		return ParamsFactory.convertParmas(commParams);
+	}
 
-    Iterator<String> it = paramMap.keySet().iterator();
-    Object key = null;
-    String[] value = null;
-    Params commParams = new CommParams();
-    boolean isMultipart = ServletFileUpload.isMultipartContent(req);//파일전송시 POST방식인지 체크
-
-    HttpSession session = req.getSession(); //세션 정보
-    Enumeration<String> attrNames = session.getAttributeNames();
-    commParams.setParam("s_userId", session.getAttribute("s_userId")); //로그인아이디 Param에 저장
-    Set<String> addedParams = (Set)session.getAttribute("addedParams"); //필수값들 Param에 저장
-
-    //세션에 추가된 정보와 필수값 Param와 일치하면, 세션정보를 Param에 저장
-    if ((addedParams != null) && (addedParams.size() > 0)) {
-      while (attrNames.hasMoreElements()) {
-        String attrName = (String)attrNames.nextElement();
-        if (addedParams.contains(attrName)) {
-          commParams.setParam(attrName, session.getAttribute(attrName));
-        }
-      }
-    }
-
-    //request의 parameter 정보를 Param에 저장
-    while (it.hasNext())
-    {
-      key = it.next();
-      value = (String[])paramMap.get(key);
-      commParams.setParam(key.toString(), value[0]);
-    }
-
-    if (contentType.contains("application/json")) {
-          webRequest.setAttribute("contentType", "application/json", 0);
-          StringBuilder jsonText = new StringBuilder();
-          String line = null;
-          ObjectMapper mapper = new ObjectMapper();
-          try {
-                BufferedReader reader = req.getReader();
-                while ((line = reader.readLine()) != null) {
-                  jsonText.append(line);
-                }
-
-                String jsonTxt = jsonText.toString();
-                if ("".equals(jsonTxt)) {
-                }else {
-                    Map<String, Object> jsonMap = (Map<String, Object>)mapper.readValue(jsonTxt, new TypeReference<Map<String, Object>>() {});
-                    for (Iterator<Map.Entry<String, Object>> i = jsonMap.entrySet().iterator(); i.hasNext();) {
-                      Map.Entry<String, Object> e = (Map.Entry)i.next();
-                      String jsonKey = (String)e.getKey();
-                      Object jsonValue = e.getValue();
-
-
-                      //Request 중 dt_로 시작하는 데이터가 있으면 datatable로 받음
-                      if (jsonKey.startsWith("dt_")) {
-                          LOG.debug("dataTable make : " + jsonKey);
-
-                          List<Map<String, Object>> list = (List)jsonValue;
-                          DataTable dt = new CommDataTable();
-                          if ((addedParams != null) && (addedParams.size() > 0)) {
-                            LOG.debug("Add Session default Paramaters Size: " + addedParams.size());
-                            for (String addParamskey : addedParams) {
-                              if (addedParams.contains(addParamskey)) {
-                                dt.setParam(addParamskey, commParams.getParam(addParamskey));
-                              }
-                            }
-                          }
-                          dt.setDataTable(list, addedParams);
-                          commParams.setDataTable(jsonKey, dt);
-                        } else {
-                          commParams.setParam(jsonKey, jsonValue);
-                        }
-                    }
-                }
-
-          }
-          catch (Exception e)
-          {
-            e.printStackTrace();
-          }
-    } else if (isMultipart) {
-      MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)req;
-      Iterator<String> iterator = multipartHttpServletRequest.getFileNames();
-
-      commParams.setFileable(true);
-      while (iterator.hasNext()) {
-        String fileKey = (String)iterator.next();
-        List<MultipartFile> listM = multipartHttpServletRequest.getFiles(fileKey);
-        if (!listM.isEmpty()) {
-          commParams.setParam(fileKey, listM);
-        }
-      }
-    }
-
-    return ParamsFactory.convertParmas(commParams);
-  }
 }

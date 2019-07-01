@@ -5,7 +5,7 @@
 	
 	<entry key="driver">org.mariadb.jdbc.Driver</entry>
   	<entry key="url">jdbc:mariadb://61.252.235.153:18081/seonhoblog?useUnicode=true&amp;characterEncoding=utf8</entry>
-	<entry key="id">root</entry>
-	<entry key="pw">1234</entry>
+	<entry key="id">sleepygloa</entry>
+	<entry key="pw">gkstna88</entry>
 	  
 </properties> 
