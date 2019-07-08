@@ -4,16 +4,90 @@
 
 <jsp:include page="header.jsp" flush="false" />
 
+<head>
+
+	<style>
+	
+		@font-face{
+			font-family:SDSwagger;
+			src: url(font/SDSwaggerTTF.ttf);
+		}
+	
+		body{
+			font-family : SDSwagger;
+		}
+		
+	
+		.header, .nav, .section, .aside, .footer {
+			display:block;
+			width:100%;
+			position:relative;
+		}
+		
+		.header{
+			height:50px;
+			background:yellow;
+		}
+		
+		.header .header-container{
+			text-align : center;
+		}
+		.header .header-container .header-contentBox-left{}
+		.header .header-container .header-contentBox-middle{
+		
+		}
+		.header .header-container .header-contentBox-right{}
+		
+		.nav{
+			background:blue;
+		}
+			
+		.section{
+		background:black;
+		}
+		
+		.article{
+		background:red;
+		}
+		
+		.aside{
+			background:purple;
+		}
+		
+		.footer{
+			background:green;
+		}
+		
+		
+		
+		@media ( max-width : 1024px) {
+			.nav{
+				display:none;
+				width:20%;
+				height:80%;
+			}
+		
+		}
+		
+		
+	</style>
+</head>
 
 <body>
 
-	<header>헤더입니다</header>
-	<nav>메뉴입니다</nav>
-	<section>
-		<article>본문입니다</article>
+	<header class="header">
+		<div class="header-container">
+			<div class="header-container-left"></div>
+			<div class="header-container-middle">NAMBI'S VLOG</div>
+			<div class="header-container-right"></div>
+		</div>
+	</header>
+	<nav class="nav">메뉴입니다</nav>
+	<section class="section">
+		<article class="article">본문입니다</article>
 	</section>
-	<aside>광고입니다</aside>
-	<footer></footer>
+	<aside class="aside">광고입니다</aside>
+	<footer class="footer">푸터입니다</footer>
 
   <script src="/resources/plugins/jquery/dist/jquery.min.js"></script>
 <!--   <script src="/resources/plugins/popper.js/dist/umd/popper.min.js"></script>
