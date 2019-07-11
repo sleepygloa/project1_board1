@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:annotation-config />
+
+    <!-- <context:component-scan base-package="com, vertexid"> -->
+    <context:component-scan base-package="com">
+    	<context:include-filter type="annotation" expression="com.core.web.observer.ConfigCheck"/>
+	</context:component-scan>
+
+
+	<bean class="com.core.web.servlet.mvc.ParagonRequestMappingHandlerAdapter">
+		<property name="paramsArgumentResolver" ref="paramsArgumentResolver" ></property>
+		<property name="paramsReturnValueHandler" ref="paramsReturnValueHandler" ></property>
+		<property name="order" value="0" />
+	</bean>
+
+	<bean id="paramsArgumentResolver" class="com.core.conversion.ParamsArgumentResolver" />
+	<bean id="paramsReturnValueHandler" class="com.core.conversion.ParamsReturnValueHandler" />
+
+<!-- 스케줄러 객체 -->
+ 	<bean id="MessageUtil" class="com.core.utility.common.MessageLoadUtil" />
+
+	<!-- 스케줄러 객체 -->
+	<bean id="JobScheduler" class="com.core.utility.scheduler.JobScheduler"/>
+	<!-- 권한체크 객체 -->
+	<!-- <bean id="authorityRule" class="vertexid.com.comm.util.AuthorityRuleUtil" /> -->
+
+    <!-- MultipartResolver 설정 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="100000000" />
+        <property name="maxInMemorySize" value="100000000" />
+    </bean>
+
+</beans>

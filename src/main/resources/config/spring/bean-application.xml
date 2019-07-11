@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:util="http://www.springframework.org/schema/util"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+   <util:properties id="db_info" location="classpath:config/app/db_info.xml"/>
+
+
+   <!-- Oracle Datasource -->
+   <bean id="comDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+      <property name="driverClassName" value="#{db_info.driver}"/>
+      <property name="url"          value="#{db_info.url}"/>
+      <property name="username"       value="#{db_info.id}"/>
+      <property name="password" value="#{db_info.pw}" />
+   </bean>
+
+   <!-- TransactionManager -->
+   <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="comDataSource" />
+   </bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	  <constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+   <!-- SqlManager -->
+   <bean id="comSqlManager" class="com.core.mvc.SqlManager">
+      <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+   </bean>
+
+
+   <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+      <property name="defaultEncoding" value="UTF-8"></property>
+      <property name="maxUploadSize" value="20000000"></property>
+   </bean>
+
+   <!-- SqlSession Factory myBatis-->
+   <bean id="sqlSessionFactory" class="com.core.mybatis.ReloadableSqlSessionFactoryBean">
+      <!-- <property name="interval" value="10000" /> -->
+       <property name="dataSource" ref="comDataSource" />
+       <property name="configLocation" value="classpath:config/mybatis/mybatis-context.xml" />
+       <property name="mapperLocations">
+          <list>
+            <value>classpath:/com/**/**/*.xml</value>
+         </list>
+       </property>
+   </bean>
+
+</beans>

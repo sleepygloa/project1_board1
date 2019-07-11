@@ -1,18 +1,6 @@
 package com.settings.svce;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
-
-import com.core.parameters.CommParams;
-import com.core.parameters.LinkedParams;
-import com.core.parameters.Params;
-import com.core.parameters.ParamsFactory;
-import com.core.parameters.datatable.DataTable;
-import com.core.parameters.datatable.datarow.DataRow;
-import com.core.utility.variable.CommUtil;
 
 @Service
 public class AuthService {

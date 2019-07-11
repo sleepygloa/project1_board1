@@ -1,8 +1,6 @@
 package com.main.ctrl;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -46,35 +42,13 @@ public class MainController {
 	//관리자 메인화면
 	@RequestMapping("")
 	public String home(HttpSession session, HttpServletRequest request) throws Exception {
-		LOG.debug("MainController home() ... ");
-		LOG.debug("MAIN CHECK::"+Config.getString("session.timeoutSec"));
 
-//		if(!authRule.isLogin(request)){
+		//접속자 IP
+		session.setAttribute("s_ip", (String)request.getAttribute(ParagonConstants.CLIENT_IP));
+		
+		//필수 테이블과 데이터 확인
 
-			session.setAttribute("s_ip", (String)request.getAttribute(ParagonConstants.CLIENT_IP));
-			session.setAttribute("s_logined", false);
-//			session.setAttribute("s_language", LocaleUtil.getUserLocale(session).getLanguage());
-//			String sCountry = LocaleUtil.getUserLocale(session).getCountry();
-//			if(sCountry ==""){
-//				sCountry = Config.getString("locale.defaultCountry");
-//			}
-//			session.setAttribute("s_country", sCountry);
-//			session.setAttribute("s_language_nm", LocaleUtil.getUserLocale(session).getDisplayLanguage());
-			session.setAttribute("s_jSessionId", request.getRequestedSessionId());
-			session.setAttribute("s_multiLogin", false);
-
-			if(LOG.isDebugEnabled()){
-				Enumeration<String> se = session.getAttributeNames();
-				while(se.hasMoreElements()){
-					String getse = se.nextElement()+"";
-					LOG.debug("session Default Attribute : "+getse+" : "+session.getAttribute(getse));
-				}
-			}
-
-			return "main/main";
-//		}else{
-//			return "main/main";
-//		}
+		return "main/main";
 	}
 
 	@RequestMapping("/main/toProgram")

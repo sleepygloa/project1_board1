@@ -22,9 +22,9 @@
 
 
 	<plugins>
-		<plugin interceptor="paragon.core.interceptor.PrepareStatementInterceptor" />
-		<plugin interceptor="paragon.core.interceptor.StatementInterceptor" />
-		<plugin interceptor="paragon.core.interceptor.ResultSetMetaDataInterceptor" />
+		<plugin interceptor="com.core.interceptor.PrepareStatementInterceptor" />
+		<plugin interceptor="com.core.interceptor.StatementInterceptor" />
+		<plugin interceptor="com.core.interceptor.ResultSetMetaDataInterceptor" />
 	</plugins>
 
 </configuration>

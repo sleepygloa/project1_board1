@@ -150,15 +150,6 @@ var coreJs = function(){
 			}
 		});
 	}
-//
-//	function getAuth(){
-//		$.ajax({
-//			url		: "",
-//			success : function(data){
-//
-//			}
-//		});
-//	}
 
 
 }();

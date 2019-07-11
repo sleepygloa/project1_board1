@@ -32,9 +32,6 @@ public class ParagonException extends RuntimeException {
 			lang = "en";
 		}
 
-//      WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-//      MessageLoadUtil mlu = (MessageLoadUtil)context.getBean("MessageUtil");
-
       DataTable dt = MessageLoadUtil.getMessageLoadUtil();
       DataRow dr = new CommDataRow();
       for(int i = 0; i < dt.size(); i++){
@@ -53,9 +50,6 @@ public class ParagonException extends RuntimeException {
 		super(errCd);
 		this.errCd = errCd;
 
-//        WebApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-//        MessageLoadUtil mlu = (MessageLoadUtil)context.getBean("MessageUtil");
-
         DataTable dt = MessageLoadUtil.getMessageLoadUtil();
         DataRow dr = new CommDataRow();
         for(int i = 0; i < dt.size(); i++){
@@ -69,32 +63,6 @@ public class ParagonException extends RuntimeException {
 		this.errMsg = dr.getString(lang.toUpperCase());
 	}
 
-
-	public ParagonException(String errCd, Object userData) {
-		super(errCd);
-		this.errCd = errCd;
-		this.userData = userData;
-	}
-
-	public ParagonException(String errCd, Object userData, Throwable throwable) {
-		super(errCd, throwable);
-		this.userData = userData;
-		this.errCd = errCd;
-		this.errMsg = NoticeMessageUtil.getMessage(errCd);
-	}
-
-	public ParagonException(String errCd, Throwable throwable) {
-		super(errCd, throwable);
-		this.errCd = errCd;
-		this.errMsg = NoticeMessageUtil.getMessage(errCd);
-	}
-
-	public ParagonException(String errCd, Object[] args) {
-		super(errCd);
-		this.errCd = errCd;
-		this.errMsg = NoticeMessageUtil.getMessage(errCd, args);
-		this.args = args;
-	}
 
 	public ParagonException(String lang, String errCd, String[] args) {
 		super(errCd);
@@ -130,77 +98,4 @@ public class ParagonException extends RuntimeException {
 		this.args = args;
 	}
 
-	public ParagonException(String errCd, Object[] args, Throwable throwable) {
-		super(errCd, throwable);
-		this.errCd = errCd;
-		this.errMsg = NoticeMessageUtil.getMessage(errCd, args);
-		this.args = args;
-	}
-
-	public void setDisplayMsg(String displayCode, Object[] displayArgs) {
-		this.displayCd = displayCode;
-		this.displayMsg = NoticeMessageUtil.getMessage(displayCode, displayArgs);
-		this.displayArgs = displayArgs;
-	}
-
-	public String getErrCd() { 
-		return this.errCd;
-	}
-
-	public void setErrCd(String errCd) { 
-		this.errCd = errCd;
-	}
-
-	public String getDisplayCd() { 
-		return this.displayCd;
-	}
-
-	public void setDisplayCd(String displayCode) {
-		this.displayCd = displayCode;
-		this.displayMsg = NoticeMessageUtil.getMessage(displayCode);
-	}
-
-	public String getErrMsg() {
-		return this.errMsg;
-	}
-
-	public String getErrMsg(Locale locale) { 
-		return NoticeMessageUtil.getMessage(this.errCd, this.args, locale);
-	}
-
-	public void setErrorMessage(String errMsg) {
-		this.errMsg = errMsg;
-	}
-
-	public String getDisplayMessage() {
-		return this.displayMsg;
-	}
-
-	public String getDisplayMsg(Locale locale) {
-		return NoticeMessageUtil.getMessage(this.displayCd, this.displayArgs, locale);
-	}
-
-	public Object[] getArgs() {
-		return this.args;
-	}
-
-	public Object[] getDisplayArgs() {
-		return this.displayArgs;
-	}
-
-	public void setArgs(Object[] args) {
-		this.args = args;
-	}
-
-	public void setDisplayArgs(Object[] displayArgs) {
-		this.displayArgs = displayArgs;
-	}
-
-	public Object getUserData() {
-		return this.userData;
-	}
-
-	public void setUserData(Object userData) {
-		this.userData = userData;
-	}
 }

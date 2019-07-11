@@ -61,16 +61,16 @@ public class ParamsReturnValueHandler  implements HandlerMethodReturnValueHandle
 			Params params = (Params) returnValue;
 			mavContainer.setRequestHandled(true);
 			
-			if (params.containsKey(ParagonConstants.STS_CD)) {
-				webRequest.setAttribute(ParagonConstants.STS_CD,params.getStsCd(), 0);
+			if (params.containsKey("stsCd")) {
+				webRequest.setAttribute("stsCd",params.getStsCd(), 0);
 			}
 
-			if (params.containsKey(ParagonConstants.MSG_CD)) {
-				webRequest.setAttribute(ParagonConstants.MSG_CD,params.getMsgCd(), 0);
-				webRequest.setAttribute(ParagonConstants.MSG_CD,params.getMsgTxt(), 0);
+			if (params.containsKey("msgCd")) {
+				webRequest.setAttribute("msgCd",params.getMsgCd(), 0);
+				webRequest.setAttribute("msgTxt",params.getMsgTxt(), 0);
 			}
-			if (params.containsKey(ParagonConstants.RTN_URI)) {
-				webRequest.setAttribute(ParagonConstants.RTN_URI,params.getRtnUri(), 0);
+			if (params.containsKey("rtnUri")) {
+				webRequest.setAttribute("rtnUri",params.getRtnUri(), 0);
 			}
 
 		}
