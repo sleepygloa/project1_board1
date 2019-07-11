@@ -1,20 +1,55 @@
 var s_userId = '';
-var coreJs = function(){
+
+
+////json Parameter 사용
+//(function defaultAjaxSetting() {
+//	$.ajaxSetup({
+////		global: false,
+//		timeout: 6000000,
+//		type : "POST",
+//		dataType : "json",
+////		contentType: 'application/json; charset=utf-8',
+//		cache: false,
+//		beforeSend : function(xhr){
+//    	},error : function(jqXHR, textStatus, errorThrown) {
+//    		console.log(jqXHR);
+//    		if(jqXHR.status != ""){
+//    			if(jqXHR.status === 404 ) {
+//    				alert("일시적이 오류가 발생했습니다.\n담장자에게 문의하세요.");
+//    			}else if(jqXHR.status === 999 ) {
+//    				alert(jqXHR.responseText);
+//    				//TODO 로그인 POPUP창 개발후 출력
+//    			}else if(jqXHR.status === 997 ) {
+//    				var jsonData = $.parseJSON(jqXHR.responseText);
+//    				alert(jsonData.errMsg);
+//    			}else if(jqXHR.status === 1000 ) {
+//    				alert(jqXHR.responseText);
+//    			}
+//    		}
+//        }, complete : function(){
+//        }, success : function(){
+//        }
+//	});
+//})();
+
+var MainJs = function(){
 	"use strict";
 
-	var deviceHeight = $(window).height();
-	var deviceWidth = $(window).width();
-	$('.content-wrapper').css('height', deviceHeight - 52);
-	$('.content-wrapper').css('width', deviceWidth);
+//	var deviceHeight = $(window).height();
+//	var deviceWidth = $(window).width();
+//	$('.content-wrapper').css('height', deviceHeight - 52);
+//	$('.content-wrapper').css('width', deviceWidth);
 	
 	return {
 		init : function(){
 
-			getSession();
+			
+			
+//			getSession();
 			
 			getMenu();
 
-			getEvents();
+//			getEvents();
 
 		}
 	}
@@ -94,10 +129,11 @@ var coreJs = function(){
 	
 	function getMenu(){
 		$.ajax({
-			url		 : "/ctrl/set/menu/getMenu",			
+			url		 : "/ctrl/settings/menu/getMenu",			
 			type	 : "POST",
 			dataType : "json",
 			success : function(data){
+				console.log('1111');
 //				$('#sidebarMenu').empty();
 				//session
 				
@@ -155,6 +191,6 @@ var coreJs = function(){
 }();
 
 $(document).ready(function(){
-	coreJs.init();
+	MainJs.init();
 });
 

@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>seonho page</title>
 	
-	<link rel="stylesheet" href="/resources/plugins/font-awesome/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="/resources/css/custom.css" />
+	<link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="/css/custom.css" />
 	<link rel="shortcut icon" href="/resources/images/favicon.png" />
 </head>

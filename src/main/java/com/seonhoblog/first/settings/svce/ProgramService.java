@@ -12,7 +12,7 @@
  * ------------------   --------------    ------------------
  * VertexID         	2016. 12. 20. 		First Draft.
  */
-package com.settings.svce;
+package com.seonhoblog.first.settings.svce;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -1,17 +1,15 @@
-package com.settings.ctrl;
+package com.seonhoblog.first.settings.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.core.parameters.Params;
-import com.settings.svce.MenuService;
+import com.seonhoblog.first.settings.svce.MenuService;
 
 @Controller
-@ResponseBody
-@RequestMapping("/ctrl/set/menu")
+@RequestMapping("/ctrl/settings/menu")
 public class MenuController {
 	
 	@Autowired
@@ -19,11 +17,16 @@ public class MenuController {
 
 	
 	//사이드바 메뉴불러오기
+//	@RequestMapping("/getMenu")
+//	public ModelAndView getSidebarMenu() throws Exception {
+//		ModelAndView mv = new ModelAndView("jsonView");
+//		mv.addObject("list", menuService.getSidebarMenu());
+//		return mv;
+//	}
+	
 	@RequestMapping("/getMenu")
-	public ModelAndView getSidebarMenu() throws Exception {
-		ModelAndView mv = new ModelAndView("jsonView");
-		mv.addObject("list", menuService.getSidebarMenu());
-		return mv;
+	public Params getSidebarMenu(Params inParams) throws Exception {
+		return inParams;
 	}
 	
 	//사이드바 메뉴불러오기

@@ -17,17 +17,16 @@
    <context:component-scan base-package="com">
       <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
       <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-      <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+      <!-- <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/> -->
    </context:component-scan>
 
+   <resources location="/resources/plugins/" mapping="/plugins/**" cache-period="0"/>
    <resources location="/resources/js/" mapping="/js/**" cache-period="0"/>
    <resources location="/resources/css/" mapping="/css/**" cache-period="0"/>
    <resources location="/resources/img/" mapping="/img/**" cache-period="0"/>
    <resources location="/resources/fonts/" mapping="/fonts/**" cache-period="0"/>
-   <resources location="/resources/report/" mapping="/resources/report/**" cache-period="0"/>
-<!--    <resources location="/resources/" mapping="/**" /> -->
-   <resources location="/upload/"  mapping="/upload/**"/>
-<!--    <resources location="/WEB-INF/routine/ " mapping="/routine/" /> -->
+   <resources location="/resources/report/" mapping="/report/**" cache-period="0"/>
+   <resources location="/resources/upload/"  mapping="/upload/**"/>
 
    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <beans:property name="prefix" value="/WEB-INF/views/" />

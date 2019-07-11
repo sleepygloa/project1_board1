@@ -1,6 +1,5 @@
 package com.main.ctrl;
 
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.core.common.ParagonConstants;
 import com.core.parameters.Params;
-import com.core.utility.config.Config;
 import com.main.svce.MainService;
 
 
@@ -32,12 +30,6 @@ public class MainController {
 
 	@Autowired
 	private MainService mainService;
-
-//	@Autowired(required = true)
-//	private AuthorityRule authRule;
-
-	private static final Log LOG = LogFactory.getLog(MainController.class);
-
 
 	//관리자 메인화면
 	@RequestMapping("")

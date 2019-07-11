@@ -1,4 +1,4 @@
-package com.settings.svce;
+package com.seonhoblog.first.settings.svce;
 
 import java.util.List;
 import java.util.Map;

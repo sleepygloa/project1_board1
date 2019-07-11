@@ -1,4 +1,4 @@
-package com.settings.ctrl;
+package com.seonhoblog.first.settings.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.core.parameters.Params;
-import com.settings.svce.ProgramService;
+import com.seonhoblog.first.settings.svce.ProgramService;
 
 @Controller
 @ResponseBody
