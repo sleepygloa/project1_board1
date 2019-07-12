@@ -1,12 +1,11 @@
-package com.seonhoblog.first.settings.ctrl;
+package com.seonhoblog.settings.ctrl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.core.parameters.Params;
-import com.seonhoblog.first.settings.svce.MenuService;
+import com.seonhoblog.settings.svce.MenuService;
 
 @Controller
 @RequestMapping("/ctrl/settings/menu")
@@ -26,22 +25,20 @@ public class MenuController {
 	
 	@RequestMapping("/getMenu")
 	public Params getSidebarMenu(Params inParams) throws Exception {
-		return inParams;
+		return menuService.getSidebarMenu(inParams);
 	}
 	
 	//사이드바 메뉴불러오기
-	@RequestMapping("/getIcon")
-	public ModelAndView getIcon() throws Exception {
-		ModelAndView mv = new ModelAndView("pages/icons/index");
-			return mv;
-	}
+//	@RequestMapping("/getIcon")
+//	public ModelAndView getIcon() throws Exception {
+//		ModelAndView mv = new ModelAndView("pages/icons/index");
+//			return mv;
+//	}
 
 	//추가, 수정, 삭제
 	@RequestMapping("/updateMenu")
-	public ModelAndView updateMenu(Params inParams) throws Exception{
-		ModelAndView mv = new ModelAndView("jsonView");
-		menuService.updateMenu(inParams);
-		return mv;
+	public Params updateMenu(Params inParams) throws Exception{
+		return menuService.updateMenu(inParams);
 	}
 	
 }

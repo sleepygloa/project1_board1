@@ -48,7 +48,7 @@
   </filter-mapping> -->
   <context-param>
     <param-name>contextLoaderAdapter</param-name>
-    <param-value>com.core.web.listener.adapter.comContextLoaderAdapter</param-value>
+    <param-value>com.core.web.listener.adapter.ParagonContextLoaderAdapter</param-value>
   </context-param>
   <context-param>
     <param-name>systemConfigLocation</param-name>
@@ -63,7 +63,7 @@
 			classpath:config/spring/servlet-context.xml
 		</param-value>
     </init-param>
-    <load-on-startup>0</load-on-startup>
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
     <servlet-name>appServlet</servlet-name>

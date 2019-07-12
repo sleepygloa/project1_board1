@@ -1,15 +1,18 @@
 package com.main.svce;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+import org.springframework.stereotype.Service;
 
 import com.core.parameters.Params;
 
-public interface MainService{
+@Service
+public class MainService {
 
-	//필수테이블과 데이터 확인
-//	List<Map<String, Object>> getEssentialTable() throws Exception;
-	
-	List<Map<String, Object>> getProgramPath(Params inParams) throws Exception;
+	public List getProgramPath(Params inParams) {
+		List list = new ArrayList();
+		return list;
+	}
 	
 }

@@ -1,22 +1,17 @@
 package com.main.ctrl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
-import com.common.common.CommandMap;
 import com.core.parameters.Params;
-import com.main.svce.LoginService;
 
 
 @Controller
@@ -25,8 +20,8 @@ public class LoginController {
 	
 	Logger log = Logger.getLogger(LoginController.class);
 	
-	@Autowired(required = true)
-	private LoginService loginService;
+//	@Autowired(required = true)
+//	private LoginService loginService;
 	
 	//로그인페이지 이동
 	@RequestMapping("/getSession")
@@ -51,7 +46,7 @@ public class LoginController {
 		
 		//아이디확인
 		try {
-			list = loginService.loginInfoCheck(inParams);	
+//			list = loginService.loginInfoCheck(inParams);	
 		}catch(Exception e) {
 			log.debug("loginInfoCheck ERROR "+e);
 		}
@@ -102,7 +97,7 @@ public class LoginController {
 		ModelAndView mv = new ModelAndView("jsonView");
 		
 		try {
-			loginService.loginInsert(inParams);
+//			loginService.loginInsert(inParams);
 		}catch(Exception e) {
 			log.debug("loginInsert ERROR" + e);
 			mv.addObject("YN", "FAIL");

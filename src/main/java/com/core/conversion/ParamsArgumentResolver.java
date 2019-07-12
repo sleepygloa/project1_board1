@@ -60,10 +60,7 @@ public class ParamsArgumentResolver implements HandlerMethodArgumentResolver {
 		boolean isMultipart = ServletFileUpload.isMultipartContent(req);
 
 		HttpSession session = req.getSession();
-		Locale userLocale = LocaleManager.getUserLocale(session);
 		String s_proCd = StringUtils.defaultString(req.getHeader("proCd")).trim();
-		commParams.setLocale(LocaleManager.getUserLocale(session));
-		commParams.setParam("s_language",userLocale.getLanguage());
 		commParams.setParam("s_proCd",s_proCd);
 		Enumeration<String> attrNames = session.getAttributeNames();
 		@SuppressWarnings("unchecked")
@@ -78,13 +75,6 @@ public class ParamsArgumentResolver implements HandlerMethodArgumentResolver {
 				}
 			}
 		}
-
-		LOG.debug("===================================================");
-		LOG.debug("====== NO TOUCH. OUT OF SESSION ERROR. TEST========");
-		LOG.debug("====== "+session);
-		LOG.debug("====== "+session.getAttributeNames());
-		LOG.debug("====== "+session.getId());
-		LOG.debug("===================================================");
 
 		while (it.hasNext()) {
 

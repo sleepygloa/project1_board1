@@ -30,7 +30,7 @@ public class ParagonContextLoaderAdapter extends DefaultParagonContextLoaderAdap
 //			}
 //
 //		}
-		JobScheduler.loadScheduler();
+//		JobScheduler.loadScheduler();
 //		VersionUtil.loadVersion();
 //		AllowedURIUtil.loadAllowedURIList();
 //		DomainUtil.loadDomainList();

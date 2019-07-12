@@ -128,14 +128,20 @@ var MainJs = function(){
 	}
 	
 	function getMenu(){
-		$.ajax({
-			url		 : "/ctrl/settings/menu/getMenu",			
-			type	 : "POST",
-			dataType : "json",
-			success : function(data){
+		
+		
+		
+        $.ajax({
+            url      : "/ctrl/settings/menu/getMenu",	
+//            data     : jsonData,
+            dataType : 'json',
+            type     : 'POST',
+            contentType : 'application/json; charset=utf-8',
+            success  : function(data) {
 				console.log('1111');
 //				$('#sidebarMenu').empty();
 				//session
+				console.log(data);
 				
 				
 				//leftMenu

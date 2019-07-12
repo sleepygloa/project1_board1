@@ -12,15 +12,12 @@
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-   <util:properties id="db_info" location="classpath:config/app/db_info.xml"/>
-
-
    <!-- Oracle Datasource -->
    <bean id="comDataSource" class="org.apache.commons.dbcp.BasicDataSource">
-      <property name="driverClassName" value="#{db_info.driver}"/>
-      <property name="url"          value="#{db_info.url}"/>
-      <property name="username"       value="#{db_info.id}"/>
-      <property name="password" value="#{db_info.pw}" />
+      <property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+      <property name="url"          value="jdbc:mariadb://61.252.235.153:18081/seonhoblog?useUnicode=true&amp;characterEncoding=utf8"/>
+      <property name="username"       value="sleepygloa"/>
+      <property name="password" value="gkstna88" />
    </bean>
 
    <!-- TransactionManager -->
@@ -28,9 +25,9 @@
       <property name="dataSource" ref="comDataSource" />
    </bean>
 
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+<!-- 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 	  <constructor-arg index="0" ref="sqlSessionFactory" />
-	</bean>
+	</bean> -->
 
    <!-- SqlManager -->
    <bean id="comSqlManager" class="com.core.mvc.SqlManager">
@@ -48,11 +45,7 @@
       <!-- <property name="interval" value="10000" /> -->
        <property name="dataSource" ref="comDataSource" />
        <property name="configLocation" value="classpath:config/mybatis/mybatis-context.xml" />
-       <property name="mapperLocations">
-          <list>
-            <value>classpath:/com/**/**/*.xml</value>
-         </list>
-       </property>
+       <property name="mapperLocations" value="classpath:com/seonhoblog/**/sql/*.xml" />
    </bean>
-
+<aop:aspectj-autoproxy proxy-target-class="true" />
 </beans>

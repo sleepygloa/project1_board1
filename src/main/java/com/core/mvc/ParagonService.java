@@ -7,6 +7,6 @@ public class ParagonService {
 	}
 
 	public SqlManager getSqlManager() {
-		return SqlManagerFactory.getSqlManager("paragonSqlManager");
+		return SqlManagerFactory.getSqlManager("comSqlManager");
 	}
 }

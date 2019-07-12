@@ -3,7 +3,7 @@
 
 <mapper namespace="MenuService">
 
-	<select id="getSidebarMenu" resultType="hashmap">
+	<select id="getSidebarMenu" resultType="HMap">
 		SELECT 
 				MENU.MENU_SEQ
 			,	MENU.MENU_PARENT_SEQ

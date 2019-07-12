@@ -6,13 +6,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.core.common.ParagonConstants;
 import com.core.parameters.Params;
@@ -24,7 +21,6 @@ import com.main.svce.MainService;
  *
  */
 @Controller
-@EnableWebMvc
 @RequestMapping("/")
 public class MainController {
 

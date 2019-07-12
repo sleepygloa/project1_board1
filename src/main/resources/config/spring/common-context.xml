@@ -35,7 +35,7 @@
  	<bean id="MessageUtil" class="com.core.utility.common.MessageLoadUtil" />
 
 	<!-- 스케줄러 객체 -->
-	<bean id="JobScheduler" class="com.core.utility.scheduler.JobScheduler"/>
+	<!-- <bean id="JobScheduler" class="com.core.utility.scheduler.JobScheduler"/> -->
 	<!-- 권한체크 객체 -->
 	<!-- <bean id="authorityRule" class="vertexid.com.comm.util.AuthorityRuleUtil" /> -->
 
