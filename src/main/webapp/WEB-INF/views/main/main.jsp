@@ -93,13 +93,13 @@
 	<header class="header">
 		<div class="header-container">
 			<div class="header-container-left"></div>
-			<div class="header-container-middle">NAMBI'S VLOG</div>
+			<div class="header-container-middle" style="font-size:2.5em;">NAMBI'S VLOG</div>
 			<div class="header-container-right"></div>
 		</div>
 	</header>
-	<nav class="nav">메뉴입니다</nav>
+	<nav id="nav" class="nav"></nav>
 	<section class="section">
-		<article class="article">본문입니다</article>
+		<article id="mainArticle" class="article">본문입니다</article>
 	</section>
 	<aside class="aside">광고입니다</aside>
 	<footer class="footer">푸터입니다</footer>

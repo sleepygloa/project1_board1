@@ -14,15 +14,9 @@ public class MenuService extends ParagonService {
 	
 	private static final Log LOG = LogFactory.getLog(MenuService.class);
 
-	public Params getSidebarMenu(Params inParams) {
-		LOG.debug("getSidebarMenu");
-		System.out.println("ddddd");
-		
-		Params outParams = getSqlManager().selectGridParams("MenuService.getSidebarMenu", inParams);
-//		List<Map<String, Object>> list = ("MenuService.getSidebarMenu");
-//		DataTable dt = new CommDataTable(list);
-		
-		return outParams;
+	public Params listMainSideMenu(Params inParams) {
+		LOG.debug("listMainSideMenu");
+		return getSqlManager().selectGridParams("MenuService.listMainSideMenu", inParams);
 	}
 	
 	public Params updateMenu(Params inParams) {

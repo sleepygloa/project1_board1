@@ -66,14 +66,14 @@ var focusIdx = -1;
     	var editableFlag = false;
 
     	$.ajax({
-    		url : data.url + "get" + uProgramId,
+    		url : data.url + "list" + uProgramId,
     		async : false,
     		success : function(result){
 
     			/**
     			 * 키를 가져와 컬럼 이름을 구성
     			 * */
-    			var colList = result.list[0];
+    			var colList = result.dt_grid[0];
     			var k = Object.keys(colList);
     			if(k.length > 0){
     				var tColName = [];

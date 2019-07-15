@@ -3,7 +3,7 @@
 
 <mapper namespace="MenuService">
 
-	<select id="getSidebarMenu" resultType="HMap">
+	<select id="listMainSideMenu" resultType="HMap">
 		SELECT 
 				MENU.MENU_SEQ
 			,	MENU.MENU_PARENT_SEQ
@@ -11,6 +11,8 @@
 			,	MENU.MENU_NM
 			,	MENU.MENU_ICO
 			,	MENU.MENU_ORDER
+			,   MENU.MENU_GROUP_YN
+			,   MENU.MENU_URL
 			,	MENU.USE_YN
 			,	(SELECT COUNT(MENU_PARENT_SEQ) FROM TB_NAMBI_MENU CNT
 				WHERE MENU.MENU_PARENT_SEQ = CNT.MENU_PARENT_SEQ ) COUNT

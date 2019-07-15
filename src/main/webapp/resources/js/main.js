@@ -47,7 +47,7 @@ var MainJs = function(){
 			
 //			getSession();
 			
-			getMenu();
+			fnSideMenu();
 
 //			getEvents();
 
@@ -74,32 +74,25 @@ var MainJs = function(){
 		});
 	};
 	
-	function getEvents(){
-		
-		
-		
-		$(document).on('click', 'a.nav-link', function(){
-			
-			var length = $(this).children().length;
-			
-			if(length == 3){
-				var value = $(this).children('input').val();
-				
-				$('#sidebar').parent().removeClass('active');
-				$.ajax({
-					url  : "/main/toProgram",
-					data : {
-						proCd : value
-					},
-					type : "POST",
-					success : function(data){
-						$('#content_wrapper').empty();
-						$('#content_wrapper').html(data);
-					}
-				});
+	function fnPageMove(data){
+		$.ajax({
+			url			: data.MENU_URL,
+			type 		: "POST",
+			dataType	: "text",
+			success 	: function(data){
+				console.log('dd');
+				$('#mainArticle').empty();
+				$('#mainArticle').html(data);
+			},
+			error : function(data){
+				console.log(data);
+				console.log('ee');
 			}
-			
 		});
+	}
+	
+	
+	function getEvents(){
 
 		$('#headerLoginCircle').click(function(){
 			alert('login');
@@ -127,68 +120,117 @@ var MainJs = function(){
 		
 	}
 	
-	function getMenu(){
+	function fnSideMenu(){
 		
 		
 		
         $.ajax({
-            url      : "/ctrl/settings/menu/getMenu",	
+            url      : "/ctrl/settings/menu/listMainSideMenu",	
 //            data     : jsonData,
             dataType : 'json',
             type     : 'POST',
             contentType : 'application/json; charset=utf-8',
             success  : function(data) {
-				console.log('1111');
-//				$('#sidebarMenu').empty();
-				//session
-				console.log(data);
+            	var dt_grid = data.dt_grid;
+				console.log(data.dt_grid);
+
+				//리스트를 순서대로 내보냄
+				var sideMenuUi = $('<ul/>');
 				
-				
-				//leftMenu
-				var menuStr = '';
-				var pIdx = 0;
-				var pCnt = 0;
-				var menuDataList = data.list;
-				$.each(menuDataList, function(i, v){
-					var menuData = menuDataList[i];
-					if(pIdx != menuData.MENU_PARENT_SEQ){
-						
-						if(menuData.COUNT != 1){
-							pIdx = menuData.MENU_PARENT_SEQ;
-							menuStr += '<li class="nav-item">'
-								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'" style="padding:0px 0px 0px 13px;">'
-								+ '<img src="images/icons/9.png" alt="">'
-								+ '<span class="menu-title">'+menuData.MENU_NM+'<i class="fa fa-sort-down"></i></span>'
-								+ '</a>'
-								+ '<div class="collapse" id="'+menuData.PRO_CD+'">'
-								+ '<ul class="nav flex-column sub-menu" style="padding:0px 0px 0px 15px;">';
-							pCnt++;
-						}else{
-							menuStr += '<li class="nav-item">'
-								+ '<a class="nav-link" data-toggle="collapse" href="#'+menuData.PRO_CD+'" aria-expanded="false" aria-controls="'+menuData.PRO_CD+'">'
-								+ '<input type="hidden" value="'+menuData.PRO_CD+'" />'
-								+ '<img src="images/icons/1.png" alt="">'
-								+ '<span class="menu-title">'+menuData.MENU_NM+'</span>'
-								+ '</a></li>'
-						}
-					}else{
-						menuStr += '<li class="nav-item" style="margin:2.5px 0px;">'
-							+'<a class="nav-link" href="#" style="padding:0px 0px 0px 13px;">'
-							+'<input type="hidden" value="'+menuData.PRO_CD+'" />'
-							+'<img src="'+menuData.MENU_ICO+'" alt="">'
-							+'<span class="menu-title">'+menuData.MENU_NM+'</span>'
-							+'</a>'
-							+'</li>';
-						pCnt++;
-						if(pCnt == menuData.COUNT){
-							menuStr += '</ul></div></li>';
-							pCnt = 0;
-						}
-					}
+				//스타일
+				sideMenuUi.css({
+					'list-style' 	: 'none',
+					'padding'		: '0px'
 					
 				});
+				
+				var sideMenuLi = null;
+				
 
-				$('#sidebarMenu').append(menuStr);
+				var pIdx = -1; //부모의 시퀀스
+				var pCnt = -1; //부모의 자식 개수
+				var cnt = 0; //자식 순서
+				
+				//상위 관리 메뉴(그룹메뉴)이면
+				var sideMenuGroup = null;
+				
+				$.each(dt_grid, function(i, v){
+					
+					//부모의 시퀀스와 현재 작업중인 메뉴의 부모 시퀀스가 다를경우만 입력.
+					if(pIdx != v.MENU_PARENT_SEQ){
+						pIdx = v.MENU_PARENT_SEQ;
+						//루프 안에서
+						sideMenuLi = $('<li>');
+					}
+					
+
+					
+					
+					//이 메뉴가 상위 그룹메뉴인지, 하위 리스트 메뉴인지 확인
+					if(v.MENU_GROUP_YN == 'Y'){
+						
+						//상위 관리 메뉴 초기화
+						sideMenuGroup = null;
+						
+						//상위 관리 메뉴 초기화
+						sideMenuGroup = $('<ul/>');
+						
+						//메뉴의 실제 컨텐츠 Text
+						var sideMenuP = $('<p/>');
+						sideMenuGroup.append(v.MENU_NM);
+					}else{
+						//자식순번 증가
+						cnt++;
+						
+						//상위 관리 메뉴의 하위 메뉴이면
+						var sideMenuGroupLi = $('<li/>');
+						
+						//리스트 스타일
+						sideMenuGroupLi.css({
+							'margin-left' : '20px'
+						})
+						
+						//메뉴의 실제 컨텐츠 a
+						var sideMenuA = $('<a/>')
+						if(v.MENU_ICO != null){
+							//어느 아이콘인지 확인
+							//코드 생략
+							sideMenuA.addClass(v.MENU_ICO);
+						}
+						
+						//메뉴의 실제 컨텐츠 Text
+						var sideMenuP = $('<p/>');
+						sideMenuP.append(v.MENU_NM);
+						
+						//리스트 생성
+						sideMenuGroupLi.append(sideMenuA).append(sideMenuP);
+						sideMenuGroup.append(sideMenuGroupLi);
+						
+						//클릭 이벤트
+						if(v.MENU_URL != null){
+							sideMenuGroupLi.click(function(){
+								fnPageMove(v);
+							});
+						}
+						
+						//마지막 자식일 경우 상위 관리 메뉴를 최종 부모 메뉴에 추가함.
+						if(cnt == v.COUNT){
+							sideMenuLi.append(sideMenuGroup);
+
+						}
+					}
+					//마지막 자식일 경우 상위 관리 메뉴를 최종 부모 메뉴에 추가함.
+					if(v.MENU_GROUP_YN == 'N' && cnt == v.COUNT){
+						sideMenuUi.append(sideMenuLi);
+						
+						//자식순번 초기화
+						cnt = 0;
+					}			
+					
+				});
+				
+				$('#nav').append(sideMenuUi);
+				
 			}
 		});
 	}

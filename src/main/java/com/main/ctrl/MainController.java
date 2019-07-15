@@ -38,7 +38,8 @@ public class MainController {
 
 		return "main/main";
 	}
-
+	
+	//메뉴 선택시 페이지 이동
 	@RequestMapping("/main/toProgram")
 	public ModelAndView toProgram(Params inParams) throws Exception {
 		System.out.println("toProgram");

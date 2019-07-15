@@ -14,30 +14,26 @@ public class MenuController {
 	@Autowired
 	private MenuService menuService;
 
-	
-	//사이드바 메뉴불러오기
-//	@RequestMapping("/getMenu")
-//	public ModelAndView getSidebarMenu() throws Exception {
-//		ModelAndView mv = new ModelAndView("jsonView");
-//		mv.addObject("list", menuService.getSidebarMenu());
-//		return mv;
-//	}
-	
-	@RequestMapping("/getMenu")
-	public Params getSidebarMenu(Params inParams) throws Exception {
-		return menuService.getSidebarMenu(inParams);
+	//메뉴 선택시 페이지 이동
+	@RequestMapping("")
+	public String listToProgramPageMove(Params inParams)  {
+		return "settings/menu";
 	}
 	
-	//사이드바 메뉴불러오기
-//	@RequestMapping("/getIcon")
-//	public ModelAndView getIcon() throws Exception {
-//		ModelAndView mv = new ModelAndView("pages/icons/index");
-//			return mv;
-//	}
+	@RequestMapping("/listMainSideMenu")
+	public Params listMainSideMenu(Params inParams)  {
+		return menuService.listMainSideMenu(inParams);
+	}
+
+	@RequestMapping("/listMenu")
+	public Params listMenu(Params inParams)  {
+		return menuService.listMainSideMenu(inParams);
+	}
+
 
 	//추가, 수정, 삭제
 	@RequestMapping("/updateMenu")
-	public Params updateMenu(Params inParams) throws Exception{
+	public Params updateMenu(Params inParams) {
 		return menuService.updateMenu(inParams);
 	}
 	

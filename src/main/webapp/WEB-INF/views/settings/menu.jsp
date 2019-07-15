@@ -7,4 +7,4 @@
 	<div id="menuGrid" class="row mb-2">
 	</div>
 
-<script src="/resources/js/views/set/menu.js"></script>
+<script src="/js/views/settings/menu.js"></script>
