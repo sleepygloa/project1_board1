@@ -219,6 +219,7 @@ var MainJs = function(){
 
 						}
 					}
+					console.log(v);
 					//마지막 자식일 경우 상위 관리 메뉴를 최종 부모 메뉴에 추가함.
 					if(v.MENU_GROUP_YN == 'N' && cnt == v.COUNT){
 						sideMenuUi.append(sideMenuLi);

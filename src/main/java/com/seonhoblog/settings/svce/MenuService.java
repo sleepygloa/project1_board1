@@ -20,9 +20,17 @@ public class MenuService extends ParagonService {
 	}
 	
 	public Params updateMenu(Params inParams) {
+		System.out.println(" - -" + inParams);
 		Params outParams = new CommParams();
 		
-		getSqlManager().update("MenuService.updateMenu", inParams);
+		String flag = inParams.getString("flag");
+		if(flag.equals("INSERT")) {
+			getSqlManager().update("MenuService.insertMenu", inParams);
+		}else if(flag.equals("UPDATE")) {
+			getSqlManager().update("MenuService.updateMenu", inParams);
+		}
+		
+		
 		
 		outParams.setStsCd(200);
 		return outParams; 

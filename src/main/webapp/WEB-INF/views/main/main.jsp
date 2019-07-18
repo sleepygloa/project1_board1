@@ -18,24 +18,25 @@
 		}
 		
 	
-		.header, .nav, .section, .aside, .footer {
+		.header, .nav, .section, .article, .aside, .footer {
 			float:left;
 			display:block;
 			width:100%;
 			position:relative;
 		}
 		.nav {
-			width:20%;
+			width:15%;
 		}
 		.section {
-			width:80%;
+			width:85%;
 		}
 		.nav, .section{
 			height:100vh;
 		}
 		.header{
 			height:50px;
-			background:yellow;
+			/* background:yellow; */
+			border-bottom-style:1px solid black;
 		}
 		
 		.header .header-container{
@@ -48,15 +49,16 @@
 		.header .header-container .header-contentBox-right{}
 		
 		.nav{
-			background:blue;
+			/* background:blue; */
+			border-right-style:1px solid black;
 		}
 			
 		.section{
-		background:black;
+			background:sky;
 		}
 		
 		.article{
-		background:red;
+			/* background:red; */
 		}
 		
 		.aside{
@@ -79,7 +81,40 @@
 		}
 		
 		
+		/**
+		공통 UI
+		*/
 		
+		
+		.pull-right{ float:right; }
+		.pull-left{ float:left;}
+		
+		.btn{ 
+			height:30px;
+			position:relative;
+			float:left;
+			padding:5px;
+		 }
+		/* 버튼-저장 */
+		.btn-save{ backgroun-color:blue; }
+		/* 버튼-추가, 신규 */
+		.btn-add{ backgroun-color:green; }
+		/* 버튼-수정 */
+		.btn-update{ backgroun-color:yellow; }
+		/* 버튼-삭제 */
+		.btn-delete{ backgroun-color:red; }
+		/* 버튼-취소 */
+		.btn-cancel{ backgroun-color:red; }
+		
+		.btn-sm{ height : 15px; }
+		.btn-md{ height : 20px; }
+		.btn-dl{ height : 25px; }
+		.btn-lg{ height : 30px; }
+		
+		.table{
+			position:relative;
+			float:left;
+		}
 		/**
 		메뉴
 		*/

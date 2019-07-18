@@ -35,7 +35,7 @@ var blogJs = function(){
 				],
 				viewContents : true,
 				viewContentsRe : true,
-				btn			: ['add', 'update', 'save']
+				btn			: ['add', 'update', 'saveRow']
 			});
 
 	  }

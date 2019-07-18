@@ -19,7 +19,8 @@
 		FROM	
 				TB_NAMBI_MENU MENU
 		WHERE
-				MENU.USE_YN = 'Y';
+				MENU.USE_YN = 'Y'
+		ORDER BY MENU.MENU_ORDER ASC;
 		
 	</select>
 
