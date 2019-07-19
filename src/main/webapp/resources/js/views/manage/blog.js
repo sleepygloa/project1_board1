@@ -16,26 +16,26 @@ var blogJs = function(){
 	return {
 		init : function(){
 
-			getBlogContent();
+			fnList();
 
 		}
 	}
 
-	  function getBlogContent(){
+	  function fnList(){
 			$grid.fnList({
 				programId 	: 'blog',
 				programNm 	: '블로그',
 //				editable	: true,
-				url 		: '/manage/blog/',
+				url 		: '/ctrl/manage/blog/',
 				colName		: ['IDX', 'TITLE', 'SUBJECT'],
 				colOption	: [
-					{id:'IDX', title:'순번', width:"50px", hidden:true},
-					{id:'TITLE', title:'분류',width:"150px"},
-					{id:'SUBJECT', title:'제목',width:"500px"}
+					{id:'IDX', 		title:'순번', width:"50px"},
+					{id:'TITLE', 	title:'분류',width:"150px"},
+					{id:'SUBJECT', 	title:'제목',width:"500px"}
 				],
 				viewContents : true,
 				viewContentsRe : true,
-				btn			: ['add', 'update', 'saveRow']
+				btn			: ['add', 'update', 'save']
 			});
 
 	  }

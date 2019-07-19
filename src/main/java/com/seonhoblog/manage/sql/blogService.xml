@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="blogService">
+<mapper namespace="BlogService">
 
-	<select id="loadingMainBlogContent" resultType="hashmap">
+	<select id="listBlog" resultType="HMap">
 		SELECT
 			IDX
 		,	TITLE
@@ -45,7 +45,7 @@
 		);
 	</insert>
 
-	<select id="viewBlog" parameterType="hashmap" resultType="hashmap">
+	<select id="viewUpdateBlog" resultType="HMap">
 		SELECT
 			M.IDX			AS IDX
 		,	M.SUBJECT		AS SUBJECT

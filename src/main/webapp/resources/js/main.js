@@ -80,7 +80,6 @@ var MainJs = function(){
 			type 		: "POST",
 			dataType	: "text",
 			success 	: function(data){
-				console.log('dd');
 				$('#mainArticle').empty();
 				$('#mainArticle').html(data);
 			},
@@ -121,9 +120,6 @@ var MainJs = function(){
 	}
 	
 	function fnSideMenu(){
-		
-		
-		
         $.ajax({
             url      : "/ctrl/settings/menu/listMainSideMenu",	
 //            data     : jsonData,
@@ -132,7 +128,6 @@ var MainJs = function(){
             contentType : 'application/json; charset=utf-8',
             success  : function(data) {
             	var dt_grid = data.dt_grid;
-				console.log(data.dt_grid);
 
 				//리스트를 순서대로 내보냄
 				var sideMenuUi = $('<ul/>');
@@ -219,7 +214,6 @@ var MainJs = function(){
 
 						}
 					}
-					console.log(v);
 					//마지막 자식일 경우 상위 관리 메뉴를 최종 부모 메뉴에 추가함.
 					if(v.MENU_GROUP_YN == 'N' && cnt == v.COUNT){
 						sideMenuUi.append(sideMenuLi);

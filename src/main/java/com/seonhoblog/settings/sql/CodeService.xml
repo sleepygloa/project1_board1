@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="MenuService">
+<mapper namespace="CodeService">
 
-	<select id="listMainSideMenu" resultType="HMap">
+	<select id="listCodeCombo" resultType="HMap">
 		SELECT 
-				MENU.MENU_SEQ
-			,	MENU.MENU_PARENT_SEQ
-			,	MENU.PRO_CD
-			,	MENU.MENU_NM
-			,	MENU.MENU_ICO
-			,	MENU.MENU_ORDER
-			,   MENU.MENU_GROUP_YN
-			,   MENU.MENU_URL
-			,	MENU.USE_YN
-			,	(SELECT COUNT(MENU_PARENT_SEQ) FROM TB_NAMBI_MENU CNT
-				WHERE MENU.MENU_PARENT_SEQ = CNT.MENU_PARENT_SEQ ) COUNT
-		FROM	
-				TB_NAMBI_MENU MENU
-		WHERE
-				MENU.USE_YN = 'Y'
-		ORDER BY MENU.MENU_ORDER ASC;
+                  CC.CODE_CD NAME,
+                  CC.CODE_NM VALUE
+        FROM      TB_NAMBI_COMM_CODE CC,
+                  TB_NAMBI_COMM_CODE_GROUP CCR
+        WHERE     CC.CODE_GROUP_CD = CCR.CODE_GROUP_CD
+        ORDER BY  CC.CODE_ORDER ASC;
+		
+	</select>
+
+	<select id="listCode" resultType="HMap">
+		SELECT 
+                  CC.*
+        FROM      TB_NAMBI_COMM_CODE CC,
+                  TB_NAMBI_COMM_CODE_GROUP CCR
+        WHERE     CC.CODE_GROUP_CD = CCR.CODE_GROUP_CD
+        ORDER BY  CC.CODE_ORDER ASC;
 		
 	</select>
 

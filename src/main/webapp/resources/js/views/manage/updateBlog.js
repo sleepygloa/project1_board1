@@ -17,72 +17,78 @@
 //	focusIdx = i;
 //}
 
-//function resize(obj) {
-//	  obj.style.height = "1px";
-//	  obj.style.height = (12+obj.scrollHeight)+"px";
-//	}
+function resize(obj) {
+	  obj.style.height = "1px";
+	  obj.style.height = (12+obj.scrollHeight)+"px";
+}
 
 //var focusIdx = -1;
 var updateIdx = '';
-var MainUpdateBlogContentJs = function(){
+var UpdateBlogJs = function(){
 	"use strict";
-//	var contentLength = 0;
+	var contentLength = 0;
 
 	return {
 		init : function(){
 
 //			updateBlogTitleCombo();
+			
+			fnMakeCombo('updateBlogTitle', 'BLOG_TITLE_CD');
 
-//			loadingViewBlogContent();
+			fnView();
 
-//			updateBlogContentEvent();
+			fnEvents();
 		}
 	}
 
-//	function loadingViewBlogContent(){
-//		$.ajax({
-//			url	 : '/manage/blog/viewBlog',
-//			data : blogData,
-//			type : "POST",
-//			success : function(result){
-//				console.log(result);
-//				if(result.map){
-//					var list = result.map;
-//					updateIdx = list[0].IDX;
-////					$('#updateBlogContentTitle').text(map.TITLE);
-//					$('#updateBlogSubject').val(list[0].SUBJECT);
-//
-//
-////					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
-//					for(var i = 0; i < list.length; i++){
-//						var str = '';
-//						if(list[i].TYPE == 'IMG'){
-//							addImgArea();
-//							$('#text_'+i).attr('src', list[i].CONTENT);
-//							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
-//						}else if(list[i].TYPE == 'CODE'){
-//							addCodeTextArea();
-//							$('#text_'+i).text(list[i].CONTENT);
-//						}else{
-//							addTextArea(list[i].CONTENT);
-//							$('#text_'+i).text(list[i].CONTENT);
-//						}
-//					}
-//					contentLength = list.length;
-//				}else{
-//					$('#sortable').text('');
-//				}
-//			}
-//		})
-//	}
+	function fnView(){
+		$.ajax({
+			url	 	: '/ctrl/manage/blog/viewUpdateBlog',
+			data 	: blogData,
+			type 	: "POST",
+			success : function(result){
+				console.log(result);
+				
+				if(result.dt_contents){
+					var list = result.map;
+					updateIdx = list[0].IDX;
+//					$('#updateBlogContentTitle').text(map.TITLE);
+					$('#updateBlogSubject').val(list[0].SUBJECT);
 
-	function updateBlogContentEvent(){
 
-//		$('#updateBlogContentCancelBtn').click(function(){
-//			window.location.href="/";
-//		})
+//					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
+					for(var i = 0; i < list.length; i++){
+						var str = '';
+						if(list[i].TYPE == 'IMG'){
+							addImgArea();
+							$('#text_'+i).attr('src', list[i].CONTENT);
+							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
+						}else if(list[i].TYPE == 'CODE'){
+							addCodeTextArea();
+							$('#text_'+i).text(list[i].CONTENT);
+						}else{
+							fnAddTextBox(list[i].CONTENT);
+							$('#text_'+i).text(list[i].CONTENT);
+						}
+					}
+					contentLength = list.length;
+				}else{
+					$('#sortable').text('');
+				}
+			}
+		})
+	}
 
-		$('#updateBlogContentSaveBtn').click(function(){
+	//이벤트
+	function fnEvents(){
+
+		//메인으로
+		$('#updateBlogCancelBtn').click(function(){
+			window.location.href="/";
+		});
+
+		//저장
+		$('#updateBlogSaveBtn').click(function(){
 			save();
 		});
 
@@ -104,10 +110,10 @@ var MainUpdateBlogContentJs = function(){
 			$('#updateBlogTitleCombo').prepend('<option value="0" id="insertBlogComboAdd">'+insertValue+'</option>');
 		});
 
-//		//글상자추가
-//		$('#updateBlogAddText').click(function(){
-//			addTextArea();
-//		});
+		//글상자추가
+		$('#updateBlogTextBox').click(function(){
+			fnAddTextBox($(this));
+		});
 //
 //		//코드추가
 //		$('#updateBlogAddCode').click(function(){
@@ -153,17 +159,17 @@ var MainUpdateBlogContentJs = function(){
 //			getSortableView();
 //		});
 	}
-//
-//	//글쓰기상자
-//	function addTextArea(){
-//	    var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
-//	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-//	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-//        str += '<textarea id="text_'+contentLength+'" class="form-control col-md-12"  style="min-height:150px;" onchange="resize('+this+')" ></textarea>'
-//        str += '</div>';
-//		$('#sortable').append(str);
-//		contentLength++;
-//	}
+
+	//글쓰기상자
+	function fnAddTextBox(el){
+	    var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
+	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+        str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
+        str += '</div>';
+		$('#updateBloxViewArea').append(str);
+		contentLength++;
+	}
 //	//코드상자
 //	function addCodeTextArea(){
 //        var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
@@ -336,5 +342,5 @@ var MainUpdateBlogContentJs = function(){
 }();
 
 $(document).ready(function(){
-	MainUpdateBlogContentJs.init();
+	UpdateBlogJs.init();
 })

@@ -15,18 +15,45 @@ var s_userId = null;
 var contentLength = 0;
 var focusIdx = -1;
 
+//콤보박스 만들기
+function fnMakeCombo(targetStr, data){
+    $.ajax({
+        url      : "/ctrl/settings/code/listCodeCombo",
+        data     : {
+        	codeGroupCd:data
+    	},
+        type     : "POST",
+        dataType : "json",
+        async	 : false,
+        success  : function(result) {
+        	console.log(result)
+        	var targetEl = $('#'+targetStr);
+        	targetEl.empty();
+        	var str = '';
+    		for ( var i = 0; i < result.length ; i++){
+    			str += '<option value="'+result[i].NAME+'">'+result[i].VALUE+'</option>'
+    		}
+    		targetEl.append(str);
+        }
+    });
+}
+
 (function(window, $, undefined){
 
+
+	
+	//글 컨텐츠 불러오기.
     $.fn.getLoadingPage = function(data){
     	blogData = data;
+    	console.log(data);
 	  	$.ajax({
-	  		url		: url + '/viewPg',
-	  		data	: data,
+//	  		url		: data.url + '/view'+data.uProgramId,
+	  		url		: data.url,
 	  		type	: "POST",
 	  		async	: false,
 	  		success	: function(result){
-	  			$('#'+programId+'View').empty();
-	  			$('#'+programId+'View').html(result);
+	  			$('#'+tableInitData.programId+'View').empty();
+	  			$('#'+tableInitData.programId+'View').html(result);
 	  		}
 	  	});
     }
@@ -119,33 +146,34 @@ var focusIdx = -1;
     		url : tableInitData.url + "list" + tableInitData.uProgramId,
     		async : false,
     		success : function(result){
-    			console.log(result);
 
     			//키를 가져와 컬럼 이름을 구성
 //    			var colList = result.dt_grid[0];
-    			var k = Object.keys(result.dt_grid[0]);
-    			if(k.length > 0){
-    				var tColName = [];
-    				//그리드 옵션 중 컬럼 명이 없을
-    				//조회된 모든 컬럼 불러옴.
-    				if(tableInitData.colName == undefined){
-        				for(var i = 0; i < k.length; i++){
-        					tColName.push(k[i]);
-        				}
-        				tableInitData.colName = tColName;
-        			//그리드 옵션 중에 컬럼명 지정
-        			//지정한 컬럼만 불러옴.
-    				}else{
-    					for(var j = 0; j < tableInitData.colName.length; j++){
+    			if(result.dt_grid.length > 0){
+        			var k = Object.keys(result.dt_grid[0]);
+        			if(k.length > 0){
+        				var tColName = [];
+        				//그리드 옵션 중 컬럼 명이 없을
+        				//조회된 모든 컬럼 불러옴.
+        				if(tableInitData.colName == undefined){
             				for(var i = 0; i < k.length; i++){
-            					if(tableInitData.colName[j] == k[i]){
-            						tColName.push(k[i]);
-            						break;
-            					}
+            					tColName.push(k[i]);
             				}
-    					}
-    					tableInitData.colName = tColName;
-    				}
+            				tableInitData.colName = tColName;
+            			//그리드 옵션 중에 컬럼명 지정
+            			//지정한 컬럼만 불러옴.
+        				}else{
+        					for(var j = 0; j < tableInitData.colName.length; j++){
+                				for(var i = 0; i < k.length; i++){
+                					if(tableInitData.colName[j] == k[i]){
+                						tColName.push(k[i]);
+                						break;
+                					}
+                				}
+        					}
+        					tableInitData.colName = tColName;
+        				}
+        			}
     			}
     			tableInitData.colRow = result.dt_grid;
     		}
@@ -153,7 +181,7 @@ var focusIdx = -1;
 
 
     	//그리드 상단 그룹 버튼
-    	var gridDivContainer = $('<div class="col-xs-w100" />');
+    	var gridDivContainer = $('<div class="col-xs-w100" style="margin-bottom:50px;"/>');
     	
     	//페이지 타이틀 
     	var divPageTitle = $('<div class="col-xs-w100" />');
@@ -172,17 +200,17 @@ var focusIdx = -1;
 	        		if(btnName == 'search'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SearchBtn" class="btn btn-save btn-sm pull-right" >검색</a>';
 	        		}else if(btnName == 'add'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddBtn" class="btn btn-save btn-sm pull-right" >추가</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddBtn" class="btn btn-save btn-sm pull-right" >글 추가</a>';
 	        		}else if(btnName == 'update'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'UpdateBtn" class="btn btn-update btn-sm pull-right" >수정</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'UpdateBtn" class="btn btn-update btn-sm pull-right" >글 수정</a>';
 	        		}else if(btnName == 'delete'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >삭제</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DeleteBtn" class="btn btn-delete btn-sm pull-right" >글 삭제</a>';
 	        		}else if(btnName == 'addRow'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>';
 	        		}else if(btnName == 'delRow'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>';
 	        		}else if(btnName == 'save'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >저장</a>';
+	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
 	        		}else if(btnName == 'saveRow'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>';
 	        		}
@@ -191,7 +219,7 @@ var focusIdx = -1;
     	gridBtnGrpStr += '</div>';
     	var gridBtnGrp = $(gridBtnGrpStr);
     	divBtnGroup.append(gridBtnGrp);
-    	gridDivContainer.append(divBtnGroup);
+//    	gridDivContainer.append(divBtnGroup);
 
     	//테이블
     	var table = $('<table class="table center-aligned-table table-hover tableScrollX" />');
@@ -282,9 +310,15 @@ var focusIdx = -1;
 		table.append(thead);
 		table.append(tbody);
 		//table End
-
+		
+		//버튼 그룹과 테이블 그룹을 한 div로 합침.
+		var tableParentDiv = $('<div class="col-xs-w100" />');
+		tableParentDiv.append(table);
+		divBtnGroup.append(tableParentDiv);
+		gridDivContainer.append(divBtnGroup);
+		
 		//타이틀, 테이블 버튼, 테이블 화면에 그림.
-    	gridDivContainer.append(table);
+//    	gridDivContainer.append(tableParentDiv);
     	$('#'+programId+'Grid').html(gridDivContainer);
 
 
@@ -725,7 +759,6 @@ var focusIdx = -1;
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
     $(document).on('click','a[id$=Btn]', function(e){
-    	console.log(gridData);
     	var thisId = $(this).attr('id');
 
     	var flag = '';
@@ -853,16 +886,13 @@ var focusIdx = -1;
 			return false;
     	//그리드 행 저장
     	}else if(thisId.indexOf('SaveRow') != -1){
-    		console.log(clickCnt);
     		var saveId = $('.tr_row_'+clickCnt);
     		var saveTds = saveId.find('td');
 
     		var saveData = {};
 
     		saveData["idx"] = clickCnt;
-//    		saveData["flag"] = 'UPDATE';
 
-    		console.log(saveTds);
     		for(var j = 0; j < saveTds.length; j++){
     			var rowNm = $(saveTds[j]).attr('class').split('td_row_')[1];
     			console.log(rowNm)
@@ -890,19 +920,20 @@ var focusIdx = -1;
     			};
     		}
 
+    		if(saveData["flag"] != "INSERT"){
+    			saveData["flag"] = "UPDATE";
+    		}
+    		
     		gridData = saveData;
-    		console.log(saveData);
 
     		newUrl = 'update'+ tableInitData.uProgramId;
 		//글추가
     	}else if(thisId.indexOf('Add') != -1){
-    		console.log('Add');
-        	var data = {
-        			idx  : '',
-        			page : url + "update" + tableInitData.uProgramId
-        	}
-//        	fnLoadingPage(data);
-        	$('#'+programId+'View').getLoadingPage(data);
+        	$('#'+tableInitData.programId+'View').getLoadingPage({
+    			idx  : '',
+    			url : tableInitData.url + "view" + tableInitData.uProgramId
+        	});
+        	
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){

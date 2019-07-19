@@ -30,6 +30,11 @@
 		.section {
 			width:85%;
 		}
+		.article{
+			width:80%;
+		}
+		
+		
 		.nav, .section{
 			height:100vh;
 		}
@@ -92,7 +97,7 @@
 		.btn{ 
 			height:30px;
 			position:relative;
-			float:left;
+			/* float:left; */
 			padding:5px;
 		 }
 		/* 버튼-저장 */
@@ -113,12 +118,15 @@
 		
 		.table{
 			position:relative;
-			float:left;
+			/* float:left; */
+			width:100%;
 		}
 		/**
 		메뉴
 		*/
-		
+		select, input, textarea{
+			padding : 5px;
+		}
 		
 	</style>
 </head>

@@ -1,36 +1,84 @@
-//package com.manage.svce;
-//
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//
-//import javax.annotation.Resource;
-//import javax.servlet.http.HttpServletRequest;
-//
-//import org.springframework.stereotype.Service;
-//import org.springframework.web.multipart.MultipartHttpServletRequest;
-//
-//import com.common.util.FileUtils;
-//import com.core.parameters.Params;
-//import com.main.svce.MainService;
-//import com.manage.dao.BlogDao;
-//
-//@Service("blogService")
-//public class BlogServiceImpl implements BlogService{
-//
-//	@Resource(name="blogDao")
-//	private BlogDao blogDao;
-//	
-//	@Resource(name="fileUtils")
-//	private FileUtils fileUtils;
-//	
-//	@Override
-//	public List<Map<String, Object>> loadingMainBlogContent() throws Exception{
-//		return blogDao.loadingMainBlogContent();
-//	}
-//
-//	
+package com.seonhoblog.manage.svce;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
+import com.common.util.FileUtils;
+import com.core.mvc.ParagonService;
+import com.core.parameters.Params;
+import com.core.parameters.datatable.DataTable;
+
+@Service
+public class BlogService extends ParagonService{
+
+	private static final Log LOG = LogFactory.getLog(BlogService.class);
+	
+	@Resource(name="fileUtils")
+	private FileUtils fileUtils;
+	
+	/**
+	 * 블로그 그리드 조회
+	 * */
+	public Params listBlog(Params inParams) throws Exception{
+		LOG.debug("listBlog" + inParams);
+		return getSqlManager().selectGridParams("BlogService.listBlog", inParams);
+	}
+
+	/**
+	 * 블로그 글 조회
+	 * */
+	public Params viewUpdateBlog(Params inParams) throws Exception{
+		System.out.println("viewUpdateBlog" + inParams);
+		Params outParams = getSqlManager().selectGridParams("BlogService.viewUpdateBlog", inParams);
+		DataTable dt = outParams.getDataTable("dt_data");
+		
+		//글의 내용이 있을 때.
+		if(dt.size() > 0) {
+			//글 수정 일때.
+			if(inParams.getString("UPDATE") == null) {
+				for(int i = 0; i < dt.size(); i++) {
+					if(dt.get(i).get("TYPE") == null){
+						
+					}else if(!(dt.get(i)).get("TYPE").equals("img")) {
+					
+//						String content = (String)((list.get(i)).get("CONTENT"));
+//						content = content.replaceAll("<", "&lt");
+//						content = content.replaceAll(">", "&gt");
+//						System.out.println(content);
+//						(list.get(i)).put("CONTENT", content);
+					}
+				}
+			}
+			outParams.setParam("dt_contents", dt);
+			
+			//아이디체크
+//			if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
+//				String s_userId = inParams.getString("s_userId");
+//				String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
+//				if(s_userId.equals(inUserId)) {
+//					System.out.println("ID_CHECK_OK");
+//					resultMap.put("S_CHECK_ID", true);
+//				}
+//			}else {
+//				resultMap.put("S_CHECK_ID", false);
+//			}
+		}
+
+		//업로드된 파일이있을 때.
+//		List<Map<String,Object>> fileList = blogDao.selectFileList(inParams);
+//		if(fileList != null) {
+//			resultMap.put("dt_file", fileList);
+//		}
+		return outParams;
+	}
+	
 //	@Override
 //	public List<Map<String, Object>> getBlogTitleDropdown(Params inParams) throws Exception{
 //		return blogDao.getBlogTitleDropdown(inParams);
@@ -175,5 +223,5 @@
 //		System.out.println("saveReReBlog data : "+ inParams);
 //		blogDao.saveReReBlog(inParams);
 //	}
-//	
-//}
+	
+}
