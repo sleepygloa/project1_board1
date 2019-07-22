@@ -29,15 +29,15 @@
 		)
 	</insert>
 	
-	<select id="loginInfoCheck" parameterType="hashmap" resultType="hashmap">
+	<select id="listMainLoginUser" resultType="HMap">
 		SELECT 
 			ID			AS ID
 		,	PASSWD		AS PW
 		,	COUNT(*)	AS COUNT
 		FROM
-			TB_BLOG_USER
+			TB_NAMBI_USER
 		WHERE
-			ID	=	#{id}
+			ID	=	#{id};
 	</select>
 
 </mapper>

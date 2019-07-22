@@ -13,9 +13,9 @@
 //	$('.imgContWidth_'+length).css('display', 'none');
 //}
 
-//function fnSaveIdx(i){
-//	focusIdx = i;
-//}
+function fnSaveIdx(i){
+	focusIdx = i;
+}
 
 function resize(obj) {
 	  obj.style.height = "1px";
@@ -35,49 +35,49 @@ var UpdateBlogJs = function(){
 			
 			fnMakeCombo('updateBlogTitle', 'BLOG_TITLE_CD');
 
-			fnView();
-
-			fnEvents();
+//			fnView();
+//
+//			fnEvents();
 		}
 	}
 
-	function fnView(){
-		$.ajax({
-			url	 	: '/ctrl/manage/blog/viewUpdateBlog',
-			data 	: blogData,
-			type 	: "POST",
-			success : function(result){
-				console.log(result);
-				
-				if(result.dt_contents){
-					var list = result.map;
-					updateIdx = list[0].IDX;
-//					$('#updateBlogContentTitle').text(map.TITLE);
-					$('#updateBlogSubject').val(list[0].SUBJECT);
-
-
-//					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
-					for(var i = 0; i < list.length; i++){
-						var str = '';
-						if(list[i].TYPE == 'IMG'){
-							addImgArea();
-							$('#text_'+i).attr('src', list[i].CONTENT);
-							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
-						}else if(list[i].TYPE == 'CODE'){
-							addCodeTextArea();
-							$('#text_'+i).text(list[i].CONTENT);
-						}else{
-							fnAddTextBox(list[i].CONTENT);
-							$('#text_'+i).text(list[i].CONTENT);
-						}
-					}
-					contentLength = list.length;
-				}else{
-					$('#sortable').text('');
-				}
-			}
-		})
-	}
+//	function fnView(){
+//		$.ajax({
+//			url	 	: '/ctrl/manage/blog/viewUpdateBlog',
+//			data 	: blogData,
+//			type 	: "POST",
+//			success : function(result){
+//				console.log(result);
+//				
+//				if(result.dt_contents){
+//					var list = result.map;
+//					updateIdx = list[0].IDX;
+////					$('#updateBlogContentTitle').text(map.TITLE);
+//					$('#updateBlogSubject').val(list[0].SUBJECT);
+//
+//
+////					$('select[id=updateBlogTitleCombo]').find("option[text='"+list[0].TITLE+"']").attr("selected","selected");
+//					for(var i = 0; i < list.length; i++){
+//						var str = '';
+//						if(list[i].TYPE == 'IMG'){
+//							addImgArea();
+//							$('#text_'+i).attr('src', list[i].CONTENT);
+//							$('#text_'+i).attr('width', ''+list[i].IMGWIDTHSCALE+'%');
+//						}else if(list[i].TYPE == 'CODE'){
+//							addCodeTextArea();
+//							$('#text_'+i).text(list[i].CONTENT);
+//						}else{
+//							fnAddTextBox(list[i].CONTENT);
+//							$('#text_'+i).text(list[i].CONTENT);
+//						}
+//					}
+//					contentLength = list.length;
+//				}else{
+//					$('#sortable').text('');
+//				}
+//			}
+//		})
+//	}
 
 	//이벤트
 	function fnEvents(){
@@ -87,10 +87,10 @@ var UpdateBlogJs = function(){
 			window.location.href="/";
 		});
 
-		//저장
-		$('#updateBlogSaveBtn').click(function(){
-			save();
-		});
+//		//저장
+//		$('#updateBlogSaveBtn').click(function(){
+//			fnSave();
+//		});
 
 		//파일업로드
 //		$('#updateBlogFileUploadBtn').click(function(){
@@ -160,16 +160,16 @@ var UpdateBlogJs = function(){
 //		});
 	}
 
-	//글쓰기상자
-	function fnAddTextBox(el){
-	    var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
-	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-        str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
-        str += '</div>';
-		$('#updateBloxViewArea').append(str);
-		contentLength++;
-	}
+//	//글쓰기상자
+//	function fnAddTextBox(el){
+//	    var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
+//	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+//	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+//        str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
+//        str += '</div>';
+//		$('#updateBloxViewArea').append(str);
+//		contentLength++;
+//	}
 //	//코드상자
 //	function addCodeTextArea(){
 //        var str = '<div id="row_'+contentLength+'" onclick="fnSaveIdx('+contentLength+');">';
@@ -221,14 +221,14 @@ var UpdateBlogJs = function(){
 //		  })
 //	  }
 
-//	function save(){
-//		var form = $('mainBlogUpdateForm')[0];
-//		var formData = new FormData(form);
-//
-//		if($('#updateBlogFileUploadText').val() != ''){
-//			formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
-//		}
-//
+//	function fnSave(){
+////		var form = $('mainBlogUpdateForm')[0];
+////		var formData = new FormData(form);
+////
+////		if($('#updateBlogFileUploadText').val() != ''){
+////			formData.append('file_0', $('#updateBlogFileUpload')[0].files[0]);
+////		}
+////
 //		var dataDt = [];
 //		var count = 0;
 //		for(var i = 0; i < contentLength; i++){
@@ -273,6 +273,10 @@ var UpdateBlogJs = function(){
 //					dataDt  : dataDt
 //			}
 //		}
+//		
+//		console.log(data);
+//		return false;
+//		
 //		$.ajax({
 //			url 	: "/manage/blog/saveBlog",
 //			type	: 'POST',

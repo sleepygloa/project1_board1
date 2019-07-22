@@ -74,25 +74,7 @@ public class BlogController {
 		return outParams;
 	}
 	
-/////////////////////////////////////////////////////
-//
-//	//블로그 글쓰기 콤보박스
-//	@RequestMapping("/getBlogTitleDropdown")
-//	public ModelAndView getBlogTitleDropdown(Params inParams) {
-//		System.out.println("getBlogTitleDropdown inParams : "+inParams);
-//		ModelAndView mv = new ModelAndView("jsonView");
-//		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-//
-//		try {
-//			list = blogService.getBlogTitleDropdown(inParams);
-//		}catch(Exception e) {
-//
-//		}
-//		mv.addObject("list", list);
-//		return mv;
-//	}
-//
-//	//블로그 글쓰기 완료
+	//블로그 글쓰기 완료
 //	@RequestMapping("/insertBlogAddContent")
 //	public void insertBlogAddContent(Params inParams) {
 //		System.out.println("insertBlogAddContent"+inParams);
@@ -102,23 +84,14 @@ public class BlogController {
 //			System.out.println("에러에러");
 //		}
 //	}
-//
 
-//
-//	//블로그 글 수정하기
-//	@RequestMapping("/saveBlog")
-//	public ModelAndView saveBlogContent(Params inParams) {
-//		System.out.println("/SaveBlogContent inParams : "+inParams);
-//		ModelAndView mv = new ModelAndView("jsonView");
-//		try {
-//			blogService.saveBlogContent(inParams);
-//		}catch(Exception e) {
-//			System.out.println("ERROR" + e);
-//			e.printStackTrace();
-//		}
-//		mv.addObject("SUCCESS", "글이 수정되었습니다.");
-//		return mv;
-//	}
+
+
+	//블로그 글 수정하기
+	@RequestMapping("/saveBlogContents")
+	public Params saveBlogContents(Params inParams) {
+		return blogService.saveBlogContents(inParams);
+	}
 //
 //	//블로그 글 수정하기
 //	@RequestMapping("/deleteBlog")

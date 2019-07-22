@@ -12,8 +12,7 @@ var blogData = '';
 var gridData = {};
 var s_userId = null;
 
-var contentLength = 0;
-var focusIdx = -1;
+
 
 //콤보박스 만들기
 function fnMakeCombo(targetStr, data){
@@ -38,10 +37,28 @@ function fnMakeCombo(targetStr, data){
     });
 }
 
+
+var contentLength = 0;
+var focusIdx = -1;
+function fnSaveIdx(i){
+	focusIdx = i;
+}
+  
+function fnAddTextBox(el){
+	var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
+	str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+	str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+	str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
+	str += '</div>';
+	$('#blogViewArea').append(str);
+	contentLength++;
+}
+
+
+
 (function(window, $, undefined){
 
 
-	
 	//글 컨텐츠 불러오기.
     $.fn.getLoadingPage = function(data){
     	blogData = data;
@@ -352,6 +369,7 @@ function fnMakeCombo(targetStr, data){
     	}
     }
 
+    
     /**
      * 공통된 프로그램 id 이용하여 블로그 형태의 글을 불러오는 소스
      * */
@@ -730,32 +748,32 @@ function fnMakeCombo(targetStr, data){
     }
 
 
-	//글쓰기 드롭다운 리스
-	function viewTitleCombo(){
-		$.ajax({
-			url : url + "/get"+tableInitData.uProgramId+"TitleDropdown",
-			data 	: {
-				idx : gridData.idx
-			},
-			success : function(result){
-				  $('#'+programId+'TitleCombo').empty();
-				  var options = '';
-				  console.log(result.list);
-				  if(result.list){
-					  var list = result.list;
-					  var count = list.length * 10;
-					  var listValue = 0;
-					  for(var i in list){
-						  if(listValue != count){
-							  listValue += 10;
-						  }
-						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
-					  }
-				  }
-				  $('#'+tableInitData.programId+'TitleCombo').append(options);
-			}
-		})
-	}
+//	//글쓰기 드롭다운 리스
+//	function viewTitleCombo(){
+//		$.ajax({
+//			url : url + "/get"+tableInitData.uProgramId+"TitleDropdown",
+//			data 	: {
+//				idx : gridData.idx
+//			},
+//			success : function(result){
+//				  $('#'+programId+'TitleCombo').empty();
+//				  var options = '';
+//				  console.log(result.list);
+//				  if(result.list){
+//					  var list = result.list;
+//					  var count = list.length * 10;
+//					  var listValue = 0;
+//					  for(var i in list){
+//						  if(listValue != count){
+//							  listValue += 10;
+//						  }
+//						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
+//					  }
+//				  }
+//				  $('#'+tableInitData.programId+'TitleCombo').append(options);
+//			}
+//		})
+//	}
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
     $(document).on('click','a[id$=Btn]', function(e){
@@ -929,36 +947,38 @@ function fnMakeCombo(targetStr, data){
     		newUrl = 'update'+ tableInitData.uProgramId;
 		//글추가
     	}else if(thisId.indexOf('Add') != -1){
-        	$('#'+tableInitData.programId+'View').getLoadingPage({
-    			idx  : '',
-    			url : tableInitData.url + "view" + tableInitData.uProgramId
-        	});
-        	
+    		$('#'+tableInitData.programId+'View').css('display', 'block');
+      	
+    		fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
+    		
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){
 			newUrl = 'update'+ tableInitData.uProgramId;
 
 
-			var form = $('mainBlogUpdateForm')[0];
-			var formData = new FormData(form);
+//			var form = $('mainBlogUpdateForm')[0];
+//			var formData = new FormData(form);
+//
+//			if($('#'+programId+'FileUploadText').val() != ''){
+//				formData.append('file_0', $('#'+ tableInitData.programId+'FileUpload')[0].files[0]);
+//			}
+			
 
-			if($('#'+programId+'FileUploadText').val() != ''){
-				formData.append('file_0', $('#'+ tableInitData.programId+'FileUpload')[0].files[0]);
-			}
 			
 			var dataDt = [];
 			var count = 0;
 			for(var i = 0; i < contentLength; i++){
 				console.log('row_'+i);
+				//컨텐츠의 개수가 존재.
 				if($('#row_'+i).val() != undefined){
 					var dataList = {};
-					var textareaVal = $('#content_'+i).val();
+					var textareaVal = $('#text_'+i).val();
 					var typeVal = $('#type_'+i).val();
-					var imgWidthScale = $('#content_'+i).attr('width');
+					var imgWidthScale = $('#text_'+i).attr('width');
 
 					if(typeVal == 'IMG'){
-						textareaVal = $('#content_'+i).attr('src');
+						textareaVal = $('#text_'+i).attr('src');
 						if(imgWidthScale != ''){
 							imgWidthScale = imgWidthScale.replace(/[^0-9]/g,"");
 						}
@@ -976,50 +996,53 @@ function fnMakeCombo(targetStr, data){
 				}
 			}
 
-			var data = {}
+			var sendData = {}
 
 			if(blogData.idx != ''){
-				data = {
+				sendData = {
 						idx		: blogData.idx,
 						title 	: $('#'+tableInitData.programId+'TitleCombo option:selected').text(),
 						subject : $('#'+tableInitData.programId+'Subject').val(),
-						dataDt  : dataDt
+						dt_data  : dataDt
 				}
 			}else{
-				data = {
+				sendData = {
 						title : $('#'+tableInitData.programId+'TitleCombo option:selected').text(),
 						subject : $('#'+tableInitData.programId+'Subject').val(),
-						dataDt  : dataDt
+						dt_data  : dataDt
 				}
 			}
+			
+console.log(sendData);
+			
 			$.ajax({
-				url 	: tableInitData.url + "/save" + tableInitData.uProgramId,
+				url 	: tableInitData.url + "save" + tableInitData.uProgramId + "Contents",
 				type	: 'POST',
 //				data    : formData,
-				data	: JSON.stringify(data),
+				data	: JSON.stringify(sendData),
 //				contentType : false,
 //				processData : false,
 				contentType : "application/json, charset=utf-8",
 				async 	: false,
 				success	: function(result){
-					if($('#'+programId+'FileUploadText').val() != ''){
-						$.ajax({
-							url 	: tableInitData.url + "/save"+tableInitData.uProgramId+"FileUpload",
-							type	: 'POST',
-							data    : formData,
-							contentType : false,
-							processData : false,
-							async 	: false,
-							success	: function(){
-								if(result.SUCCESS){
-									alert(result.SUCCESS);
+//					if($('#'+programId+'FileUploadText').val() != ''){
+//						$.ajax({
+//							url 	: tableInitData.url + "/save"+tableInitData.uProgramId+"FileUpload",
+//							type	: 'POST',
+//							data    : formData,
+//							contentType : false,
+//							processData : false,
+//							async 	: false,
+//							success	: function(){
+//								if(result.SUCCESS){
+//									alert(result.SUCCESS);
+//
+//								}
+//							}
+//						})
+//					}
 
-								}
-							}
-						})
-					}
-
-					window.location.href="/";
+//					window.location.href="/";
 				}
 			})
 
@@ -1097,6 +1120,20 @@ return false;
     });
 
 
+    
+	//글쓰기상자
+	function fnAddTextBox(el){
+	    var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
+	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+        str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
+        str += '</div>';
+		$('#updateBloxViewArea').append(str);
+		contentLength++;
+	}    
+    
+    
+    
   //글쓰기버튼
     function mainBlogInsertBtn(){
     	  var data = {
@@ -1203,6 +1240,66 @@ return false;
 //    	$('.imgContWidth_'+length).css('display', 'none');
 //    }
 
+
+    
+    
 }(window, jQuery));
 
+
+
+
+var SeonhoblogUtil = function() {
+	"use strict";
+
+	return {
+		ajax : function(jsonData, saveUrl, msg, callback, sucMsgFlag){
+
+
+			//ajax 펑션 유효성검사
+			if(saveUrl == undefined){
+				alert('');
+				return false;
+			}
+
+			if(msg != false){
+		        //cofirm Message
+		        if (!confirm((Util.confirm(msg)).msgTxt)) return;
+			}
+
+			//데이터 request 잇음. dt_grid
+			if(jsonData != undefined){
+		        $.ajax({
+		            url      : saveUrl,
+		            data     : jsonData,
+		            dataType : 'json',
+		            type     : 'POST',
+		            cache    : false,
+		            async	 : false,
+		            contentType : 'application/json; charset=utf-8',
+		            success  : function(data) {
+		            	callback(data);
+		            }
+		        });
+		    //데이터 request 없음.
+			}else{
+		        $.ajax({
+		            url      : saveUrl,
+//		            data     : jsonData,
+		            dataType : 'json',
+		            type     : 'POST',
+		            cache    : false,
+		            async	 : false,
+		            contentType : 'application/json; charset=utf-8',
+		            success  : function(data) {
+
+		            	callback(data);
+		            }
+		        });
+			}
+
+
+		},
+		
+	}
+}();
 

@@ -137,7 +137,12 @@
 		<div class="header-container">
 			<div class="header-container-left"></div>
 			<div class="header-container-middle" style="font-size:2.5em;">NAMBI'S VLOG</div>
-			<div class="header-container-right"></div>
+			<div class="header-container-right">
+				<div id="mainLoginArea">
+					<a href="#" id="mainLoginToggleLogin" class="btn" >LOGIN</a>
+					<a href="#" id="mainLoginToggleLogout" class="btn" >LOGOUT</a>
+				</div>
+			</div>
 		</div>
 	</header>
 	<nav id="nav" class="nav"></nav>
@@ -146,6 +151,27 @@
 	</section>
 	<aside class="aside">광고입니다</aside>
 	<footer class="footer">푸터입니다</footer>
+	
+	<div id="mainLoginPop" style="position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:gray; opacity:0.7; display:none;">
+		<div style="background-color:white;border:2px black solid; position:absolute; top:30%; left:40%; width:400px; height:300px;">
+			<div class="col-xs-w100" style="border-bottom:1px gray solid; height:40px" >
+				<a href="#" id="mainLoginPopBack" class="btn pull-left" >뒤로가기</a>
+				<a href="#" id="mainLoginPopLogin" class="btn pull-right" >로그인</a>
+			</div>
+			<div class="col-xs-w100" style="padding:10px;">
+				
+				<div class="col-xs-w90" style="margin-bottom:10px;">
+					<input id="mainLoginPopId" class="col-xs-w100" type="text" placeholder="아이디를 입력해주세요"/>
+				</div>
+				<div class="col-xs-w90">
+					<input id="mainLoginPopPw" class="col-xs-w100" type="password" placeholder="비밀번호를 입력해주세요"/>
+				</div>
+			</div>
+			<div class="col-xs-w100" style="border-top:1px gray solid; height:40px;">
+			</div>
+		</div>
+	</div>
+
 
 
 	<script type="text/javascript" src="/plugins/jquery/dist/jquery.min.js"></script>

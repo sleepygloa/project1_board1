@@ -10,15 +10,29 @@ function blogChileListToggle(count){
 }
 var blogJs = function(){
 	"use strict";
+	
+	var proCd = "";
+	var proNm = "blog";
 
 	var $grid = $('#blogGrid');
 
 	return {
 		init : function(){
 
+			fnEvents();
+			
 			fnList();
 
 		}
+	}
+	
+	function fnEvents(){
+		
+		//글상자추가
+		$('#blogTextBox').click(function(){
+			fnAddTextBox($(this));
+		});
+		
 	}
 
 	  function fnList(){
@@ -39,6 +53,7 @@ var blogJs = function(){
 			});
 
 	  }
+
 
 }();
 

@@ -25,7 +25,7 @@
 		GROUP BY TITLE;
 	</select>
 
-	<insert id="insertBlogAddContent" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
+	<insert id="saveBlogContentsSubjectInsert" parameterType="HMap" useGeneratedKeys="true" keyProperty="IDX">
 		<selectKey keyProperty="IDX" resultType="string" order="BEFORE">
 			SELECT IF( IFNULL(MAX(IDX), 0) = 0, 1, MAX(IDX)+1) FROM TB_BLOG_M WHERE DEL_YN = 'N'
 		</selectKey>
@@ -34,6 +34,7 @@
 			IDX
 		,	TITLE
 		,	SUBJECT
+		,   USE_YN
 		,	IN_USER_ID
 		)
 		VALUES
@@ -41,6 +42,7 @@
 			#{IDX}
 		,	#{title}
 		,	#{subject}
+		,   'Y'
 		,	#{s_userId}
 		);
 	</insert>
@@ -230,7 +232,7 @@
 			IDX = #{file_idx}
 	</update>
 
-	<select id="getBlogcontentLastIdx" parameterType="hashmap" resultType="hashmap">
+	<select id="listBlogContentsIdx"  resultType="HMap">
 		SELECT
 			MAX(IDX) AS idx
 		FROM
@@ -239,13 +241,13 @@
 			IN_USER_ID = #{s_userId};
 	</select>
 
-	<delete id="deleteBlogContentBox" parameterType="hashmap">
+	<delete id="saveBlogContentsDelete" >
 		DELETE FROM
 			TB_BLOG_D
 		WHERE IDX = #{idx};
 	</delete>
 
-	<insert id="insertBlogContentBox" parameterType="hashmap">
+	<insert id="saveBlogContentsInsert" >
 		INSERT INTO
 			TB_BLOG_D
 		(
@@ -253,7 +255,7 @@
 		,	I
 		,	TYPE
 		,	CONTENT
-		,	IMGWIDTHSCALE
+		,	IMG_WIDTH_SCALE
 		)
 		VALUES
 		(

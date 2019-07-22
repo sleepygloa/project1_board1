@@ -1,36 +1,6 @@
-var s_userId = '';
-
-
-////json Parameter 사용
-//(function defaultAjaxSetting() {
-//	$.ajaxSetup({
-////		global: false,
-//		timeout: 6000000,
-//		type : "POST",
-//		dataType : "json",
-////		contentType: 'application/json; charset=utf-8',
-//		cache: false,
-//		beforeSend : function(xhr){
-//    	},error : function(jqXHR, textStatus, errorThrown) {
-//    		console.log(jqXHR);
-//    		if(jqXHR.status != ""){
-//    			if(jqXHR.status === 404 ) {
-//    				alert("일시적이 오류가 발생했습니다.\n담장자에게 문의하세요.");
-//    			}else if(jqXHR.status === 999 ) {
-//    				alert(jqXHR.responseText);
-//    				//TODO 로그인 POPUP창 개발후 출력
-//    			}else if(jqXHR.status === 997 ) {
-//    				var jsonData = $.parseJSON(jqXHR.responseText);
-//    				alert(jsonData.errMsg);
-//    			}else if(jqXHR.status === 1000 ) {
-//    				alert(jqXHR.responseText);
-//    			}
-//    		}
-//        }, complete : function(){
-//        }, success : function(){
-//        }
-//	});
-//})();
+var seonhoblogData={
+		s_userId : ''
+}
 
 var MainJs = function(){
 	"use strict";
@@ -43,35 +13,24 @@ var MainJs = function(){
 	return {
 		init : function(){
 
-			
-			
-//			getSession();
+			fnSession();
 			
 			fnSideMenu();
 
-//			getEvents();
-
+			fnEvents();
+			
+			console.log(seonhoblogData);
+			
 		}
 	}
 
-	function getSession(){
-		$.ajax({
-			url		: '/login/getSession',
-			success : function(data){
-				if(data.s_userId == null){
-					s_userId = undefined;
-					console.log("not login");
-					$('#headerLoginCircle').css('display', 'none');
-					$('#headerLogoutCircle').css('display', 'block');
-				}else{
-					s_userId = data.s_userId;
-					console.log("logined");
-					$('#headerLoginCircle').css('display', 'block');
-					$('#headerLogoutCircle').css('display', 'none');
-				}
-			}
-			
-		});
+	//세션 얻어오기
+	function fnSession(){
+		SeonhoblogUtil.ajax('', '/ctrl/login/listSession', false, function callbackfunc(data){
+			seonhoblogData = data;
+			console.log(seonhoblogData);
+		},false);
+		
 	};
 	
 	function fnPageMove(data){
@@ -91,32 +50,57 @@ var MainJs = function(){
 	}
 	
 	
-	function getEvents(){
-
-		$('#headerLoginCircle').click(function(){
-			alert('login');
-			$.ajax({
-				url 	: '/login/logout',
-				async	: false,
-				success : function(data){
-//					$('#headerLoginCircle').css('display', 'none');
-//					$('#headerLogoutCircle').css('display', 'block');
-					window.location.href='/';
-				}
-			});
+	function fnEvents(){
+		
+		//로그인 팝업
+		$('#mainLoginToggleLogin').click(function(){
+			var css = $('#mainLoginPop').css('display');
+			if(css == "none"){
+				$('#mainLoginPop').css('display', 'block');
+			}else{
+				$('#mainLoginPop').css('display', 'none');
+			}
 		});
 		
-		$('#headerLogoutCircle').click(function(){
-			$.ajax({
-				url 	: '/login/loadingLoginPg',
-				async	: false,
-				success : function(data){
-					$('#content_wrapper').empty();
-					$('#content_wrapper').html(data);
-				}
-			});
+		//로그인 팝업 뒤로가기
+		$('#mainLoginPopBack').click(function(){
+			$('#mainLoginPop').css('display', 'none');
 		});
 		
+		//로그인 팝업 로그인하기
+		$('#mainLoginPopLogin').click(function(){
+			fnLogin();
+		});
+		
+		//엔터 이벤트
+		$('#mainLoginPopId').keydown(function(e){
+			if(e.keyCode == 13){
+				$('#mainLoginPopPw').focus();
+			}
+		})
+		$('#mainLoginPopPw').keydown(function(e){
+			if(e.keyCode == 13){
+				fnLogin();
+			}
+		});
+		
+		console.log(seonhoblogData.s_userId);
+		//로그인 버튼 토글
+		if(seonhoblogData.s_userId == null){
+			$('#mainLoginToggleLogin').css('display', 'block');
+			$('#mainLoginToggleLogout').css('display', 'none');
+		}else{
+			$('#mainLoginToggleLogin').css('display', 'none');
+			$('#mainLoginToggleLogout').css('display', 'block');
+		}
+		
+		//로그아웃 버튼
+		$('#mainLoginToggleLogout').click(function(){
+			SeonhoblogUtil.ajax('', '/ctrl/login/logout', false, function(data){
+				alert('로그아웃 되었습니다.');
+				window.location.href="/";
+			})
+		});
 	}
 	
 	function fnSideMenu(){
@@ -228,6 +212,37 @@ var MainJs = function(){
 				
 			}
 		});
+	}
+	
+	//로그인
+	function fnLogin(){
+		var loginId= $('#mainLoginPopId').val();
+		var loginPw= $('#mainLoginPopPw').val();
+		
+		var jsonData = JSON.stringify({
+			id 	: loginId,
+			pw	: loginPw
+		})
+		var saveUrl = "/ctrl/login/mainLoginUser";
+		var msg = "";
+		
+		SeonhoblogUtil.ajax(jsonData, saveUrl, msg, function(data){
+			console.log(data);
+			var dt_grid = data.dt_grid[0];
+			if(data.stsCd == 200){
+				seonhoblogData.userId = dt_grid.ID;
+				alert('로그인에 성공하였습니다.');
+				window.location.href= "/";
+			}else{
+				seonhoblogData.userId = '';
+				
+				if(data.stsCd == 101){
+					alert('아이디가 존재하지 않습니다.');
+				}else if(data.stsCd == 102){
+					alert('비밀번호가 틀립니다.');
+				}
+			}
+		})
 	}
 
 

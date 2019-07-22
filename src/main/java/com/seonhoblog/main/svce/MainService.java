@@ -1,4 +1,4 @@
-package com.main.svce;
+package com.seonhoblog.main.svce;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.main.ctrl;
+package com.seonhoblog.main.ctrl;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.core.common.ParagonConstants;
 import com.core.parameters.Params;
-import com.main.svce.MainService;
+import com.seonhoblog.main.svce.MainService;
 
 
 /**
