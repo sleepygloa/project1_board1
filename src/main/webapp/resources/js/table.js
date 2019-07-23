@@ -2,14 +2,13 @@ var url = '';
 var programId = '';
 var uProgramId = '';
 var trCnt = -1;
-var clickCnt = -1; //클릭시 행번호
+
 var colRow = null;
 var colName = null;
 var initData = '';
 var viewContents = false;
 var viewContentsRe = false;
 var blogData = '';
-var gridData = {};
 var s_userId = null;
 
 
@@ -36,23 +35,15 @@ function fnMakeCombo(targetStr, data){
         }
     });
 }
-
-
+var clickCnt = -1; //클릭시 행번호
+var rowId = -1;
 var contentLength = 0;
 var focusIdx = -1;
 function fnSaveIdx(i){
 	focusIdx = i;
 }
   
-function fnAddTextBox(el){
-	var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
-	str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-	str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-	str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
-	str += '</div>';
-	$('#blogViewArea').append(str);
-	contentLength++;
-}
+
 
 
 
@@ -77,7 +68,7 @@ function fnAddTextBox(el){
 
     //현재 선택된 행 데이터 리턴
     $.fn.getGridData = function(){
-    	return gridData;
+    	return programInitData;
     }
 
     var tableInitData = {
@@ -96,6 +87,10 @@ function fnAddTextBox(el){
     		viewContentsRe	: false,
     		
     		btn			: []
+    }
+    
+    var programInitData = {
+    		idx	: "",
     }
     
     //그리드 초기화
@@ -226,8 +221,8 @@ function fnAddTextBox(el){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'AddRowBtn" class="btn btn-add btn-sm pull-right" >행추가</a>';
 	        		}else if(btnName == 'delRow'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'DelRowBtn" class="btn btn-delete btn-sm pull-right" >행삭제</a>';
-	        		}else if(btnName == 'save'){
-	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
+//	        		}else if(btnName == 'save'){
+//	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveBtn" class="btn btn-save btn-sm pull-right" >글 저장</a>';
 	        		}else if(btnName == 'saveRow'){
 	        			gridBtnGrpStr += '<a href="#" id="'+tableInitData.programId+'SaveRowBtn" class="btn btn-save btn-sm pull-right" >행저장</a>';
 	        		}
@@ -240,7 +235,6 @@ function fnAddTextBox(el){
 
     	//테이블
     	var table = $('<table class="table center-aligned-table table-hover tableScrollX" />');
-
 
     	//테이블 헤더
     	var thead = $('<thead />');
@@ -342,7 +336,6 @@ function fnAddTextBox(el){
 
     	//
     	if(editable){
-    		var rowId = -1;
     		$('tr[id^="tr_row_"]').dblclick(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
     			clickCnt = rowId;
@@ -364,6 +357,9 @@ function fnAddTextBox(el){
 
     		$('tr[id^="tr_row_"]').click(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
+    			
+    			
+    			
     			gridRowGridBlurEvent($(this));
     		});
     	}
@@ -552,6 +548,8 @@ function fnAddTextBox(el){
     	var tdData = thisData.children('td');
     	var tdRowData = {};
     	clickCnt = rowId;
+    	
+    	programInitData.idx = rowId;
     	var faFlag = null;
 
     	var elI = $(tdData[0]).children('i');
@@ -598,15 +596,17 @@ function fnAddTextBox(el){
         		}
         	}
     	}
-    	gridData = tdRowData;
+    	programInitData = tdRowData;
     }
 
     function gridRowGridBlurEvent(thisData){
+    	
+    	console.log(thisData);
     	gridDataSetting(thisData);
 
-    	if(gridData.idx != undefined){
+    	if(programInitData.idx != undefined){
         	blogData = {
-        		idx : gridData.idx
+        		idx : programInitData.idx
         	}
     		getView();
     	}
@@ -616,11 +616,19 @@ function fnAddTextBox(el){
     function getView(){
 		if(viewContents){
 			//내용 초기화
-			$('#'+tableInitData.programId+'View').empty();
+			$('#'+tableInitData.programId+'Title').empty();
+			$('#'+tableInitData.programId+'Subject').empty();
+			$('#'+tableInitData.programId+'ViewArea').empty();
+			
+			
 			//내용 생성
 			var divContainer = $('<div class="col-lg-12" style="margin-bottom:100px;" />');
 
 			//제목
+			
+			//$('#'+tableInitData.programId+'Subject').val();
+			
+			
 			var divSubject = $('<div id="'+tableInitData.programId+'ContainerSubject" class="form-control" />');
 				var inputSubject = $('<input id="'+tableInitData.programId+'Subject" type="text" class="col-lg-12 inputWhite viewInput" /> ');
 				//수정.
@@ -782,9 +790,12 @@ function fnAddTextBox(el){
     	var flag = '';
     	var newUrl = '';
     	var sendData = '';
+    	var gridData = {};
 
+    	if(thisId.indexOf('TextBoxAdd') != -1){
+    		fnAddTextBox();
     	//댓댓글 저장
-    	if(thisId.indexOf('ReReSaveBtn') != -1){
+    	}else if(thisId.indexOf('ReReSaveBtn') != -1){
     		console.log('ReReSaveBtn');
     		flag = 'insert';
     		newUrl = 'saveReRe' + tableInitData.uProgramId;
@@ -947,10 +958,11 @@ function fnAddTextBox(el){
     		newUrl = 'update'+ tableInitData.uProgramId;
 		//글추가
     	}else if(thisId.indexOf('Add') != -1){
-    		$('#'+tableInitData.programId+'View').css('display', 'block');
-      	
-    		fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
-    		
+    		if($('#'+tableInitData.programId+'View').css('display') == "none"){
+        		$('#'+tableInitData.programId+'View').css('display', 'block');
+              	
+        		fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');    			
+    		}
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){
@@ -1001,31 +1013,25 @@ function fnAddTextBox(el){
 			if(blogData.idx != ''){
 				sendData = {
 						idx		: blogData.idx,
-						title 	: $('#'+tableInitData.programId+'TitleCombo option:selected').text(),
+						title 	: $('#'+tableInitData.programId+'Title option:selected').text(),
 						subject : $('#'+tableInitData.programId+'Subject').val(),
 						dt_data  : dataDt
 				}
 			}else{
 				sendData = {
-						title : $('#'+tableInitData.programId+'TitleCombo option:selected').text(),
+						title : $('#'+tableInitData.programId+'Title option:selected').text(),
 						subject : $('#'+tableInitData.programId+'Subject').val(),
 						dt_data  : dataDt
 				}
 			}
 			
-console.log(sendData);
-			
-			$.ajax({
-				url 	: tableInitData.url + "save" + tableInitData.uProgramId + "Contents",
-				type	: 'POST',
-//				data    : formData,
-				data	: JSON.stringify(sendData),
-//				contentType : false,
-//				processData : false,
-				contentType : "application/json, charset=utf-8",
-				async 	: false,
-				success	: function(result){
-//					if($('#'+programId+'FileUploadText').val() != ''){
+			SeonhoblogUtil.ajax(
+					JSON.stringify(sendData), 
+					tableInitData.url + "save" + tableInitData.uProgramId + "Contents", 
+					false, 
+					function callbackFunc(data){
+						
+//						if($('#'+programId+'FileUploadText').val() != ''){
 //						$.ajax({
 //							url 	: tableInitData.url + "/save"+tableInitData.uProgramId+"FileUpload",
 //							type	: 'POST',
@@ -1041,10 +1047,11 @@ console.log(sendData);
 //							}
 //						})
 //					}
-
-//					window.location.href="/";
-				}
-			})
+						
+						window.location.href="/";
+					}	
+			)
+			
 
 return false;
 
@@ -1120,18 +1127,6 @@ return false;
     });
 
 
-    
-	//글쓰기상자
-	function fnAddTextBox(el){
-	    var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
-	    str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-	    str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-        str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
-        str += '</div>';
-		$('#updateBloxViewArea').append(str);
-		contentLength++;
-	}    
-    
     
     
   //글쓰기버튼
@@ -1222,9 +1217,11 @@ return false;
     }
 
 
+    
+    //텍스트상자 높이 조정
     function resize(obj) {
-  	  obj.style.height = "1px";
-  	  obj.style.height = (12+obj.scrollHeight)+"px";
+  	  obj.currentTarget.style.height = "50px";
+  	  obj.currentTarget.style.height = (12+obj.target.scrollHeight)+"px";
   	}
 
     function fnImgWidthChg(data){
@@ -1240,7 +1237,34 @@ return false;
 //    	$('.imgContWidth_'+length).css('display', 'none');
 //    }
 
-
+    function fnAddTextBox(){
+    	
+    	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
+    		dd.click(function(){
+    			fnSaveIdx(contentLength);
+    		});
+    	
+    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
+    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT" />');
+    		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;" />');
+    		childTextArea.keydown(function(el){
+    			resize(el);
+    		})
+    		
+    		
+    	dd.append(childInput1).append(childInput2).append(childTextArea);
+    	
+    	$('#'+tableInitData.programId+'ViewArea').append(dd);
+    		
+    		
+//    	var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
+//    	str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
+//    	str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
+//    	str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
+//    	str += '</div>';
+//    	$('#blogViewArea').append(str);
+    	contentLength++;
+    }
     
     
 }(window, jQuery));

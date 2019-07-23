@@ -1,7 +1,9 @@
 package com.seonhoblog.main.ctrl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +35,13 @@ public class MainController {
 
 		//접속자 IP
 		session.setAttribute("s_ip", (String)request.getAttribute(ParagonConstants.CLIENT_IP));
+		
+		Set<String> addedParams = new HashSet<String>();
+		
+        addedParams.add("s_userId");
+        addedParams.add("s_ip");
+        session.setAttribute("addedParams",addedParams);
+		
 		
 		//필수 테이블과 데이터 확인
 

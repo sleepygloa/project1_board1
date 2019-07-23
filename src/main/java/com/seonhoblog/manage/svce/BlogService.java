@@ -107,6 +107,7 @@ public class BlogService extends ParagonService{
 			String idx = getSqlManager().selectOne("BlogService.listBlogContentsIdx", inParams);
 			System.out.print("idx "+ idx);
 			if(idx != null) {
+				inParams.setParam("idx", idx);
 				//기존 내용 삭제
 				getSqlManager().update("BlogService.saveBlogContentsDelete", inParams);
 				
@@ -117,7 +118,7 @@ public class BlogService extends ParagonService{
 					dr.setParam("idx", idx);
 					
 					//글 내용 저장
-					getSqlManager().update("BlogService.saveBlogContentsInsert", inParams);
+					getSqlManager().update("BlogService.saveBlogContentsInsert", dr);
 				}
 			}else {
 				//에러

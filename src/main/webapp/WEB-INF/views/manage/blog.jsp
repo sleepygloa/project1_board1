@@ -7,9 +7,9 @@
 	<div id="blogView" class="viewContainer col-xs-w100" style="display:none;">
 		<div class="col-xs-w100">
 			<div class="col-xs-w100">
-				<a id="blogTextBox" type="button" class="btn btn-sm btn-info pull-left" >글상자</a>
-				<a id="blogImg" type="button" class="btn btn-sm btn-info pull-left" >이미지</a>
-				<a id="blogs" type="button" class="btn btn-sm btn-info pull-left" >미정</a>
+				<a id="blogTextBoxAddBtn" type="button" class="btn btn-sm btn-info pull-left" >글상자</a>
+				<a id="blogImgAddBtn" type="button" class="btn btn-sm btn-info pull-left" >이미지</a>
+				<a id="blogCodeAddBtn" type="button" class="btn btn-sm btn-info pull-left" >미정</a>
 				
 			
 				<a id="blogSaveBtn" type="button" class="btn btn-sm btn-info pull-right" >저장하기</a>

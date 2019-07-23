@@ -232,7 +232,7 @@
 			IDX = #{file_idx}
 	</update>
 
-	<select id="listBlogContentsIdx"  resultType="HMap">
+	<select id="listBlogContentsIdx"  resultType="String">
 		SELECT
 			MAX(IDX) AS idx
 		FROM
