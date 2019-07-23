@@ -20,6 +20,16 @@
       <property name="password" value="gkstna88" />
    </bean>
 
+	<bean id="logDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+	 <constructor-arg ref="comDataSource" />
+	 <property name="logFormatter">
+	  <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+	   <property name="loggingType" value="MULTI_LINE" />
+	   <property name="sqlPrefix" value="SQL:::" />
+	  </bean>
+	 </property>
+	</bean>
+
    <!-- TransactionManager -->
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
       <property name="dataSource" ref="comDataSource" />
@@ -28,6 +38,8 @@
 <!-- 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 	  <constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean> -->
+	
+	
 
    <!-- SqlManager -->
    <bean id="comSqlManager" class="com.core.mvc.SqlManager">
@@ -43,7 +55,7 @@
    <!-- SqlSession Factory myBatis-->
    	<bean id="sqlSessionFactory" class="com.core.mybatis.ReloadableSqlSessionFactoryBean">
     	<!-- <property name="interval" value="10000" /> -->
-       	<property name="dataSource" ref="comDataSource" />
+       	<property name="dataSource" ref="logDataSource" />
        	<property name="configLocation" value="classpath:config/mybatis/mybatis-context.xml" />
        	<property name="mapperLocations" value="classpath:com/seonhoblog/**/sql/*.xml" />
    	</bean>
