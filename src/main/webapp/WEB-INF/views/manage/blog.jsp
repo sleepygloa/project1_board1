@@ -8,8 +8,10 @@
 		<div class="col-xs-w100">
 			<div class="col-xs-w100">
 				<a id="blogTextBoxAddBtn" type="button" class="btn btn-sm btn-info pull-left" >글상자</a>
+				<a id="blogCodeAddBtn" type="button" class="btn btn-sm btn-info pull-left" >코드</a>
 				<a id="blogImgAddBtn" type="button" class="btn btn-sm btn-info pull-left" >이미지</a>
-				<a id="blogCodeAddBtn" type="button" class="btn btn-sm btn-info pull-left" >미정</a>
+				<input id="blogImgAddBtn_input" type="file" style="display:none;" />
+				<a id="blogDelBoxBtn" type="button" class="btn btn-sm btn-info pull-left" >컨텐츠삭제</a>
 				
 			
 				<a id="blogSaveBtn" type="button" class="btn btn-sm btn-info pull-right" >저장하기</a>

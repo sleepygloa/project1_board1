@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.core.parameters.CommParams;
@@ -51,27 +52,12 @@ public class BlogController {
 		return outParams;
 	}
 	
-	//블로그 글 페이지 이동
-	@RequestMapping("/viewBlog")
-	public String viewPg(Params inParams) {
-		return "manage/updateBlog";
-	}
 
 	
 	//블로그 글 불러오기
-	@RequestMapping("/viewUpdateBlog")
-	public Params viewUpdateBlog(Params inParams) throws Exception {
-		System.out.println("viewUpdateBlog : "+inParams);
-		Params outParams = ParamsFactory.createOutParams(inParams);
-
-		String idx = inParams.getString("idx");
-		
-		//저장된 부분이 있을 때.
-		if(idx != "") {
-			outParams = blogService.viewUpdateBlog(inParams);
-		}
-
-		return outParams;
+	@RequestMapping(method = RequestMethod.POST, value="/viewBlog")
+	public Params viewBlog(Params inParams) throws Exception {
+		return blogService.viewBlog(inParams);
 	}
 	
 	//블로그 글쓰기 완료

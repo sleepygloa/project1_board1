@@ -46,8 +46,43 @@
 		,	#{s_userId}
 		);
 	</insert>
+	
+	<select id="listBlogContentsIdx"  resultType="String">
+		SELECT
+			MAX(IDX) AS idx
+		FROM
+			TB_BLOG_M
+		WHERE
+			IN_USER_ID = #{s_userId};
+	</select>
 
-	<select id="viewUpdateBlog" resultType="HMap">
+	<delete id="saveBlogContentsDelete" >
+		DELETE FROM
+			TB_BLOG_D
+		WHERE IDX = #{idx};
+	</delete>
+
+	<insert id="saveBlogContentsInsert" >
+		INSERT INTO
+			TB_BLOG_D
+		(
+			IDX
+		,	I
+		,	TYPE
+		,	CONTENT
+		,	IMG_WIDTH_SCALE
+		)
+		VALUES
+		(
+			#{idx}
+		,	#{i}
+		,	#{type}
+		,	#{content}
+		,	#{imgWidthScale}
+		);
+	</insert>
+
+	<select id="viewBlog" resultType="HMap">
 		SELECT
 			M.IDX			AS IDX
 		,	M.SUBJECT		AS SUBJECT
@@ -56,7 +91,7 @@
 		,	D.TYPE
 		,	D.I
 		,	D.CONTENT
-		,	D.IMGWIDTHSCALE	AS IMG_WIDTH_SCALE
+		,	D.IMG_WIDTH_SCALE
 		FROM
 			TB_BLOG_M M
 		LEFT OUTER JOIN
@@ -232,39 +267,6 @@
 			IDX = #{file_idx}
 	</update>
 
-	<select id="listBlogContentsIdx"  resultType="String">
-		SELECT
-			MAX(IDX) AS idx
-		FROM
-			TB_BLOG_M
-		WHERE
-			IN_USER_ID = #{s_userId};
-	</select>
 
-	<delete id="saveBlogContentsDelete" >
-		DELETE FROM
-			TB_BLOG_D
-		WHERE IDX = #{idx};
-	</delete>
-
-	<insert id="saveBlogContentsInsert" >
-		INSERT INTO
-			TB_BLOG_D
-		(
-			IDX
-		,	I
-		,	TYPE
-		,	CONTENT
-		,	IMG_WIDTH_SCALE
-		)
-		VALUES
-		(
-			#{idx}
-		,	#{i}
-		,	#{type}
-		,	#{content}
-		,	#{imgWidthScale}
-		);
-	</insert>
 
 </mapper>

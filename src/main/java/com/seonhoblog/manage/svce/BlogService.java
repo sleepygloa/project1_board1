@@ -35,48 +35,49 @@ public class BlogService extends ParagonService{
 	/**
 	 * 블로그 글 조회
 	 * */
-	public Params viewUpdateBlog(Params inParams) throws Exception{
-		System.out.println("viewUpdateBlog" + inParams);
-		Params outParams = getSqlManager().selectGridParams("BlogService.viewUpdateBlog", inParams);
-		DataTable dt = outParams.getDataTable("dt_data");
+	public Params viewBlog(Params inParams) throws Exception{
+		System.out.println("viewBlog" + inParams);
+		Params outParams = getSqlManager().selectGridParams("BlogService.viewBlog", inParams);
+//		DataTable dt = outParams.getDataTable("dt_data");
 		
 		//글의 내용이 있을 때.
-		if(dt.size() > 0) {
-			//글 수정 일때.
-			if(inParams.getString("UPDATE") == null) {
-				for(int i = 0; i < dt.size(); i++) {
-					if(dt.get(i).get("TYPE") == null){
-						
-					}else if(!(dt.get(i)).get("TYPE").equals("img")) {
-					
-//						String content = (String)((list.get(i)).get("CONTENT"));
-//						content = content.replaceAll("<", "&lt");
-//						content = content.replaceAll(">", "&gt");
-//						System.out.println(content);
-//						(list.get(i)).put("CONTENT", content);
-					}
-				}
-			}
-			outParams.setParam("dt_contents", dt);
-			
-			//아이디체크
-//			if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
-//				String s_userId = inParams.getString("s_userId");
-//				String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
-//				if(s_userId.equals(inUserId)) {
-//					System.out.println("ID_CHECK_OK");
-//					resultMap.put("S_CHECK_ID", true);
+//		if(dt.size() > 0) {
+//			//글 수정 일때.
+//			if(inParams.getString("UPDATE") == null) {
+//				for(int i = 0; i < dt.size(); i++) {
+//					if(dt.get(i).get("TYPE") == null){
+//						
+//					}else if(!(dt.get(i)).get("TYPE").equals("img")) {
+//					
+////						String content = (String)((list.get(i)).get("CONTENT"));
+////						content = content.replaceAll("<", "&lt");
+////						content = content.replaceAll(">", "&gt");
+////						System.out.println(content);
+////						(list.get(i)).put("CONTENT", content);
+//					}
 //				}
-//			}else {
-//				resultMap.put("S_CHECK_ID", false);
 //			}
-		}
+//			outParams.setParam("dt_contents", dt);
+//			
+//			//아이디체크
+////			if(inParams.getString("s_userId") != null && (list.get(0)).get("IN_USER_ID") != null) {
+////				String s_userId = inParams.getString("s_userId");
+////				String inUserId = (String)((list.get(0)).get("IN_USER_ID"));
+////				if(s_userId.equals(inUserId)) {
+////					System.out.println("ID_CHECK_OK");
+////					resultMap.put("S_CHECK_ID", true);
+////				}
+////			}else {
+////				resultMap.put("S_CHECK_ID", false);
+////			}
+//		}
 
 		//업로드된 파일이있을 때.
 //		List<Map<String,Object>> fileList = blogDao.selectFileList(inParams);
 //		if(fileList != null) {
 //			resultMap.put("dt_file", fileList);
 //		}
+		System.out.println("d");
 		return outParams;
 	}
 	

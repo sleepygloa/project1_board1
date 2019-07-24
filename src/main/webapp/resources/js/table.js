@@ -358,65 +358,9 @@ function fnSaveIdx(i){
     		$('tr[id^="tr_row_"]').click(function(){
     			rowId = $(this).attr('id').split('tr_row_')[1];
     			
-    			
-    			
     			gridRowGridBlurEvent($(this));
     		});
     	}
-    }
-
-    
-    /**
-     * 공통된 프로그램 id 이용하여 블로그 형태의 글을 불러오는 소스
-     * */
-    $.fn.getContents = function(){
-    	contentLength = 0;
-    	$.ajax({
-			url	 : url + '/view'+ tableInitData.uProgramId,
-			data : blogData,
-			type : "POST",
-			async:false,
-			success : function(result){
-				$(this).empty();
-				var list = result.map;
-					blogIdx = list[0].IDX;
-					var idCheck = result.S_CHECK_ID;
-					$('#'+tableInitData.programId+'Title').val(list[0].TITLE);
-					$('#'+tableInitData.programId+'Subject').val(list[0].SUBJECT);
-					
-//					$('select[id='+programId+'TitleCombo]').find("option").filter(function(index){
-//						console.log(list[0].TITLE);
-//						console.log($(this).text());
-//						return list[0].TITLE == $(this).text();
-//					}).prop("selected", "selected");
-
-					for(var i = 0; i < list.length; i++){
-						var sendContents = list[i];
-						if(sendContents == undefined){
-							$('#'+tableInitData.programId+'ViewContainer').val('');
-						}else{
-							if(list[i].TYPE == 'IMG'){
-								updateImgArea(sendContents);
-							}else if(list[i].TYPE == 'CODE'){
-								updateTextArea(sendContents);
-							}else{
-								updateTextArea(sendContents);
-							}
-						}
-					}
-					contentLength = list.length;
-
-					if(idCheck){
-						$('#'+tableInitData.programId+'ModifyBtn').css('display', 'inline-block');
-						$('#'+tableInitData.programId+'DeleteBtn').css('display', 'inline-block');
-					}
-
-					var list = result.list;
-					var str = '';
-					//list[i].ORIGINAL_FILE_NAME
-
-				}
-		})
     }
 
     /**
@@ -429,6 +373,7 @@ function fnSaveIdx(i){
 				idx : tableInitData.idx
 			},
 			type	: "POST",
+			contentType : 'application/json; charset=utf-8',
 //			async	: false,
 			success : function(result){
 
@@ -600,17 +545,13 @@ function fnSaveIdx(i){
     }
 
     function gridRowGridBlurEvent(thisData){
-    	
-    	console.log(thisData);
+
+    	//클릭했을때 programInitData 에 td 속성 값들 저장
     	gridDataSetting(thisData);
 
     	if(programInitData.idx != undefined){
-        	blogData = {
-        		idx : programInitData.idx
-        	}
     		getView();
     	}
-
     }
 
     function getView(){
@@ -620,168 +561,74 @@ function fnSaveIdx(i){
 			$('#'+tableInitData.programId+'Subject').empty();
 			$('#'+tableInitData.programId+'ViewArea').empty();
 			
-			
-			//내용 생성
-			var divContainer = $('<div class="col-lg-12" style="margin-bottom:100px;" />');
+			$('#'+tableInitData.programId+'View').css('display', 'block');
+			fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
 
-			//제목
-			
-			//$('#'+tableInitData.programId+'Subject').val();
-			
-			
-			var divSubject = $('<div id="'+tableInitData.programId+'ContainerSubject" class="form-control" />');
-				var inputSubject = $('<input id="'+tableInitData.programId+'Subject" type="text" class="col-lg-12 inputWhite viewInput" /> ');
-				//수정.
-				if(!blogData.update){
-					inputSubject.attr('disabled', 'disabled');
-				}
-			divSubject.append(inputSubject);
+//			var divViewContainer = $('<div id="'+tableInitData.programId+'ViewContainer" class="form-control viewContentContainer" />');
+//
+//			divContainer.append(divSubject);
+//			divContainer.append(divSubContent);
+//
+//			divContainer.append(divViewContainer);
+//
+//			if(viewContentsRe){
+//				var disRe = $('<div id="'+tableInitData.programId+'Re" class="re-container" />');
+//				divContainer.append(disRe);
+//			}
+//
+//			$('#'+tableInitData.programId+'View').html(divContainer);
 
-			//부제 컨텐츠
-			var divSubContent = $('<div class="form-control" />');
-				var fs = $('<span id="'+tableInitData.programId+'FileUploadBtn" class="btn btn-outline-success btn-sm">파일업로드</span>');
-				var fsI = $('<input id="'+tableInitData.programId+'FileUpload" type="file" value="" style="display:none;"/>');
-				var fsIT = $('<input id="'+tableInitData.programId+'FileUploadText" type="text" class="inputWhite viewInput" readonly/>');
-				//수정.
-				if(!blogData.update){
-					fsIT.attr('disabled', 'disabled');
-				}else{
-					fs.click(function(){
-						fsI.trigger('click');
-					});
-					fsI.change(function(){
-						var fileValue = $('#'+programId+'FileUpload').val().split("\\");
-						var fileName = fileValue[fileValue.length-1]; // 파일명
+			//컨텐츠 개수 초기화
+	    	contentLength = 0;
+	    	$.ajax({
+				url	 	: tableInitData.url + 'view'+ tableInitData.uProgramId,
+				data 	: JSON.stringify(programInitData),
+				type 	: "POST",
+				async	: false,
+				contentType : 'application/json; charset=utf-8',
+				success : function(result){
+					console.log(result);
+					
+					//블로그 내용 초기화
+					$('#'+tableInitData.programId+'ViewArea').empty();
+					
+					var dt_grid = result.dt_grid;
+						console.log(programInitData);
+						
+						//타이틀, 주제 입력
+						$('#'+tableInitData.programId+'Title').val(dt_grid[0].TITLE);
+						$('#'+tableInitData.programId+'Subject').val(dt_grid[0].SUBJECT);
+						
+						//컨텐츠 입력(루프)
+						for(var i = 0; i < dt_grid.length; i++){
+							if(dt_grid[i].TYPE == 'IMG'){
+								fnAddImg(false, dt_grid[i]);
+							}else if(dt_grid[i].TYPE == 'CODE'){
+								fnAddCode(false, dt_grid[i]);
+							}else{
+								fnAddTextBox(false, dt_grid[i]);
+							}
+						}
 
-						$('#'+programId+'FileUploadText').val(fileName);
-					});
-				}
+//						if(idCheck){
+//							$('#'+tableInitData.programId+'ModifyBtn').css('display', 'inline-block');
+//							$('#'+tableInitData.programId+'DeleteBtn').css('display', 'inline-block');
+//						}
 
-				var divTitleCombo = $('<div />');
-					var subTitleCombo = $('<select id="'+tableInitData.programId+'TitleCombo" class="form-control" />');
-				divTitleCombo.append(subTitleCombo);
-				viewTitleCombo();
+						var list = result.list;
+						var str = '';
+						//list[i].ORIGINAL_FILE_NAME
 
+					}
+			})
 
-				//글 상자버튼그룹
-				var divBtnBox = $('<div class="form-control" />');
-					var bbText = $('<a id="'+tableInitData.programId+'TextBoxBtn" class="btn btn-sm"/>');
-					bbText.addClass('btn-outline-success');
-					bbText.text('글상자');
-					bbText.click(function(){
-						updateTextArea({TYPE:'TEXT'});
-					});
-
-					var bbCode = $('<a id="'+tableInitData.programId+'CodeBoxBtn" class="btn btn-sm"/>');
-					bbCode.addClass('btn-outline-success');
-					bbCode.text('코드');
-					bbCode.click(function(){
-						updateTextArea({TYPE:'CODE'});
-					});
-
-					var bbImgIn = $('<input id="'+tableInitData.programId+'ImgBoxBtn_input" type="file" style="display:none;" />');
-					bbImgIn.change(function(){
-					    if (this.files && this.files[0]) {
-							console.log($(this));
-					        var reader = new FileReader();
-					        reader.onload = function (e) {
-					            $('#content_'+(contentLength-1)).attr('src', e.target.result);
-					        }
-					        reader.readAsDataURL(this.files[0]);
-					    }
-					});
-					var bbImg = $('<a id="'+tableInitData.programId+'ImgBoxBtn" class="btn btn-sm"/>');
-					bbImg.addClass('btn-outline-success');
-					bbImg.text('이미지');
-					bbImg.click(function(){
-						updateImgArea();
-						$('#'+programId+'ImgBoxBtn_input').trigger('click');
-					});
-
-					var bbDel = $('<a id="'+tableInitData.programId+'DelBoxBtn" class="btn btn-sm"/>');
-					bbDel.addClass('btn-outline-success');
-					bbDel.text('삭제');
-					bbDel.click(function(){
-						console.log(focusIdx);
-						$('#row_'+focusIdx).remove();
-					});
-
-					var bbTyping = $('<a id="'+tableInitData.programId+'typingBoxBtn" class="btn btn-sm"/>');
-					bbTyping.addClass('btn-outline-success');
-					bbTyping.text('글보기');
-
-					var bbView = $('<a id="'+tableInitData.programId+'ViewBoxBtn" class="btn btn-sm"/>');
-					bbView.addClass('btn-outline-success');
-					bbView.text('뷰');
-
-
-					divBtnBox.append(bbText)
-							.append(bbCode)
-							.append(bbImgIn)
-							.append(bbImg)
-							.append(bbDel)
-//							.append(bbTyping)
-//							.append(bbView)
-
-			divSubContent.append(fs)
-						.append(fsI)
-						.append(fsIT)
-						.append(divTitleCombo);
-			if(blogData.update){
-				divSubContent.append(divBtnBox);
-			}
-
-			var divViewContainer = $('<div id="'+tableInitData.programId+'ViewContainer" class="form-control viewContentContainer" />');
-
-			divContainer.append(divSubject);
-			divContainer.append(divSubContent);
-
-			divContainer.append(divViewContainer);
-
-			if(viewContentsRe){
-				var disRe = $('<div id="'+tableInitData.programId+'Re" class="re-container" />');
-				divContainer.append(disRe);
-			}
-
-			$('#'+tableInitData.programId+'View').html(divContainer);
-
-
-			$('#'+tableInitData.programId+'ViewContainer').getContents();
 		}
 
-		if(viewContentsRe){
-			$('#'+tableInitData.programId+'Re').getBlogRe();
-		}
+//		if(viewContentsRe){
+//			$('#'+tableInitData.programId+'Re').getBlogRe();
+//		}
 
     }
-
-
-//	//글쓰기 드롭다운 리스
-//	function viewTitleCombo(){
-//		$.ajax({
-//			url : url + "/get"+tableInitData.uProgramId+"TitleDropdown",
-//			data 	: {
-//				idx : gridData.idx
-//			},
-//			success : function(result){
-//				  $('#'+programId+'TitleCombo').empty();
-//				  var options = '';
-//				  console.log(result.list);
-//				  if(result.list){
-//					  var list = result.list;
-//					  var count = list.length * 10;
-//					  var listValue = 0;
-//					  for(var i in list){
-//						  if(listValue != count){
-//							  listValue += 10;
-//						  }
-//						  options += '<option value="'+listValue+'" >'+list[i].NAME+'</option>';
-//					  }
-//				  }
-//				  $('#'+tableInitData.programId+'TitleCombo').append(options);
-//			}
-//		})
-//	}
 
     //그리드와 관련된 버튼을 클릭 했을때 이벤트
     $(document).on('click','a[id$=Btn]', function(e){
@@ -793,7 +640,17 @@ function fnSaveIdx(i){
     	var gridData = {};
 
     	if(thisId.indexOf('TextBoxAdd') != -1){
-    		fnAddTextBox();
+    		fnAddTextBox(true);
+    		return false;
+    	}else if(thisId.indexOf('CodeAdd') != -1){
+    		fnAddCode(true);
+    		return false;
+    	}else if(thisId.indexOf('ImgAdd') != -1){
+    		fnAddImg(true);
+    		return false;
+    	}else if(thisId.indexOf('DelBox') != -1){
+			$('#row_'+focusIdx).remove();
+			return false;
     	//댓댓글 저장
     	}else if(thisId.indexOf('ReReSaveBtn') != -1){
     		console.log('ReReSaveBtn');
@@ -982,25 +839,33 @@ function fnSaveIdx(i){
 			var count = 0;
 			for(var i = 0; i < contentLength; i++){
 				console.log('row_'+i);
-				//컨텐츠의 개수가 존재.
+				
+				//글(컨텐츠) 가 작성된 개수, 있을 때.
 				if($('#row_'+i).val() != undefined){
-					var dataList = {};
-					var textareaVal = $('#text_'+i).val();
-					var typeVal = $('#type_'+i).val();
-					var imgWidthScale = $('#text_'+i).attr('width');
+					
+					//데이터 세팅
+					var initData = {
+							text		: $('#text_'+i).val(),
+							type			: $('#type_'+i).val(),
+							imgWidthScale	: $('#text_'+i).attr('width')
+					}
+					
 
-					if(typeVal == 'IMG'){
-						textareaVal = $('#text_'+i).attr('src');
-						if(imgWidthScale != ''){
-							imgWidthScale = imgWidthScale.replace(/[^0-9]/g,"");
+					//이미지 일 경우
+					if(initData.type == 'IMG'){
+						initData.text = $('#text_'+i).attr('src');
+						if(initData.imgWidthScale != ''){
+							initData.imgWidthScale = initData.imgWidthScale.replace(/[^0-9]/g,"");
 						}
 					}
-					dataList = {
-							idx 			: blogData.idx,
+					
+					//바인딩
+					var	dataList = {
+							idx 			: programInitData.idx,
 							i   			: i-count,
-							type 			: typeVal,
-							content 		: textareaVal,
-							imgWidthScale 	: imgWidthScale
+							type 			: initData.type,
+							content 		: initData.text,
+							imgWidthScale 	: initData.imgWidthScale,
 					}
 					dataDt.push(dataList);
 				}else{
@@ -1008,21 +873,14 @@ function fnSaveIdx(i){
 				}
 			}
 
-			var sendData = {}
-
-			if(blogData.idx != ''){
-				sendData = {
-						idx		: blogData.idx,
-						title 	: $('#'+tableInitData.programId+'Title option:selected').text(),
-						subject : $('#'+tableInitData.programId+'Subject').val(),
-						dt_data  : dataDt
-				}
-			}else{
-				sendData = {
-						title : $('#'+tableInitData.programId+'Title option:selected').text(),
-						subject : $('#'+tableInitData.programId+'Subject').val(),
-						dt_data  : dataDt
-				}
+			var sendData = {
+				title : $('#'+tableInitData.programId+'Title option:selected').text(),
+				subject : $('#'+tableInitData.programId+'Subject').val(),
+				dt_data  : dataDt
+			}
+	
+			if(programInitData.idx != ''){
+				sendData["idx"] = programInitData.idx;
 			}
 			
 			SeonhoblogUtil.ajax(
@@ -1225,20 +1083,11 @@ return false;
   	}
 
     function fnImgWidthChg(data){
-    	var per = data.width+'%';
-    	$('#content_'+data.contentLength).attr('width', per);
+    	$('#content_'+data.contentLength).attr('width', data.width+'%');
     }
 
-//    function fnImgController(length){
-//    	$('.imgContWidth_'+length).css('display', 'block');
-//    }
-//
-//    function fnRvImgController(length){
-//    	$('.imgContWidth_'+length).css('display', 'none');
-//    }
 
-    function fnAddTextBox(){
-    	
+    function fnAddTextBox(flag, data){
     	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
     		dd.click(function(){
     			fnSaveIdx(contentLength);
@@ -1246,26 +1095,151 @@ return false;
     	
     		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
     		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT" />');
-    		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;" />');
-    		childTextArea.keydown(function(el){
-    			resize(el);
-    		})
+    		dd.append(childInput1).append(childInput2);
     		
+    		//삽입,수정
+    		if(flag){ 
+        		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
+        		childTextArea.keydown(function(el){
+        			resize(el);
+        		});
+        		
+        		dd.append(childTextArea);
+    		}else{
+        		var childTextArea = $('<div id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
+//        		childTextArea.keydown(function(el){
+//        			resize(el);
+//        		});
+        		childTextArea.text(data.CONTENT);
+        		
+        		dd.append(childTextArea);
+    		}
+
+    		$('#'+tableInitData.programId+'ViewArea').append(dd);
     		
-    	dd.append(childInput1).append(childInput2).append(childTextArea);
-    	
-    	$('#'+tableInitData.programId+'ViewArea').append(dd);
-    		
-    		
-//    	var str = '<div id="row_'+contentLength+'" class="col-xs-w100" onclick="fnSaveIdx('+contentLength+');">';
-//    	str += '<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />'
-//    	str += '<input type="hidden" id="type_'+contentLength+'" value="TEXT" />'
-//    	str += '<textarea id="text_'+contentLength+'" class="col-xs-w100"  style="min-height:100px;" onchange="resize('+el+')" ></textarea>'
-//    	str += '</div>';
-//    	$('#blogViewArea').append(str);
-    	contentLength++;
+	    	contentLength++;
+	    	focusIdx = contentLength;
     }
     
+    function fnAddCode(flag, data){
+    	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
+    		dd.click(function(){
+    			fnSaveIdx(contentLength);
+    		});
+    	
+    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
+    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="CODE" />');
+    		dd.append(childInput1).append(childInput2);
+    		
+    		//삽입,수정
+    		if(flag){ 
+        		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;background-color:gray;color:white; padding:10px;" />');
+        		childTextArea.keydown(function(el){
+        			resize(el);
+        		});
+        		
+        		dd.append(childTextArea);
+    		}else{
+    			var childTextArea = $('<div id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;background-color:gray;color:white; padding:10px;" />');
+//        		childTextArea.keydown(function(el){
+//        			resize(el);
+//        		});
+    			
+    			childTextArea.text(data.CONTENT);
+        		
+        		dd.append(childTextArea);
+    		}
+
+    		
+    		$('#'+tableInitData.programId+'ViewArea').append(dd);
+    		
+	    	contentLength++;
+	    	focusIdx = contentLength;
+    }
+    
+    function fnAddImg(flag, data){
+    	
+    	//쓰기, 수정
+    	if(flag){
+    		var bbImgIn = $('#'+tableInitData.programId+'ImgAddBtn_input');
+    		bbImgIn.change(function(){
+    		    if (this.files && this.files[0]) {
+    		        var reader = new FileReader();
+    		        reader.onload = function (e) {
+    		        	console.log(contentLength)
+    		            $('#text_'+(contentLength-1)).attr('src', e.target.result);
+    		        	$('#text_'+(contentLength-1)).attr('width', '100%');
+    		        }
+    		        reader.readAsDataURL(this.files[0]);
+    		    }
+    		});
+    		bbImgIn.trigger('click');
+    		
+    		var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
+    			dd.mouseover(function(){
+    				$('.imgContWidth_'+length).css('display', 'block');
+    			}).mouseleave(function(){
+    				$('.imgContWidth_'+length).css('display', 'none');
+    			}).click(function(){
+    				fnSaveIdx(contentLength);
+    			})
+    			
+    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
+    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="IMG" />');
+    		dd.append(childInput1).append(childInput2);
+    		
+    		var childImg = $('<img id="text_'+contentLength+'" src="#" alt=""/>');
+    		
+    		var childImgBtn1 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">10%</button>');
+    			childImgBtn1.click(function(){
+    				$('#text_'+(contentLength-1)).attr('width', '10%');
+    			});
+    		var childImgBtn2 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">25%</button>');
+    			childImgBtn2.click(function(){
+    				$('#text_'+(contentLength-1)).attr('width', '25%');
+    			});
+    		var childImgBtn3 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">50%</button>');
+    			childImgBtn3.click(function(){
+    				$('#text_'+(contentLength-1)).attr('width', '50%');
+    			});
+    		var childImgBtn4 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">75%</button>');
+    			childImgBtn4.click(function(){
+    				$('#text_'+(contentLength-1)).attr('width', '75%');
+    			});
+    		var childImgBtn5 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">100%</button>');
+    			childImgBtn5.click(function(){
+    				$('#text_'+(contentLength-1)).attr('width', '100%');
+    			});
+    			
+    		dd	.append(childImg)
+    			.append(childImgBtn1)
+    			.append(childImgBtn2)
+    			.append(childImgBtn3)
+    			.append(childImgBtn4)
+    			.append(childImgBtn5);
+    		
+    		$('#'+tableInitData.programId+'ViewArea').append(dd);
+    		
+        	contentLength++;
+        	focusIdx = contentLength;
+		//보기
+    	}else{
+    		var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
+    		
+    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
+    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="IMG" />');
+    		dd.append(childInput1).append(childInput2);
+    		
+    		var childImg = $('<img id="text_'+contentLength+'" src="'+data.CONTENT+'" alt=""/>');
+    		dd	.append(childImg);
+    		
+    		$('#'+tableInitData.programId+'ViewArea').append(dd);
+    		
+        	contentLength++;
+        	focusIdx = contentLength;
+    		
+    	}
+    }
     
 }(window, jQuery));
 
@@ -1315,7 +1289,6 @@ var SeonhoblogUtil = function() {
 		            async	 : false,
 		            contentType : 'application/json; charset=utf-8',
 		            success  : function(data) {
-
 		            	callback(data);
 		            }
 		        });
