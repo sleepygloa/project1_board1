@@ -84,47 +84,38 @@ public class BlogService extends ParagonService{
 	
 	public Params saveBlogContents(Params inParams) {
 		System.out.println("saveBlogContents" + inParams);
+		
+		String idx = "";
+		
 		//글 수정
 		if(inParams.getString("idx")!=null) {
-//			blogDao.saveBlogContent(inParams);
-//			
-//			blogDao.deleteBlogContentBox(inParams);
-//			List<Map<String, Object>> list = (ArrayList<Map<String, Object>>)inParams.getParam("dataDt");
-//			for(int i = 0; i < list.size(); i++) {
-//				inParams.setParam("idx", list.get(i).get("idx"));
-//				inParams.setParam("i", list.get(i).get("i"));
-//				inParams.setParam("type", list.get(i).get("type"));
-//				inParams.setParam("content", list.get(i).get("content"));
-//				inParams.setParam("imgWidthScale", list.get(i).get("imgWidthScale"));
-//				blogDao.insertBlogContentBox(inParams);
-//			}
-//			
+			//글 제목 M 저장
+			getSqlManager().update("BlogService.saveBlogContentsSubjectUpdate", inParams);
+			
+			idx = inParams.getString("idx");
 		}else {
-		//새글
 			//글 제목 M 저장
 			getSqlManager().update("BlogService.saveBlogContentsSubjectInsert", inParams);
 
 			//글 제목 M 찾기
-			String idx = getSqlManager().selectOne("BlogService.listBlogContentsIdx", inParams);
-			System.out.print("idx "+ idx);
-			if(idx != null) {
-				inParams.setParam("idx", idx);
-				//기존 내용 삭제
-				getSqlManager().update("BlogService.saveBlogContentsDelete", inParams);
-				
-				//신규내용 저장
-				DataTable dt = inParams.getDataTable("dt_data");
-				for(DataRow dr : dt) {
-					//글 제목 M 추가
-					dr.setParam("idx", idx);
-					
-					//글 내용 저장
-					getSqlManager().update("BlogService.saveBlogContentsInsert", dr);
-				}
-			}else {
-				//에러
-			}
-
+			idx = getSqlManager().selectOne("BlogService.listBlogContentsMaxIdx", inParams);
+			
+			inParams.setParam("idx", idx);
+		}
+		
+		System.out.print("idx "+ idx);
+			
+		//기존 내용 삭제
+		getSqlManager().update("BlogService.saveBlogContentsDelete", inParams);
+		
+		//신규내용 저장
+		DataTable dt = inParams.getDataTable("dt_data");
+		for(DataRow dr : dt) {
+			//글 제목 M 추가
+			dr.setParam("idx", idx);
+			
+			//글 내용 저장
+			getSqlManager().update("BlogService.saveBlogContentsInsert", dr);
 		}
 		
 		return inParams;

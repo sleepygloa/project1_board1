@@ -128,6 +128,9 @@
 			padding : 5px;
 		}
 		
+		.blogUpdateFlag{
+			display:none;
+		}
 		
 	</style>
 </head>

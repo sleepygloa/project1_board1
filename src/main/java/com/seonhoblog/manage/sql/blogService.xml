@@ -47,7 +47,25 @@
 		);
 	</insert>
 	
-	<select id="listBlogContentsIdx"  resultType="String">
+	<update id="saveBlogContentsSubjectUpdate" parameterType="HMap">
+		UPDATE	TB_BLOG_M
+		SET
+			TITLE   = #{title}
+		,	SUBJECT	= #{subject}
+		WHERE
+			IDX	= #{idx};
+	</update>
+	
+	<select id="listBlogContentsIdx"  resultType="int">
+		SELECT
+			COUNT(*) AS COUNT
+		FROM
+			TB_BLOG_M
+		WHERE
+			IDX = #{idx};
+	</select>
+	
+	<select id="listBlogContentsMaxIdx"  resultType="String">
 		SELECT
 			MAX(IDX) AS idx
 		FROM
@@ -82,6 +100,7 @@
 		);
 	</insert>
 
+
 	<select id="viewBlog" resultType="HMap">
 		SELECT
 			M.IDX			AS IDX
@@ -103,21 +122,11 @@
 		ORDER BY D.I;
 	</select>
 
-	<update id="saveBlogContent" parameterType="hashmap">
-		UPDATE	TB_BLOG_M
-		SET
-			TITLE   = #{title}
-		,	SUBJECT	= #{subject}
-		WHERE
-			IDX	= #{idx};
-	</update>
 
-	<delete id="deleteBlogTitleContent" parameterType="hashmap">
-		DELETE FROM
-			TB_BLOG_M
-		WHERE
-			IDX	= #{idx};
-	</delete>
+
+
+
+
 
 	<select id="getReBlog" parameterType="hashmap" resultType="hashmap">
 		SELECT

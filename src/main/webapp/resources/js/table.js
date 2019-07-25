@@ -11,7 +11,25 @@ var viewContentsRe = false;
 var blogData = '';
 var s_userId = null;
 
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+        byteString = atob(dataURI.split(',')[1]);
+    else
+        byteString = unescape(dataURI.split(',')[1]);
 
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
 
 //콤보박스 만들기
 function fnMakeCombo(targetStr, data){
@@ -91,6 +109,7 @@ function fnSaveIdx(i){
     
     var programInitData = {
     		idx	: "",
+    		userId : "",
     }
     
     //그리드 초기화
@@ -356,11 +375,12 @@ function fnSaveIdx(i){
     	}else{
 
     		$('tr[id^="tr_row_"]').click(function(){
-    			rowId = $(this).attr('id').split('tr_row_')[1];
-    			
     			gridRowGridBlurEvent($(this));
     		});
     	}
+    	
+    	//첫행 블러오기
+    	gridRowGridBlurEvent($('#tr_row_0'));
     }
 
     /**
@@ -550,11 +570,11 @@ function fnSaveIdx(i){
     	gridDataSetting(thisData);
 
     	if(programInitData.idx != undefined){
-    		getView();
+    		getView('VIEW');
     	}
     }
 
-    function getView(){
+    function getView(flag){
 		if(viewContents){
 			//내용 초기화
 			$('#'+tableInitData.programId+'Title').empty();
@@ -564,19 +584,6 @@ function fnSaveIdx(i){
 			$('#'+tableInitData.programId+'View').css('display', 'block');
 			fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');
 
-//			var divViewContainer = $('<div id="'+tableInitData.programId+'ViewContainer" class="form-control viewContentContainer" />');
-//
-//			divContainer.append(divSubject);
-//			divContainer.append(divSubContent);
-//
-//			divContainer.append(divViewContainer);
-//
-//			if(viewContentsRe){
-//				var disRe = $('<div id="'+tableInitData.programId+'Re" class="re-container" />');
-//				divContainer.append(disRe);
-//			}
-//
-//			$('#'+tableInitData.programId+'View').html(divContainer);
 
 			//컨텐츠 개수 초기화
 	    	contentLength = 0;
@@ -596,28 +603,42 @@ function fnSaveIdx(i){
 						console.log(programInitData);
 						
 						//타이틀, 주제 입력
-						$('#'+tableInitData.programId+'Title').val(dt_grid[0].TITLE);
+						$('#'+tableInitData.programId+'Title option:contains('+dt_grid[0].TITLE+')').attr('selected', 'selected');
 						$('#'+tableInitData.programId+'Subject').val(dt_grid[0].SUBJECT);
 						
 						//컨텐츠 입력(루프)
 						for(var i = 0; i < dt_grid.length; i++){
-							if(dt_grid[i].TYPE == 'IMG'){
-								fnAddImg(false, dt_grid[i]);
-							}else if(dt_grid[i].TYPE == 'CODE'){
-								fnAddCode(false, dt_grid[i]);
+							if(flag == 'VIEW'){
+								if(dt_grid[i].TYPE == 'IMG'){
+									fnAddImg(flag, dt_grid[i]);
+								}else if(dt_grid[i].TYPE == 'CODE'){
+									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+								}else{
+									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+								}
 							}else{
-								fnAddTextBox(false, dt_grid[i]);
+								if(dt_grid[i].TYPE == 'IMG'){
+									fnAddImg(flag, dt_grid[i]);
+								}else if(dt_grid[i].TYPE == 'CODE'){
+									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+								}else{
+									fnAddTextBox(flag, dt_grid[i], dt_grid[i].TYPE);
+								}
 							}
 						}
 
+						//유저 세팅
+						programInitData.userId = dt_grid[0].IN_USER_ID;
+						
+						if(flag != 'VIEW' && seonhoblogData.s_userId == dt_grid[0].IN_USER_ID){
+							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
+						}
+						
+//						blogUpdateFlag
 //						if(idCheck){
 //							$('#'+tableInitData.programId+'ModifyBtn').css('display', 'inline-block');
 //							$('#'+tableInitData.programId+'DeleteBtn').css('display', 'inline-block');
 //						}
-
-						var list = result.list;
-						var str = '';
-						//list[i].ORIGINAL_FILE_NAME
 
 					}
 			})
@@ -627,6 +648,10 @@ function fnSaveIdx(i){
 //		if(viewContentsRe){
 //			$('#'+tableInitData.programId+'Re').getBlogRe();
 //		}
+		
+		
+		//글쓴이 일때만 글 수정 
+		//글쓴이가 아니면 수정 양 식 숨김
 
     }
 
@@ -640,13 +665,13 @@ function fnSaveIdx(i){
     	var gridData = {};
 
     	if(thisId.indexOf('TextBoxAdd') != -1){
-    		fnAddTextBox(true);
+    		fnAddTextBox('INSERT',  {}, 'TEXT');
     		return false;
     	}else if(thisId.indexOf('CodeAdd') != -1){
-    		fnAddCode(true);
+    		fnAddTextBox('INSERT', {}, 'CODE');
     		return false;
     	}else if(thisId.indexOf('ImgAdd') != -1){
-    		fnAddImg(true);
+    		fnAddImg('INSERT',  {});
     		return false;
     	}else if(thisId.indexOf('DelBox') != -1){
 			$('#row_'+focusIdx).remove();
@@ -817,9 +842,14 @@ function fnSaveIdx(i){
     	}else if(thisId.indexOf('Add') != -1){
     		if($('#'+tableInitData.programId+'View').css('display') == "none"){
         		$('#'+tableInitData.programId+'View').css('display', 'block');
-              	
-        		fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');    			
     		}
+    		
+			//내용 초기화
+			$('#'+tableInitData.programId+'Title').empty();
+			$('#'+tableInitData.programId+'Subject').empty();
+			$('#'+tableInitData.programId+'ViewArea').empty();
+    		
+    		fnMakeCombo(tableInitData.programId+'Title', 'BLOG_TITLE_CD');    	
         	return false;
         //글저장
     	}else if(thisId.indexOf('Save') != -1){
@@ -853,7 +883,9 @@ function fnSaveIdx(i){
 
 					//이미지 일 경우
 					if(initData.type == 'IMG'){
+						
 						initData.text = $('#text_'+i).attr('src');
+//						initData.text = dataURItoBlob($('#text_'+i).attr('src'));
 						if(initData.imgWidthScale != ''){
 							initData.imgWidthScale = initData.imgWidthScale.replace(/[^0-9]/g,"");
 						}
@@ -915,13 +947,8 @@ return false;
 
 		//글수정
     	}else if(thisId.indexOf('Update') != -1){
-    		if(blogData.idx == undefined) return false;
-			blogData = {
-    				flag : 'modify',
-					idx  : blogData.idx,
-					update : true
-			}
-			getView();
+    		
+			getView('UPDATE');
 			return false;
 		//글삭제
     	}else if(thisId.indexOf('Delete') != -1){
@@ -985,95 +1012,6 @@ return false;
     });
 
 
-    
-    
-  //글쓰기버튼
-    function mainBlogInsertBtn(){
-    	  var data = {
-    			  idx  : '',
-    			  page : tableInitData.url + '/updateBlog'
-    	  }
-    	  loadingPgSetting(data);
-    }
-
-    function updateTextArea(sendContents){
-    	var c = contentLength;
-    	var str = $('<div id="row_'+c+'"/>');
-    	str.click(function(){
-    		focusIdx = c;
-    	});
-    		var strIdx = $('<input type="hidden" id="idx_'+c+'"/>');
-    		var strType = $('<input type="hidden" id="type_'+c+'" value="TEXT"/>');
-    		var strTextArea = $('<textarea id="content_'+c+'" class="form-control col-xs-12" style="min-height:150px;"/>');
-    		if(sendContents != undefined){
-    			strTextArea.text(sendContents.CONTENT);
-	    		if(sendContents.TYPE == 'CODE'){
-	    	   		strTextArea.css({
-	        			'background-color' : 'gray',
-	        			'color'			: 'white'
-	        		});
-	    	   		strType.attr('value', 'CODE');
-	    		}
-    		}
- 
-    		if(!blogData.update) strTextArea.attr('readonly', true);
-    		strTextArea.change(function(){
-    			//resize(this);
-    		});
-    		str.append(strIdx)
-    			.append(strType)
-				.append(strTextArea);
-    		
-		$('#'+programId+'ViewContainer').append(str);
-	    contentLength++;
-    }
-
-    function updateImgArea(sendContents){
-    	var c = contentLength;
-    	var iaDiv = $('<div id="row_'+c+'" />');
-    	iaDiv.mouseover(function(){
-    		$('.imgContWidth_'+c).css('display', 'block');
-    	}).mouseleave(function(){
-    		$('.imgContWidth_'+c).css('display', 'none;');
-    	}).click(function(){
-    		focusIdx = c;
-    	});
-    	
-    	var iaIdx = $('<input id="idx_'+c+'" type="hidden" value="'+c+'"/>');
-    	var iaType = $('<input id="type_'+c+'" type="hidden" value="IMG"/>');
-    	var iaImg = $('<img id="content_'+c+'"  alt="your image"  />');
-		var iaImgChBtn1 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('10%');
-			iaImgChBtn1.click(function(){ fnImgWidthChg({ contentLength : c, width  : 10 }) });
-		var iaImgChBtn2 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('25%');
-			iaImgChBtn2.click(function(){ fnImgWidthChg({ contentLength : c, width  : 25 }) });
-		var iaImgChBtn3 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('50%');
-			iaImgChBtn3.click(function(){ fnImgWidthChg({ contentLength : c, width  : 50 }) });
-		var iaImgChBtn4 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('75%');
-			iaImgChBtn4.click(function(){ fnImgWidthChg({ contentLength : c, width  : 75 }) });    	
-		var iaImgChBtn5 = $('<span class="col-sm-1 btn btn-outline-success btn-sm imgContWidth_'+c+'" style="display:none;" />').text('100%');
-			iaImgChBtn5.click(function(){ fnImgWidthChg({ contentLength : c, width  : 100 }) });
-
-		if(sendContents != undefined){
-			iaImg.attr('src', sendContents.CONTENT);
-			iaImg.attr('width', ''+sendContents.IMG_WIDTH_SCALE+'%');
-		}
-    			
-    	iaDiv.append(iaImg);
-    	
-    	if(blogData.update){
-    		iaDiv.append(iaIdx)
-	    		.append(iaType)
-	    		.append(iaImgChBtn1)
-	    		.append(iaImgChBtn2)
-	    		.append(iaImgChBtn3)
-	    		.append(iaImgChBtn4)
-	    		.append(iaImgChBtn5);
-    	}
-		$('#'+programId+'ViewContainer').append(iaDiv);
-    	
-	    contentLength++;
-    }
-
 
     
     //텍스트상자 높이 조정
@@ -1082,12 +1020,9 @@ return false;
   	  obj.currentTarget.style.height = (12+obj.target.scrollHeight)+"px";
   	}
 
-    function fnImgWidthChg(data){
-    	$('#content_'+data.contentLength).attr('width', data.width+'%');
-    }
 
 
-    function fnAddTextBox(flag, data){
+    function fnAddTextBox(flag, data, type){
     	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
     		dd.click(function(){
     			fnSaveIdx(contentLength);
@@ -1095,14 +1030,31 @@ return false;
     	
     		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
     		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT" />');
+    		
+    		if(type == "TEXT"){
+    			childInput2.value = 'TEXT';	
+    		}else{
+    			childInput2.value = 'CODE';
+    		}
+    		
     		dd.append(childInput1).append(childInput2);
     		
     		//삽입,수정
-    		if(flag){ 
+    		if(flag != "VIEW"){
         		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
         		childTextArea.keydown(function(el){
         			resize(el);
         		});
+        		
+        		if(flag == "UPDATE"){
+        			childTextArea.text(data.CONTENT);
+        		}
+        		if(type == "CODE"){
+            		childTextArea.css({
+	        			"background-color" : "gray",
+	        			"color"			: "white"
+	        		})
+        		}
         		
         		dd.append(childTextArea);
     		}else{
@@ -1121,124 +1073,124 @@ return false;
 	    	focusIdx = contentLength;
     }
     
-    function fnAddCode(flag, data){
-    	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
-    		dd.click(function(){
-    			fnSaveIdx(contentLength);
-    		});
-    	
-    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
-    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="CODE" />');
-    		dd.append(childInput1).append(childInput2);
-    		
-    		//삽입,수정
-    		if(flag){ 
-        		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;background-color:gray;color:white; padding:10px;" />');
-        		childTextArea.keydown(function(el){
-        			resize(el);
-        		});
-        		
-        		dd.append(childTextArea);
-    		}else{
-    			var childTextArea = $('<div id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px;background-color:gray;color:white; padding:10px;" />');
-//        		childTextArea.keydown(function(el){
-//        			resize(el);
-//        		});
-    			
-    			childTextArea.text(data.CONTENT);
-        		
-        		dd.append(childTextArea);
-    		}
-
-    		
-    		$('#'+tableInitData.programId+'ViewArea').append(dd);
-    		
-	    	contentLength++;
-	    	focusIdx = contentLength;
-    }
     
     function fnAddImg(flag, data){
+    	var cnt = contentLength;
+    	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
     	
     	//쓰기, 수정
-    	if(flag){
+    	if(flag != "VIEW"){
     		var bbImgIn = $('#'+tableInitData.programId+'ImgAddBtn_input');
     		bbImgIn.change(function(){
+    			//이미지 변경
     		    if (this.files && this.files[0]) {
     		        var reader = new FileReader();
+    		        
     		        reader.onload = function (e) {
-    		        	console.log(contentLength)
-    		            $('#text_'+(contentLength-1)).attr('src', e.target.result);
-    		        	$('#text_'+(contentLength-1)).attr('width', '100%');
+    		        	
+    		        	var img = new Image();
+    		        	img.src = e.target.result;
+    		        	img.onload = function(e){
+        		        	var canvas = document.createElement("canvas"),
+    		            	max_size = 640,
+	    		            width = img.width,
+	    		            height = img.height;
+
+		        		if (width > height) {
+		        			//가로가 길 경우
+		        			if (width > max_size) {
+		        				height *= max_size / width;
+		        				width = max_size;
+		        			}
+		        		} else {
+		        			//세로가 길 경우
+		        			if (height > max_size) {
+		        				width *= max_size / height;
+		        				height = max_size;
+		        			}
+		        		}
+		        		
+		        		canvas.width = width;
+		        		canvas.height = height;
+		        		canvas.getContext("2d").drawImage(img, 0, 0, width, height);
+		        		var dataUrl = canvas.toDataURL("image/jpeg");
+
+    		            $('#text_'+cnt).attr('src', dataUrl);
+    		        	$('#text_'+cnt).attr('width', '100%');
+    		        	}
+    		        	
+//
     		        }
     		        reader.readAsDataURL(this.files[0]);
     		    }
     		});
-    		bbImgIn.trigger('click');
-    		
-    		var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
-    			dd.mouseover(function(){
-    				$('.imgContWidth_'+length).css('display', 'block');
-    			}).mouseleave(function(){
-    				$('.imgContWidth_'+length).css('display', 'none');
-    			}).click(function(){
-    				fnSaveIdx(contentLength);
-    			})
-    			
-    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
-    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="IMG" />');
-    		dd.append(childInput1).append(childInput2);
-    		
-    		var childImg = $('<img id="text_'+contentLength+'" src="#" alt=""/>');
-    		
-    		var childImgBtn1 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">10%</button>');
-    			childImgBtn1.click(function(){
-    				$('#text_'+(contentLength-1)).attr('width', '10%');
-    			});
-    		var childImgBtn2 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">25%</button>');
-    			childImgBtn2.click(function(){
-    				$('#text_'+(contentLength-1)).attr('width', '25%');
-    			});
-    		var childImgBtn3 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">50%</button>');
-    			childImgBtn3.click(function(){
-    				$('#text_'+(contentLength-1)).attr('width', '50%');
-    			});
-    		var childImgBtn4 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">75%</button>');
-    			childImgBtn4.click(function(){
-    				$('#text_'+(contentLength-1)).attr('width', '75%');
-    			});
-    		var childImgBtn5 = $('<button class="col-xs-w5 imgContWidth_'+contentLength+'" style="display:none">100%</button>');
-    			childImgBtn5.click(function(){
-    				$('#text_'+(contentLength-1)).attr('width', '100%');
-    			});
-    			
-    		dd	.append(childImg)
-    			.append(childImgBtn1)
-    			.append(childImgBtn2)
-    			.append(childImgBtn3)
-    			.append(childImgBtn4)
-    			.append(childImgBtn5);
-    		
-    		$('#'+tableInitData.programId+'ViewArea').append(dd);
-    		
-        	contentLength++;
-        	focusIdx = contentLength;
-		//보기
-    	}else{
-    		var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
-    		
-    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
-    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="IMG" />');
-    		dd.append(childInput1).append(childInput2);
-    		
-    		var childImg = $('<img id="text_'+contentLength+'" src="'+data.CONTENT+'" alt=""/>');
-    		dd	.append(childImg);
-    		
-    		$('#'+tableInitData.programId+'ViewArea').append(dd);
-    		
-        	contentLength++;
-        	focusIdx = contentLength;
-    		
+    		if(flag == 'INSERT'){
+    			bbImgIn.trigger('click');
+    		}
     	}
+		
+
+    	
+		var childInput1 = $('<input type="hidden" id="idx_'+cnt+'" value="'+cnt+'" />');
+		var childInput2 = $('<input type="hidden" id="type_'+cnt+'" value="IMG" />');
+		dd.append(childInput1).append(childInput2);
+		
+		var childImg = $('<img id="text_'+cnt+'" />');
+		if(flag != 'INSERT'){ //글보기와 글수정만
+			childImg.attr('src', data.CONTENT);
+			childImg.attr('width', data.IMG_WIDTH_SCALE+'%');			
+		}
+
+		
+		dd.append(childImg);
+		
+		console.log(flag);
+		if(flag != "VIEW"){
+			console.log('d');
+			
+    		dd.mouseover(function(){
+    			$('.imgContWidth_'+cnt).css('display', 'block');
+    		}).mouseleave(function(){
+    			$('.imgContWidth_'+cnt).css('display', 'none');
+    		}).click(function(){
+    			fnSaveIdx(cnt);
+    		})
+			
+			var childImgBtn1 = $('<button class="col-xs-w5 imgContWidth_'+cnt+'" style="display:none">10%</button>');
+				childImgBtn1.click(function(){
+					$('#text_'+cnt).attr('width', '10%');
+				});
+			var childImgBtn2 = $('<button class="col-xs-w5 imgContWidth_'+cnt+'" style="display:none">25%</button>');
+				childImgBtn2.click(function(){
+					$('#text_'+cnt).attr('width', '25%');
+				});
+			var childImgBtn3 = $('<button class="col-xs-w5 imgContWidth_'+cnt+'" style="display:none">50%</button>');
+				childImgBtn3.click(function(){
+					$('#text_'+cnt).attr('width', '50%');
+				});
+			var childImgBtn4 = $('<button class="col-xs-w5 imgContWidth_'+cnt+'" style="display:none">75%</button>');
+				childImgBtn4.click(function(){
+					$('#text_'+cnt).attr('width', '75%');
+				});
+			var childImgBtn5 = $('<button class="col-xs-w5 imgContWidth_'+cnt+'" style="display:none">100%</button>');
+				childImgBtn5.click(function(){
+					console.log(cnt)
+					$('#text_'+cnt).attr('width', '100%');
+				});
+			
+			dd	.append(childImgBtn1)
+				.append(childImgBtn2)
+				.append(childImgBtn3)
+				.append(childImgBtn4)
+				.append(childImgBtn5);
+		}
+
+    	
+		
+		$('#'+tableInitData.programId+'ViewArea').append(dd);
+		
+    	contentLength++;
+    	focusIdx = contentLength;
     }
     
 }(window, jQuery));
