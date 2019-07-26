@@ -60,7 +60,9 @@ var focusIdx = -1;
 function fnSaveIdx(i){
 	focusIdx = i;
 }
-  
+function fnSaveReIdx(el){
+	console.log(el)
+}
 
 
 
@@ -386,125 +388,170 @@ function fnSaveIdx(i){
     /**
      * 블로그 글의 댓글 리스트를 불러오는 소스
      * */
-    $.fn.getBlogRe = function(){
-		$.ajax({
-			url  	: url + "/getRe" + tableInitData.uProgramId,
-			data 	: {
-				idx : tableInitData.idx
-			},
-			type	: "POST",
-			contentType : 'application/json; charset=utf-8',
-//			async	: false,
-			success : function(result){
+    function getViewReContent(flag, ref, reStep){
+    	
+    	$('#'+tableInitData.programId+'Re').remove();
+    	var reBody = $('<div id="'+tableInitData.programId+'Re" class="col-xs-w100" />');
 
-				var result = result.list;
-				var body = $('#'+tableInitData.programId+"Re");
-				body.empty();
+    		SeonhoblogUtil.ajax(
+					JSON.stringify(programInitData), 
+					tableInitData.url + "listRe" + tableInitData.uProgramId, 
+					false, 
+					function callbackFunc(result){
+						
+						var dt_grid = result.dt_grid;
+						
+//						if(dt_grid.length > 0){
+							
+							for(var i = -1; i < dt_grid.length; i++){
+								
+								var dtGridRef = (i == -1? "-1" : dt_grid[i].REF);
+								var dtGridReStep = (i == -1? "-1" : dt_grid[i].RE_STEP);
+								
+								
+								console.log(i);
+								var dd = $('<div class="col-xs-w100" />');
+								dd.css({
+//									"height":"70px"
+								});
+								
+									var ddImgDiv = $('<div class="col-xs-w15" />');
+									ddImgDiv.css({
+										"height":"50px"
+									});
+										//이미지//기본이미지.
+										var ddImg = $('<img src="" />');
+										//사용자 이미지 입력
+//										ddImg.src = dt_grid[i].IMG;
+										ddImgDiv.append(ddImg);
+									
+									
+									var ddDiv = $('<div class="col-xs-w85" />');
+										var ddIdDiv = $('<div class="col-xs-w100" />');
+										ddIdDiv.css({
+											"min-height":"25px"
+										});
+										if(i == -1){
+											var ddIdText = $('<input id="'+tableInitData.programId+'Writer" class="col-xs-w20" />');
+											ddIdDiv.append(ddIdText);
+										}else{
+											ddIdDiv.text(programInitData.s_userId + " " + programInitData.in_dt);
+										}
+										
+										var ddContentDiv = $('<div class="col-xs-w100" />');
+										ddContentDiv.css({
+											"min-height":"35px"
+										});
+										
+										if(i == -1){
+											var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content" class="col-xs-w100"  />');
+											ddIdTextArea.keydown(function(el){
+							        			resize(el);
+							        		});
+											ddContentDiv.append(ddIdTextArea);
+										}else{
+											if(flag == 'VIEW'){
+												ddIdDiv.text(dt_grid[i].CONTENT);
+											}else{
+												var ddIdTextArea = $('<textarea id="'+tableInitData.programId+'Content" class="col-xs-w100" />');
+												ddIdTextArea.text(dt_grid[i].CONTENT);
+												ddIdTextArea.keydown(function(el){
+								        			resize(el);
+								        		});
+												
+												ddContentDiv.append(ddIdTextArea);
+											}
+										}
+										
+										var ddBtnDiv = $('<div id="'+tableInitData.programId+'ReContentPlace_'+dtGridRef+'_'+dtGridReStep+'" class="col-xs-w100" />');
+										ddBtnDiv.css({
+											"min-height":"30px"
+										});
+//										ddBtnDiv.click(function(){
+//											fnSaveReIdx(ddBtnDiv);
+//										})
+										
+										//댓글달기
+										var ddBtnNew = $('<a class="btn" />');
+										ddBtnNew.text('댓글달기');
+										ddBtnNew.append('<input class="ref" type="hidden" value="'+dtGridRef+'" />');
+										ddBtnNew.append('<input class="reStep" type="hidden" value="'+dtGridReStep+'" />');
+										
+										//수정
+										var ddBtnUpdate = $('<a class="btn" />');
+										ddBtnUpdate.text('수정');
+										ddBtnUpdate.append('<input class="ref" type="hidden" value="'+dtGridRef+'" />');
+										ddBtnUpdate.append('<input class="reStep" type="hidden" value="'+dtGridReStep+'" />');
+										
+										ddBtnUpdate.click(function(){
+											getViewReContent('UPDATE', dtGridRef, dt_grid[i].RE_STEP);
+										})
+										
+										//저장
+										var ddBtnSave = $('<a class="btn" />');
+										ddBtnSave.text('저장');
+										ddBtnSave.append('<input class="ref" type="hidden" value="'+dtGridRef+'" />');
+										ddBtnSave.append('<input class="reStep" type="hidden" value="'+dtGridReStep+'" />');
+										
+										ddBtnSave.click(function(){
+											
+								    		SeonhoblogUtil.ajax(
+													JSON.stringify({
+														idx	: programInitData.idx,
+														ref	: dtGridRef,
+														reStep	: dtGridReStep,
+														writer	: $('#'+tableInitData.programId+'Writer').val(),
+														content	: $('#'+tableInitData.programId+'Content').val(),
+													}), 
+													tableInitData.url + "saveRe" + tableInitData.uProgramId, 
+													false, 
+													function callbackFunc(result){
+														console.log(result);
+													}
+												);
+										})
+										
+										//삭제
+										var ddBtnDelete = $('<a class="btn" />');
+										ddBtnDelete.text('삭제');
+										ddBtnDelete.append('<input class="ref" type="hidden" value="'+dtGridRef+'" />');
+										ddBtnDelete.append('<input class="reStep" type="hidden" value="'+dtGridReStep+'" />');
+										
+										//버튼 그룹
+										console.log(dtGridRef);
+										console.log(dtGridReStep);
+										if(dtGridReStep == 0){
+											ddBtnDiv.append(ddBtnNew);
+										}
+										if(i != -1){
+											if(programInitData.s_userId == dt_grid[i].IN_USER_ID){
+												ddBtnDiv.append(ddBtnUpdate);
+												ddBtnDiv.append(ddBtnDelete);
+											}											
+										}else{
+											ddBtnDiv.append(ddBtnSave);
+										}
+										
 
-				/**
-				 * 댓글 영역
-				 * 댓글이  0 = 글쓰기 폼만 보여짐
-				 * 댓글이 존재 = 댓글과 글쓰기폼이 보여짐
-				 *
-				 * 댓글 개수, 정렬준(인기순, 최신순, 날짜 오름차순)
-				 * 유저 이미지(페이스북 이미지)
-				 * */
-
-				var reContent = $('<div class="col-lg-12" />');
-
-				var reContentNew = $('<div class="col-lg-12 re-contents-input"/>');
-
-				var reContentNewImg = $('<div class="" style="float:left;" />');
-				var reContentNewImgA = $('<a><img class="re-cp-img" src="#"  /></a>');
-				reContentNewImg.append(reContentNewImgA);
-
-				var reContentNewInput = $('<input id="'+tableInitData.programId+'ReWriter" class="col-lg-2" type="text" value="'+(s_userId == null? '' : s_userId)+'" style="padding:0px;display:none;" />');
-				var reContentNewTxt = $('<div class="" style="float:right;min-width:220px;width:90%" ><textarea id="'+tableInitData.programId+'ReContent" style="height:100%;width:100%" ></textarea></div>');
-				var reContentNewAddOn = $('<div style="float:right;min-width:220px;width:90%;height:50px;" />');
-				var reContentNewAddOnDiv = $('<div />').append('<label><input type="checkbox" />Facebook에도 게시</label>');
-
-				var reContentNewAddOnDivA = (s_userId != undefined ?
-						 '<a class="btn btn-default" id="'+tableInitData.programId+'ReSaveBtn" style="float:right";>댓글쓰기</a>'
-						:
-						 '<a style="float:right;">게시하려면 로그인을 하세요</a>');
-				reContentNewAddOnDiv.append(reContentNewAddOnDivA);
-				reContentNewAddOn.append(reContentNewAddOnDiv);
-
-				reContentNew.append(reContentNewImg)
-							.append(reContentNewInput)
-							.append(reContentNewTxt)
-							.append(reContentNewAddOn);
-
-				reContent.append(reContentNew);
-
-				//RE_STEP 댓글 단계
-				//IN_USER_ID 사용자이름
-				//IN_DT 입력시간
-
-				$.each(result, function(key, value){
-
-					var reContentView = $('<div class="col-lg-12 re-contents " />');
-					if(value.RE_LEVEL > 1){
-						reContentView.addClass('reContentDiv');
+										
+										//댓글 컨텐츠 그룹
+										ddDiv.append(ddIdDiv);
+										ddDiv.append(ddContentDiv);
+										ddDiv.append(ddBtnDiv);
+										
+								//댓글 이미지와 컨텐츠그룹
+								dd.append(ddImgDiv).append(ddDiv);
+								
+								//댓글영역 추가
+								reBody.append(dd);
+							}
+//						}
 					}
-
-					var reContentImg = $('<div style="float:left;" />');
-					var reContentImgA = $('<a><img class="re-cp-img src="#" /></a>');
-					reContentImg.append(reContentImgA);
-
-					var reContentTxt = $('<div />');
-
-					reContentTxt.addClass('reContentDiv');
-					reContentTxt.append('<span>'+value.IN_USER_ID+'</span>');
-					reContentTxt.append('<div>'+value.CONTENT+'</div>');
-
-					var reContentAddOn = $('<div id="'+programId+'ReContentPlace_'+value.REF+'_'+value.RE_STEP+'" style="float:right;min-width:220px;width:90%;" />');
-
-					var reContentDeleteBtn = '';
-					var reContentAddBtn = '';
-
-								if(s_userId == value.IN_USER_ID){
-									reContentDeleteBtn = '<span>'
-									+	'<a href="#this" id="'+tableInitData.programId+'ReDelBtn" >댓글삭제'
-									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
-									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-									+	'</a> '
-									+ '</span>';
-								}
-								if(value.RE_STEP == 0){
-									reContentAddBtn = '<span>'
-									+	'<a href="#this"  id="'+tableInitData.programId+'ReAddBtn" )">답변달기'
-									+	'<input class="ref" type="hidden" value="'+value.REF+'" />'
-									+	'<input class="reStep" type="hidden" value="'+value.RE_STEP+'" />'
-									+	'</a>'
-									+ '</span>';
-								}
-
-					var btnArray = reContentDeleteBtn + (reContentDeleteBtn != '' && reContentAddBtn != '' ? '<span> · </span>' : '')
-								+ reContentAddBtn + (reContentAddBtn != '' ? '<span> · </span>' : '')
-								+ value.IN_DT;
-
-						//첫댓글이고, 마지막댓글이 아닐
-						if(value.RE_LEVEL == 1 && value.RE_LEVEL != value.COUNT){
-							reContentAddOn.append(btnArray);
-						//첫댓글이 아니고, 마지막 댓글일
-						}else if(value.RE_LEVEL == value.COUNT){
-							reContentAddOn.append(btnArray);
-						//첫댓글이 아니고, 마지막 댓글도 아닐
-						}else{
-							reContentAddOn.append(btnArray);
-						}
-
-
-						reContentView.append(reContentImg).append(reContentTxt).append(reContentAddOn);
-						reContent.append(reContentView);
-				});
-
-				body.append(reContent);
-
-			}
-		})
+				);
+    		
+    		$('#'+tableInitData.programId+'ViewArea').after(reBody);
     }
+    
 
     //행 선택 시 데이터 세팅
     function gridDataSetting(thisData){
@@ -634,20 +681,16 @@ function fnSaveIdx(i){
 							$('.'+programInitData.programId+'UpdateFlag').css('display', 'block');
 						}
 						
-//						blogUpdateFlag
-//						if(idCheck){
-//							$('#'+tableInitData.programId+'ModifyBtn').css('display', 'inline-block');
-//							$('#'+tableInitData.programId+'DeleteBtn').css('display', 'inline-block');
-//						}
-
-					}
+						
+						if(viewContentsRe){
+							getViewReContent('VIEW');
+						}
+				}
 			})
 
 		}
 
-//		if(viewContentsRe){
-//			$('#'+tableInitData.programId+'Re').getBlogRe();
-//		}
+
 		
 		
 		//글쓴이 일때만 글 수정 
@@ -674,6 +717,7 @@ function fnSaveIdx(i){
     		fnAddImg('INSERT',  {});
     		return false;
     	}else if(thisId.indexOf('DelBox') != -1){
+    		console.log(focusIdx);
 			$('#row_'+focusIdx).remove();
 			return false;
     	//댓댓글 저장
@@ -844,6 +888,8 @@ function fnSaveIdx(i){
         		$('#'+tableInitData.programId+'View').css('display', 'block');
     		}
     		
+			$('.'+tableInitData.programId+'UpdateFlag').css('display', 'block');
+    		
 			//내용 초기화
 			$('#'+tableInitData.programId+'Title').empty();
 			$('#'+tableInitData.programId+'Subject').empty();
@@ -948,6 +994,8 @@ return false;
 		//글수정
     	}else if(thisId.indexOf('Update') != -1){
     		
+    		$('.'+tableInitData.programId+'UpdateFlag').css('display', 'block');
+    		
 			getView('UPDATE');
 			return false;
 		//글삭제
@@ -1006,9 +1054,6 @@ return false;
         		}
         	});
     	}
-
-    	console.log(thisId);
-    	console.log(newUrl);
     });
 
 
@@ -1023,50 +1068,73 @@ return false;
 
 
     function fnAddTextBox(flag, data, type){
-    	var dd = $('<div id="row_'+contentLength+'" class="col-xs-w100" />');
-    		dd.click(function(){
-    			fnSaveIdx(contentLength);
-    		});
-    	
-    		var childInput1 = $('<input type="hidden" id="idx_'+contentLength+'" value="'+contentLength+'" />');
-    		var childInput2 = $('<input type="hidden" id="type_'+contentLength+'" value="TEXT" />');
+    	var cnt = contentLength;
+    	var dd = $('<div id="row_'+cnt+'" class="col-xs-w100" />');
+	    	dd.click(function(){
+	    		console.log($(this))
+	    	})
+
+    		var childInput1 = $('<input type="hidden" id="idx_'+cnt+'" value="'+cnt+'" />');
+    		var childInput2 = $('<input type="hidden" id="type_'+cnt+'" value="TEXT" />');
     		
     		if(type == "TEXT"){
-    			childInput2.value = 'TEXT';	
+    			childInput2.val('TEXT');	
     		}else{
-    			childInput2.value = 'CODE';
+    			childInput2.val('CODE');
     		}
     		
     		dd.append(childInput1).append(childInput2);
     		
     		//삽입,수정
     		if(flag != "VIEW"){
-        		var childTextArea = $('<textarea id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
+        		var childTextArea = $('<textarea id="text_'+cnt+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
         		childTextArea.keydown(function(el){
         			resize(el);
         		});
         		
         		if(flag == "UPDATE"){
         			childTextArea.text(data.CONTENT);
+        		}else{
+
         		}
         		if(type == "CODE"){
             		childTextArea.css({
-	        			"background-color" : "gray",
-	        			"color"			: "white"
+	        			"background-color" 	: "gray",
+	        			"color"				: "white"
+	        		})
+        		}
+        		if(type == "CODE"){
+            		childTextArea.css({
+	        			"background-color" 	: "gray",
+	        			"color"				: "white"
 	        		})
         		}
         		
         		dd.append(childTextArea);
+        		
+        		dd.click(function(){
+        			fnSaveIdx(cnt);
+        		})
     		}else{
-        		var childTextArea = $('<div id="text_'+contentLength+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
+        		var childTextArea = $('<div id="text_'+cnt+'" class="col-xs-w100" style="min-height:50px; padding:10px;" />');
 //        		childTextArea.keydown(function(el){
 //        			resize(el);
 //        		});
+//        		childTextArea.css({
+//        			"text-align"		: "center"
+//        		})
+        		
         		childTextArea.text(data.CONTENT);
+        		if(type == "CODE"){
+            		childTextArea.css({
+	        			"background-color" 	: "gray",
+	        			"color"				: "white"
+	        		})
+        		}
         		
         		dd.append(childTextArea);
     		}
-
+    		
     		$('#'+tableInitData.programId+'ViewArea').append(dd);
     		
 	    	contentLength++;
@@ -1080,8 +1148,9 @@ return false;
     	
     	//쓰기, 수정
     	if(flag != "VIEW"){
-    		var bbImgIn = $('#'+tableInitData.programId+'ImgAddBtn_input');
-    		bbImgIn.change(function(){
+    		var childInput0 = $('<input type="file" id="img_'+cnt+'" "display:none" />');
+//    		var childInput0 = $('#'+tableInitData.programId+'ImgAddBtn_input');
+    		childInput0.change(function(){
     			//이미지 변경
     		    if (this.files && this.files[0]) {
     		        var reader = new FileReader();
@@ -1125,12 +1194,10 @@ return false;
     		    }
     		});
     		if(flag == 'INSERT'){
-    			bbImgIn.trigger('click');
+    			childInput0.trigger('click');
     		}
     	}
 		
-
-    	
 		var childInput1 = $('<input type="hidden" id="idx_'+cnt+'" value="'+cnt+'" />');
 		var childInput2 = $('<input type="hidden" id="type_'+cnt+'" value="IMG" />');
 		dd.append(childInput1).append(childInput2);
@@ -1144,9 +1211,7 @@ return false;
 		
 		dd.append(childImg);
 		
-		console.log(flag);
 		if(flag != "VIEW"){
-			console.log('d');
 			
     		dd.mouseover(function(){
     			$('.imgContWidth_'+cnt).css('display', 'block');
@@ -1250,5 +1315,6 @@ var SeonhoblogUtil = function() {
 		},
 		
 	}
+	
 }();
 

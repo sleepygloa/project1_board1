@@ -128,7 +128,7 @@
 
 
 
-	<select id="getReBlog" parameterType="hashmap" resultType="hashmap">
+	<select id="listReBlog" resultType="HMap">
 		SELECT
 				M.REF
 			, 	M.RE_LEVEL
@@ -152,7 +152,7 @@
 	   ORDER BY M.REF ASC, M.RE_STEP ASC;
 	</select>
 
-	<insert id="saveReBlog" parameterType="hashmap" useGeneratedKeys="true" keyProperty="REF">
+	<insert id="saveReBlog" useGeneratedKeys="true" keyProperty="REF">
 	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
 			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M WHERE DEL_YN = 'N'
 		</selectKey>
@@ -167,10 +167,10 @@
 			VALUES
 			(
 				#{idx}
-			,	#{REF}
+			,	#{ref}
 			,	#{content}
 			,	now()
-			,	#{writer}
+			,	#{s_userId}
 			)
 	</insert>
 

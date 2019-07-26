@@ -139,9 +139,9 @@
 
 	<header class="header">
 		<div class="header-container">
-			<div class="header-container-left"></div>
-			<div class="header-container-middle" style="font-size:2.5em;">NAMBI'S VLOG</div>
-			<div class="header-container-right">
+			<div class="col-xs-w10"></div>
+			<div class="col-xs-w80" style="font-size:2.5em;">NAMBI'S VLOG</div>
+			<div class="col-xs-w10">
 				<div id="mainLoginArea">
 					<a href="#" id="mainLoginToggleLogin" class="btn" >LOGIN</a>
 					<a href="#" id="mainLoginToggleLogout" class="btn" >LOGOUT</a>
