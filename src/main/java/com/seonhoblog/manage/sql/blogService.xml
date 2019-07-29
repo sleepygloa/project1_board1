@@ -152,9 +152,9 @@
 	   ORDER BY M.REF ASC, M.RE_STEP ASC;
 	</select>
 
-	<insert id="saveReBlog" useGeneratedKeys="true" keyProperty="REF">
+	<insert id="saveReBlogInsert" useGeneratedKeys="true" keyProperty="REF">
 	 	<selectKey keyProperty="REF" resultType="string" order="BEFORE">
-			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M WHERE DEL_YN = 'N'
+			SELECT IFNULL(MAX(REF) + 1, 1) AS REF FROM TB_BLOG_RE_M
 		</selectKey>
 			INSERT INTO TB_BLOG_RE_M
 			(
@@ -167,21 +167,31 @@
 			VALUES
 			(
 				#{idx}
-			,	#{ref}
+			,	#{REF}
 			,	#{content}
 			,	now()
 			,	#{s_userId}
 			)
 	</insert>
 
-	<update id="deleteReBlog" parameterType="hashmap">
+	<update id="saveReBlogUpdate" >
+			UPDATE TB_BLOG_RE_M
+			SET
+				CONTENT = #{content}
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+			AND RE_STEP = #{reStep}
+	</update>
+
+	<update id="saveReBlogDelete" >
 			UPDATE TB_BLOG_RE_M
 			SET
 				DEL_YN = 'Y'
 			WHERE
 				IDX		= #{idx}
 			AND REF		= #{ref}
-			AND RE_STEP = #{re_step}
+			AND RE_STEP = #{reStep}
 	</update>
 
 	<update id="deleteReBlogRefAll" parameterType="hashmap">

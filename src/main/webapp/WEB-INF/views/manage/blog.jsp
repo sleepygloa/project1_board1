@@ -30,7 +30,7 @@
 			</div>
 			
 			
-			<div id="blogViewArea" class="col-xs-w100">
+			<div id="blogViewArea" class="col-xs-w100" style="padding-left:10px; padding-right:20px;">
 			
 			</div>
 		</div>

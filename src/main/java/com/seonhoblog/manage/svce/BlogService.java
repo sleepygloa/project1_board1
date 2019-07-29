@@ -127,7 +127,18 @@ public class BlogService extends ParagonService{
 	
 	public Params saveReBlog(Params inParams, HttpServletRequest request) {
 		System.out.println("saveReBlog data : "+ inParams);
-		getSqlManager().update("BlogService.saveReBlog", inParams);
+		
+		
+		String modFlag = inParams.getString("flag");
+		
+		if(modFlag.equals("DELETE")) {
+			getSqlManager().update("BlogService.saveReBlogDelete", inParams);
+		}else if(modFlag.equals("UPDATE")) {
+			getSqlManager().update("BlogService.saveReBlogUpdate", inParams);
+		}else {
+			getSqlManager().update("BlogService.saveReBlogInsert", inParams);
+		}
+		
 		return inParams;
 	}
 	

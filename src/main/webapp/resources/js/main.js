@@ -28,7 +28,6 @@ var MainJs = function(){
 	function fnSession(){
 		SeonhoblogUtil.ajax('', '/ctrl/login/listSession', false, function callbackfunc(data){
 			seonhoblogData = data;
-			console.log(seonhoblogData);
 		},false);
 		
 	};
@@ -43,8 +42,6 @@ var MainJs = function(){
 				$('#mainArticle').html(data);
 			},
 			error : function(data){
-				console.log(data);
-				console.log('ee');
 			}
 		});
 	}
@@ -84,7 +81,6 @@ var MainJs = function(){
 			}
 		});
 		
-		console.log(seonhoblogData.s_userId);
 		//로그인 버튼 토글
 		if(seonhoblogData.s_userId == null){
 			$('#mainLoginToggleLogin').css('display', 'block');
