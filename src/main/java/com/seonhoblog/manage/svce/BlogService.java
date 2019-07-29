@@ -130,14 +130,27 @@ public class BlogService extends ParagonService{
 		
 		
 		String modFlag = inParams.getString("flag");
+		String reLevel = inParams.getString("reLevel");
 		
-		if(modFlag.equals("DELETE")) {
-			getSqlManager().update("BlogService.saveReBlogDelete", inParams);
-		}else if(modFlag.equals("UPDATE")) {
-			getSqlManager().update("BlogService.saveReBlogUpdate", inParams);
+		if(reLevel.equals("1")) {
+			if(modFlag.equals("DELETE")) {
+				getSqlManager().update("BlogService.saveReBlogDelete", inParams);
+			}else if(modFlag.equals("UPDATE")) {
+				getSqlManager().update("BlogService.saveReBlogUpdate", inParams);
+			}else {
+				getSqlManager().update("BlogService.saveReBlogInsert", inParams);
+			}
 		}else {
-			getSqlManager().update("BlogService.saveReBlogInsert", inParams);
+			if(modFlag.equals("DELETE")) {
+				getSqlManager().update("BlogService.saveReReBlogDelete", inParams);
+			}else if(modFlag.equals("UPDATE")) {
+				getSqlManager().update("BlogService.saveReReBlogUpdate", inParams);
+			}else {
+				getSqlManager().update("BlogService.saveReReBlogInsert", inParams);
+			}
 		}
+		
+
 		
 		return inParams;
 	}

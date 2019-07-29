@@ -153,8 +153,8 @@
 	<section class="section">
 		<article id="mainArticle" class="article">본문입니다</article>
 	</section>
-	<aside class="aside">광고입니다</aside>
-	<footer class="footer">푸터입니다</footer>
+<!-- 	<aside class="aside">광고입니다</aside>
+	<footer class="footer">푸터입니다</footer> -->
 	
 	<div id="mainLoginPop" style="position:absolute; top:0px; left:0px; width:100%; height:100%; background-color:gray; opacity:0.7; display:none;">
 		<div style="background-color:white;border:2px black solid; position:absolute; top:30%; left:40%; width:400px; height:300px;">

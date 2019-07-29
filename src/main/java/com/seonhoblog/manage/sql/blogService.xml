@@ -149,7 +149,7 @@
 	    	ON   	M.REF	= CNT.REF
 	    	WHERE   DEL_YN = 'N'
 	    	AND		IDX = #{idx}
-	   ORDER BY M.REF ASC, M.RE_STEP ASC;
+	   ORDER BY M.REF ASC, M.RE_LEVEL ASC, M.RE_STEP ASC;
 	</select>
 
 	<insert id="saveReBlogInsert" useGeneratedKeys="true" keyProperty="REF">
@@ -203,7 +203,7 @@
 			AND REF		= #{ref}
 	</update>
 
-	<insert id="saveReReBlog" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
+	<insert id="saveReReBlogInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="RE_STEP">
  	 	<selectKey keyProperty="RE_STEP" resultType="string" order="BEFORE">
 			SELECT MAX(RE_STEP)+1 FROM TB_BLOG_RE_M WHERE REF = #{ref} AND DEL_YN = 'N'
 		</selectKey>
@@ -223,11 +223,34 @@
 			,	#{content}
 			,	#{ref}
 			,	'2'
-			,	#{reStep}
+			,	#{RE_STEP}
 			,	now()
-			,	#{writer}
+			,	#{s_userId}
 			)
 	</insert>
+	
+	<update id="saveReReBlogUpdate" >
+			UPDATE TB_BLOG_RE_M
+			SET
+				CONTENT = #{content}
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+			AND RE_STEP = #{reStep}
+            AND RE_LEVEL = #{reLevel}
+	</update>
+
+	<update id="saveReReBlogDelete" >
+			UPDATE TB_BLOG_RE_M
+			SET
+				DEL_YN = 'Y'
+			WHERE
+				IDX		= #{idx}
+			AND REF		= #{ref}
+			AND RE_STEP = #{reStep}
+			AND RE_LEVEL = #{reLevel}
+	</update>
+	
 <!-- 파일 업로드 -->
 	<insert id="insertMainBlogFile" parameterType="hashmap" useGeneratedKeys="true" keyProperty="IDX">
  	 	<selectKey keyProperty="IDX" resultType="int" order="BEFORE">
