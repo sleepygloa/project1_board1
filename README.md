@@ -1,30 +1,21 @@
-## 선호 블로그
+# 선호 블로그 및 포트폴리오.
 
 #### 기능들
-1. 회원가입기능 
-2. 게시판 글 쓰기 기능
+0. 관리
+ - 메뉴관리 기능
+ - 공통코드 관리 기능
+1. 프로그램
+ - 사용자 관리 기능
+ - 블로그 기능.
+ 
+#### 예정
+0. 관리
+ - url 접근관리
+ - Message 관리
+ - 권한 관리
+1. 인스타 기능
+
 
 ## MVC Project, tomcat, maven, jdk1.8 환경으로 진행하는 세팅파일 백업
-
-
-파일
-CREATE TABLE TB_FILE
-(
-  IDX   NUMBER,
-  BOARD_IDX NUMBER NOT NULL,
-  ORIGINAL_FILE_NAME VARCHAR2(260 BYTE) NOT NULL,
-  STORED_FILE_NAME VARCHAR2(36 BYTE) NOT NULL,
-  FILE_SIZE NUMBER,
-  CREA_DTM  DATE DEFAULT SYSDATE NOT NULL,
-  CREA_ID   VARCHAR2(30 BYTE) NOT NULL,
-  DEL_GB    VARCHAR2(1 BYTE) DEFAULT 'N' NOT NULL,
-  PRIMARY KEY (IDX)
-);
-
-CREATE SEQUENCE SEQ_TB_FILE_IDX
-  START WITH 1
-  INCREMENT BY 1
-  NOMAXVALUE
-  NOCACHE;
 
 
